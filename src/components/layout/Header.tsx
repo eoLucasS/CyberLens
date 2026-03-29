@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Shield, Settings, ExternalLink } from "lucide-react";
+import { Shield, Settings, ExternalLink, BookOpen } from "lucide-react";
 
 export default function Header() {
   return (
@@ -29,8 +29,17 @@ export default function Header() {
               <span className="hidden sm:inline">Configurações</span>
             </Link>
 
+            <Link
+              href="/documentacao"
+              className="flex items-center gap-1.5 px-2 py-2 sm:px-3 rounded-md text-sm text-cyber-text-secondary hover:text-cyber-text hover:bg-white/5 transition-colors"
+              aria-label="Documentação"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline">Docs</span>
+            </Link>
+
             <a
-              href="https://github.com"
+              href="https://github.com/eoLucasS/CyberLens"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 px-2 py-2 sm:px-3 rounded-md text-sm text-cyber-text-secondary hover:text-cyber-text hover:bg-white/5 transition-colors"

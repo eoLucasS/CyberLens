@@ -7,7 +7,7 @@ import { Shield, Lock, Eye, Database, ExternalLink } from 'lucide-react';
 import { useLocalStorage } from '@/hooks';
 import { STORAGE_KEYS } from '@/lib/utils/storage';
 
-const EXEMPT_ROUTES = ['/privacidade', '/termos', '/sobre'];
+const EXEMPT_ROUTES = ['/privacidade', '/termos', '/sobre', '/documentacao'];
 
 interface ConsentRecord {
   accepted: boolean;

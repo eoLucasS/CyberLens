@@ -1,5 +1,6 @@
 // About page: static Server Component, zero client-side JavaScript.
 
+import Link from 'next/link';
 import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap } from 'lucide-react';
 
 export const metadata = {
@@ -223,38 +224,26 @@ export default function SobrePage() {
             </div>
           </section>
 
-          {/* For devs (collapsed, secondary) */}
-          <section>
-            <details className="group">
-              <summary className="flex items-center gap-2 cursor-pointer text-sm font-medium text-[#9ca3af] hover:text-[#e4e4e7] transition-colors list-none [&::-webkit-details-marker]:hidden">
-                <Code size={16} />
-                Para desenvolvedores: stack técnica
-                <ChevronDown size={14} className="transition-transform duration-200 group-open:rotate-180" />
-              </summary>
-              <div className="mt-4 space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    'Next.js (App Router)', 'React', 'TypeScript (strict)', 'Tailwind CSS v4',
-                    'pdfjs-dist', 'Tesseract.js (OCR)', 'TF-IDF (NLP)', '@react-pdf/renderer',
-                    'Lucide React', 'OpenAI API', 'Anthropic API', 'Google Gemini API',
-                    'HuggingFace Inference', 'Vercel',
-                  ].map((tech) => (
-                    <span key={tech} className="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium bg-[#0d0d18] border border-white/[0.06] text-[#9ca3af]">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-xs text-[#9ca3af] leading-relaxed">
-                  PDF parsing 100% client-side via pdfjs-dist. OCR via Tesseract.js (WASM). NLP local com
-                  TF-IDF para extração de keywords e section parser para estruturação do currículo.
-                  Proxy CORS via Next.js API Routes apenas para Anthropic e HuggingFace. Zero banco de dados.
-                  TypeScript strict, zero any. Conformidade com LGPD (Lei 13.709/2018).
+          {/* Dev CTA */}
+          <section className="rounded-xl border border-white/[0.06] bg-[#141420] p-5 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold text-[#e4e4e7]">Quer saber como funciona por dentro?</p>
+                <p className="text-xs text-[#9ca3af] mt-1">
+                  Veja a documentação técnica com o pipeline completo, tecnologias e guia para desenvolvedores.
                 </p>
               </div>
-            </details>
+              <Link
+                href="/documentacao"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#00ffd5]/10 border border-[#00ffd5]/20 text-sm font-medium text-[#00ffd5] hover:bg-[#00ffd5]/15 transition-colors shrink-0"
+              >
+                <Code size={16} />
+                Documentação
+              </Link>
+            </div>
           </section>
 
-          {/* CTA */}
+          {/* GitHub */}
           <section className="text-center space-y-3">
             <a
               href="https://github.com/eoLucasS/CyberLens"
