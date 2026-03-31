@@ -6,6 +6,7 @@ import { LOADING_MESSAGES, ERROR_MESSAGES } from '@/constants';
 import { getStorageItem, STORAGE_KEYS } from '@/lib/utils';
 import { analyzeKeywords } from '@/lib/nlp/keywords';
 import { parseResumeSections } from '@/lib/nlp/sections';
+import { cleanJobDescription } from '@/lib/nlp/cleaner';
 import { analyzeWithAI } from '@/lib/ai';
 import type { UserSettings } from '@/types';
 import type { KeywordAnalysis } from '@/lib/nlp/keywords';
@@ -73,19 +74,22 @@ export function useAnalysis(): UseAnalysisReturn {
       startMessageRotation();
 
       try {
-        // Step 1: Client-side NLP pre-processing (runs in browser, no API call)
-        const kwAnalysis = analyzeKeywords(jobDescription, resumeText);
+        // Step 1: Clean job description (remove company info, benefits, noise)
+        const cleanedJob = cleanJobDescription(jobDescription);
+
+        // Step 2: Client-side NLP pre-processing (runs in browser, no API call)
+        const kwAnalysis = analyzeKeywords(cleanedJob, resumeText);
         setKeywordAnalysis(kwAnalysis);
 
         const parsed = parseResumeSections(resumeText, isOcr);
 
-        // Step 2: Call AI with structured data + pre-analysis
+        // Step 3: Call AI with structured data + pre-analysis
         const analysisResult = await analyzeWithAI({
           provider: settings.provider,
           model: settings.model,
           apiKey: settings.apiKey,
           resumeText,
-          jobDescription,
+          jobDescription: cleanedJob,
           preAnalysis: {
             structuredResume: parsed.structured,
             matchedKeywords: kwAnalysis.matched.map((k) => k.keyword),
