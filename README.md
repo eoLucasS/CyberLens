@@ -41,6 +41,8 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 - Palavras-chave ausentes com sugestões de incorporação
 - Análise de experiência e certificações
 - Plano de estudos personalizado com cursos, certificações e recursos reais
+- Raio-X instantâneo de palavras-chave (grátis, antes da IA, milissegundos)
+- Sugestões de reescrita do currículo para cada lacuna identificada
 
 </details>
 
@@ -51,6 +53,7 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 - Parser de seções do currículo (experiência, formação, skills, certificações)
 - Matching automático de palavras-chave da vaga vs currículo
 - Prompt otimizado: a IA recebe dados estruturados, reduzindo tokens e melhorando precisão
+- Resultado do NLP exibido como "Raio-X de Compatibilidade" antes da análise com IA
 
 </details>
 

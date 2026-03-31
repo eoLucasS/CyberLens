@@ -3,10 +3,21 @@ export interface MatchedSkill {
   context: string;
 }
 
+export interface RewriteSuggestion {
+  type: 'rewrite' | 'study';
+  before?: string;       // original text from resume (only for type 'rewrite')
+  after?: string;        // suggested rewrite (only for type 'rewrite')
+  keywords?: string[];   // keywords incorporated (only for type 'rewrite')
+  resource?: string;     // study resource name (only for type 'study')
+  estimatedTime?: string; // time to learn (only for type 'study')
+  suggestedText?: string; // what to add to resume after studying (only for type 'study')
+}
+
 export interface Gap {
   skill: string;
   priority: 'Crítico' | 'Importante' | 'Desejável';
   reason: string;
+  rewriteSuggestion?: RewriteSuggestion;
 }
 
 export interface MissingKeyword {

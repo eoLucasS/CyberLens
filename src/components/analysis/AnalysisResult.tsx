@@ -15,6 +15,8 @@ import {
   BookOpen,
   TrendingUp,
   ShieldCheck,
+  Pencil,
+  ChevronDown,
 } from 'lucide-react';
 import type { AnalysisResult, Gap, StudyPlanItem, MatchedSkill, MissingKeyword } from '@/types';
 import { Card } from '@/components/ui/Card';
@@ -280,6 +282,76 @@ function GapsSection({ gaps, mounted }: { gaps: Gap[]; mounted: boolean }) {
                         <Badge variant={config.badgeVariant}>{priority}</Badge>
                       </div>
                       <p className="text-xs text-[#9ca3af] leading-relaxed">{gap.reason}</p>
+                      {gap.rewriteSuggestion && (
+                        <details className="mt-3 group rounded-lg border border-white/[0.06] overflow-hidden">
+                          <summary className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-[#00ffd5] cursor-pointer hover:bg-white/[0.02] transition-colors list-none [&::-webkit-details-marker]:hidden select-none">
+                            {gap.rewriteSuggestion.type === 'rewrite' ? (
+                              <span className="flex items-center gap-1.5">
+                                <Pencil size={12} />
+                                Sugestão de reescrita
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-1.5">
+                                <BookOpen size={12} />
+                                Plano de ação
+                              </span>
+                            )}
+                            <ChevronDown size={12} className="ml-auto transition-transform group-open:rotate-180" />
+                          </summary>
+                          <div className="border-t border-white/[0.06] bg-[#0d0d18] p-3 sm:p-4 overflow-hidden break-words">
+                            {gap.rewriteSuggestion.type === 'rewrite' ? (
+                              <div className="space-y-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                  <div className="rounded-lg border border-white/[0.06] bg-[#141420] p-3">
+                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#ff4757]/70 mb-2">Antes</p>
+                                    <p className="text-xs text-[#9ca3af] leading-relaxed">{gap.rewriteSuggestion.before}</p>
+                                  </div>
+                                  <div className="rounded-lg border border-[#00ffd5]/20 bg-[#141420] p-3">
+                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/70 mb-2">Sugerido</p>
+                                    <p className="text-xs text-[#e4e4e7] leading-relaxed">{gap.rewriteSuggestion.after}</p>
+                                  </div>
+                                </div>
+                                {gap.rewriteSuggestion.keywords && gap.rewriteSuggestion.keywords.length > 0 && (
+                                  <div className="flex flex-wrap items-center gap-1.5">
+                                    <span className="text-[10px] text-[#8b8fa3]">Keywords incorporadas:</span>
+                                    {gap.rewriteSuggestion.keywords.map((kw, j) => (
+                                      <span key={j} className="rounded-md bg-[#00ffd5]/10 px-1.5 py-0.5 text-[10px] font-medium text-[#00ffd5]">{kw}</span>
+                                    ))}
+                                  </div>
+                                )}
+                                <p className="text-[10px] text-[#8b8fa3] leading-relaxed">
+                                  Esta sugestão reformula o texto existente. Não adiciona experiências fictícias.
+                                </p>
+                              </div>
+                            ) : (
+                              <div className="space-y-3">
+                                {gap.rewriteSuggestion.resource && (
+                                  <div className="flex items-start gap-2">
+                                    <BookOpen size={13} className="shrink-0 text-[#00ffd5] mt-0.5" />
+                                    <div>
+                                      <p className="text-xs font-medium text-[#e4e4e7]">{gap.rewriteSuggestion.resource}</p>
+                                      {gap.rewriteSuggestion.estimatedTime && (
+                                        <p className="text-[11px] text-[#8b8fa3] flex items-center gap-1 mt-0.5">
+                                          <Clock size={10} />
+                                          Tempo estimado: {gap.rewriteSuggestion.estimatedTime}
+                                        </p>
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
+                                {gap.rewriteSuggestion.suggestedText && (
+                                  <div className="rounded-lg border border-[#00ffd5]/20 bg-[#141420] p-3">
+                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/60 mb-2">
+                                      Após completar este estudo, considere adicionar ao currículo:
+                                    </p>
+                                    <p className="text-xs text-[#e4e4e7] leading-relaxed italic">&quot;{gap.rewriteSuggestion.suggestedText}&quot;</p>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </details>
+                      )}
                     </div>
                   </div>
                 ))}

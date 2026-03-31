@@ -247,7 +247,9 @@ export default function DocumentacaoPage() {
                   Antes de enviar o texto para a IA, o sistema aplica TF-IDF
                   para extrair os termos mais relevantes do currículo e da vaga.
                   Isso reduz o número de tokens enviados, diminuindo o custo da
-                  análise e melhorando a precisão dos resultados.
+                  análise e melhorando a precisão dos resultados. Os resultados
+                  dessa pré-análise são exibidos ao usuário como um "Raio-X de
+                  Compatibilidade" instantâneo antes de chamar a IA.
                 </p>
               </div>
 
@@ -259,7 +261,9 @@ export default function DocumentacaoPage() {
                   O texto otimizado é enviado ao provedor de IA escolhido
                   (OpenAI, Anthropic ou Google) via proxy CORS do Next.js. A IA
                   retorna um relatório estruturado com score de aderência,
-                  habilidades, lacunas, palavras-chave e plano de estudos.
+                  habilidades, lacunas, palavras-chave e plano de estudos. Para
+                  cada lacuna identificada, a IA também sugere como reescrever
+                  trechos do currículo para incorporar os termos faltantes.
                 </p>
               </div>
             </div>

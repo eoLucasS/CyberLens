@@ -197,6 +197,12 @@ const styles = StyleSheet.create({
     color: C.gray,
     marginTop: 1,
   },
+  gapSuggestion: {
+    fontSize: 8,
+    color: C.teal,
+    marginTop: 3,
+    fontStyle: 'italic',
+  },
 
   // --- missing keywords ---
   kwRow: {
@@ -508,6 +514,17 @@ function GapsSection({ result }: GapsSectionProps) {
                 <View style={{ flex: 1 }}>
                   <Text style={[styles.gapSkill, { color }]}>{gap.skill}</Text>
                   <Text style={styles.gapReason}>{gap.reason}</Text>
+                  {gap.rewriteSuggestion?.type === 'rewrite' && gap.rewriteSuggestion.after && (
+                    <Text style={styles.gapSuggestion}>
+                      Sugestão: {gap.rewriteSuggestion.after}
+                    </Text>
+                  )}
+                  {gap.rewriteSuggestion?.type === 'study' && gap.rewriteSuggestion.resource && (
+                    <Text style={styles.gapSuggestion}>
+                      Recurso: {gap.rewriteSuggestion.resource}
+                      {gap.rewriteSuggestion.estimatedTime ? ` (${gap.rewriteSuggestion.estimatedTime})` : ''}
+                    </Text>
+                  )}
                 </View>
               </View>
             ))}

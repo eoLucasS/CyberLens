@@ -6,7 +6,11 @@ import { ResumeUpload } from '@/components/analysis/ResumeUpload';
 import { JobDescriptionInput } from '@/components/analysis/JobDescriptionInput';
 import { AnalysisButton } from '@/components/analysis/AnalysisButton';
 import { AnalysisResult } from '@/components/analysis/AnalysisResult';
+import { KeywordRadar } from '@/components/analysis/KeywordRadar';
 import { useAnalysis } from '@/hooks/useAnalysis';
+import { analyzeKeywords } from '@/lib/nlp/keywords';
+import { cleanJobDescription } from '@/lib/nlp/cleaner';
+import type { KeywordAnalysis } from '@/lib/nlp/keywords';
 import { getStorageItem, STORAGE_KEYS } from '@/lib/utils/storage';
 import { APP_NAME, APP_DESCRIPTION, STEP_TITLES } from '@/constants/ui';
 import { AI_PROVIDERS } from '@/constants/providers';
@@ -19,6 +23,7 @@ export default function HomePage() {
   const [resumeText, setResumeText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
+  const [keywordPreview, setKeywordPreview] = useState<KeywordAnalysis | null>(null);
 
   const { state, result, error, loadingMessage, analyze, reset } = useAnalysis();
 
@@ -30,7 +35,12 @@ export default function HomePage() {
   const handleJobSubmit = useCallback((text: string) => {
     setJobDescription(text);
     setCurrentStep((prev) => Math.max(prev, 2));
-  }, []);
+    if (resumeText) {
+      const cleaned = cleanJobDescription(text);
+      const preview = analyzeKeywords(cleaned, resumeText);
+      setKeywordPreview(preview);
+    }
+  }, [resumeText]);
 
   const handleAnalyze = useCallback(async () => {
     await analyze(resumeText, jobDescription);
@@ -42,6 +52,7 @@ export default function HomePage() {
     setResumeText('');
     setJobDescription('');
     setCurrentStep(0);
+    setKeywordPreview(null);
   }, [reset]);
 
   const [settings, setSettings] = useState<UserSettings | null>(null);
@@ -164,6 +175,13 @@ export default function HomePage() {
         {currentStep >= 1 && (
           <section aria-label={STEP_TITLES[1]}>
             <JobDescriptionInput onSubmit={handleJobSubmit} isComplete={currentStep > 1} />
+          </section>
+        )}
+
+        {/* Keyword Radar (instant preview) */}
+        {currentStep >= 2 && keywordPreview && state !== 'success' && (
+          <section>
+            <KeywordRadar analysis={keywordPreview} />
           </section>
         )}
 

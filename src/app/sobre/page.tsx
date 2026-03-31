@@ -1,7 +1,7 @@
 // About page: static Server Component, zero client-side JavaScript.
 
 import Link from 'next/link';
-import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap } from 'lucide-react';
+import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap, Pencil } from 'lucide-react';
 
 export const metadata = {
   title: 'Sobre o CyberLens',
@@ -113,6 +113,14 @@ export default function SobrePage() {
                   <BookOpen size={16} className="shrink-0 text-[#a855f7] mt-0.5" />
                   <span><strong className="text-[#e4e4e7]">Plano de estudos personalizado</strong> com cursos, certificações e recursos reais</span>
                 </li>
+                <li className="flex items-start gap-2">
+                  <Zap size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
+                  <span><strong className="text-[#e4e4e7]">Raio-X instantâneo</strong> que mostra em 2 segundos quais palavras-chave da vaga estão no seu currículo, grátis e sem IA</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Pencil size={16} className="shrink-0 text-[#7c3aed] mt-0.5" />
+                  <span><strong className="text-[#e4e4e7]">Sugestões de reescrita</strong> para cada lacuna, mostrando como reformular trechos do seu currículo</span>
+                </li>
               </ul>
               <p>
                 Funciona para <strong className="text-[#e4e4e7]">qualquer área</strong>: TI,
@@ -142,7 +150,7 @@ export default function SobrePage() {
                 number="3"
                 icon={<Zap size={18} />}
                 title="O CyberLens analisa"
-                description="Antes de consultar a IA, o sistema identifica automaticamente as palavras-chave da vaga e compara com seu currículo. Depois, envia tudo organizado para a inteligência artificial, que faz uma análise de contexto profunda."
+                description="Antes de consultar a IA, o sistema analisa instantaneamente as palavras-chave da vaga e mostra um raio-X de compatibilidade. Depois, envia tudo organizado para a inteligência artificial."
               />
               <div className="flex gap-4">
                 <div className="flex flex-col items-center">
@@ -188,6 +196,10 @@ export default function SobrePage() {
               <FaqItem
                 question="Preciso pagar para usar?"
                 answer="O CyberLens é gratuito. O que pode ter custo é a IA que analisa seu currículo, porque cada provedor (OpenAI, Google, Anthropic) cobra pelo uso da API. Mas o Hugging Face oferece créditos gratuitos todo mês, então dá para começar sem gastar nada. O CyberLens já vem configurado com o Hugging Face como padrão."
+              />
+              <FaqItem
+                question="O que é o Raio-X de Compatibilidade?"
+                answer="É uma pré-análise instantânea e gratuita que roda no seu navegador antes de chamar a IA. Ele compara as palavras-chave da vaga com o seu currículo e mostra quais foram encontradas e quais estão faltando. Funciona em milissegundos, sem gastar nenhum crédito de API."
               />
               <FaqItem
                 question="É seguro enviar meu currículo?"

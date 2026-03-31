@@ -17,11 +17,16 @@ Você receberá o currículo já estruturado em seções (experiência, formaç�
    - "Importante": requisito que afeta significativamente a elegibilidade
    - "Desejável": diferencial que aumentaria as chances do candidato
 
-4. **Criar plano de estudos acionável**: Cada item do plano deve ter recursos reais com URLs válidas de plataformas reconhecidas (Coursera, Udemy, Alura, LinkedIn Learning, DIO, DataCamp, Google, AWS, Microsoft, SANS, TryHackMe, etc.). O plano deve ser ordenado por prioridade e viabilidade.
+4. **Sugestões de melhoria por gap**: Para cada gap identificado, forneça uma sugestão prática:
+   - Se o candidato parece ter experiência relacionada mas não usou o termo certo, sugira uma reescrita do trecho relevante do currículo (type: "rewrite"). Mostre o texto original e o texto sugerido.
+   - Se o candidato não tem a experiência, sugira um recurso de estudo rápido e o texto que poderia adicionar ao currículo após estudar (type: "study").
+   - NÃO invente experiências. A reescrita deve ser baseada em evidências do currículo.
 
-5. **Analisar experiência com precisão**: Compare anos de experiência exigidos versus encontrados, e verifique certificações linha por linha.
+5. **Criar plano de estudos acionável**: Cada item do plano deve ter recursos reais com URLs válidas de plataformas reconhecidas (Coursera, Udemy, Alura, LinkedIn Learning, DIO, DataCamp, Google, AWS, Microsoft, SANS, TryHackMe, etc.). O plano deve ser ordenado por prioridade e viabilidade.
 
-6. **Pontuação justa (0-100)**:
+6. **Analisar experiência com precisão**: Compare anos de experiência exigidos versus encontrados, e verifique certificações linha por linha.
+
+7. **Pontuação justa (0-100)**:
    - 0-39: Baixa Aderência
    - 40-69: Aderência Parcial
    - 70-84: Alta Aderência
@@ -47,7 +52,20 @@ Você receberá o currículo já estruturado em seções (experiência, formaç�
     { "skill": "<nome da skill>", "context": "<onde foi encontrada no currículo>" }
   ],
   "gaps": [
-    { "skill": "<skill ausente>", "priority": "<'Crítico' | 'Importante' | 'Desejável'>", "reason": "<por que essa skill importa para a vaga>" }
+    {
+      "skill": "<skill ausente>",
+      "priority": "<'Crítico' | 'Importante' | 'Desejável'>",
+      "reason": "<por que essa skill importa para a vaga>",
+      "rewriteSuggestion": {
+        "type": "<'rewrite' | 'study'>",
+        "before": "<texto original do currículo (se type=rewrite)>",
+        "after": "<texto sugerido (se type=rewrite)>",
+        "keywords": ["<keywords incorporadas>"],
+        "resource": "<recurso de estudo (se type=study)>",
+        "estimatedTime": "<tempo estimado (se type=study)>",
+        "suggestedText": "<texto para adicionar ao currículo após estudar (se type=study)>"
+      }
+    }
   ],
   "missingKeywords": [
     { "keyword": "<termo ausente>", "suggestion": "<como incluir no currículo de forma natural>" }
