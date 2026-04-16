@@ -210,6 +210,10 @@ export default function SobrePage() {
                 answer="Sim, mas apenas no seu navegador. Depois do primeiro upload, o texto extraído fica salvo no localStorage do seu navegador para que você possa analisar o mesmo currículo contra várias vagas sem precisar fazer upload de novo. O arquivo PDF não é guardado, só o texto. Você pode remover esse cache a qualquer momento clicando em Enviar outro na tela de upload, ou usando o botão Limpar Dados em Configurações."
               />
               <FaqItem
+                question="Posso testar o CyberLens sem criar API key?"
+                answer="Sim. Acesse a rota /demo para ver três análises de exemplo completas, cada uma com um perfil diferente (dados, cibersegurança e full stack). A demonstração usa dados fictícios pré-gerados e não consome créditos de nenhuma API. É a forma mais rápida de ver exatamente o que a ferramenta entrega antes de configurar seu próprio provedor de IA."
+              />
+              <FaqItem
                 question="Funciona para qualquer tipo de vaga?"
                 answer="Sim. Apesar do visual temático do projeto, o CyberLens funciona para qualquer área: tecnologia, dados, cibersegurança, DevOps, suporte, gestão, marketing, design, ou qualquer outra. A inteligência artificial se adapta ao contexto da vaga que você colar."
               />

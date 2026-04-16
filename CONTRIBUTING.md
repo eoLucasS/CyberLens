@@ -147,6 +147,46 @@ Se o provedor precisa de campos extras além de `apiKey` e `model`, adicione em 
 
 ---
 
+## Como Adicionar um Novo Perfil de Demonstração
+
+<details>
+<summary><strong>Passo a passo</strong></summary>
+
+Os perfis da página `/demo` são arquivos JSON estáticos em `public/demo/profiles/`.
+
+### 1. Criar o JSON
+
+Crie `public/demo/profiles/meu-perfil.json` seguindo o formato dos arquivos existentes. Estrutura mínima:
+
+```json
+{
+  "profile": {
+    "slug": "meu-perfil",
+    "title": "Título",
+    "subtitle": "Subtítulo",
+    "narrative": "Descrição curta do cenário."
+  },
+  "resume": { "fileName": "...", "text": "..." },
+  "job": { "title": "...", "company": "...", "location": "...", "text": "..." },
+  "keywordRadar": { "matched": [...], "missing": [...], "matchPercentage": 0, "totalKeywords": 0 },
+  "analysis": { "score": 0, "classification": "...", "matchedSkills": [...], "gaps": [...], "missingKeywords": [...], "experienceAnalysis": {...}, "studyPlan": [...] }
+}
+```
+
+### 2. Registrar em `src/app/demo/page.tsx`
+
+Adicione o novo perfil nos arrays `PROFILES` (dados visuais do card) e `VALID_SLUGS` em `src/app/demo/[profile]/page.tsx`.
+
+### 3. Validar
+
+Acesse `/demo/meu-perfil` localmente e confirme que o KeywordRadar e AnalysisResult renderizam corretamente.
+
+Dados fictícios não podem conter nomes, emails ou telefones reais.
+
+</details>
+
+---
+
 ## Convenção de Commits
 
 Padrão [Conventional Commits](https://www.conventionalcommits.org/):

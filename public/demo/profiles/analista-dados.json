@@ -1,0 +1,218 @@
+{
+  "profile": {
+    "slug": "analista-dados",
+    "title": "Analista de Dados",
+    "subtitle": "De Pleno para Sênior",
+    "icon": "BarChart3",
+    "scoreHint": 62,
+    "narrative": "Profissional com 3 anos de experiência em BI tentando avançar para uma vaga de dados sênior com stack cloud."
+  },
+  "resume": {
+    "fileName": "curriculo-exemplo-dados.pdf",
+    "text": "MARINA OLIVEIRA\nAnalista de Dados Pleno\nSão Paulo, SP\n\nRESUMO PROFISSIONAL\nAnalista de Dados com 3 anos de experiência transformando números em decisões. Atuação focada em Power BI, SQL e automação de relatórios gerenciais para áreas de comercial, marketing e operações. Forte perfil analítico, atenção a detalhes e comunicação próxima do negócio.\n\nEXPERIÊNCIA PROFISSIONAL\n\nVarejo Plus S.A.\nAnalista de Dados Pleno | Jan/2023 - Atual\n- Desenvolvimento de dashboards em Power BI para diretoria comercial (12 dashboards ativos)\n- Extração e tratamento de dados via SQL em PostgreSQL e SQL Server\n- Automação de relatórios recorrentes, reduzindo 12 horas semanais de trabalho manual\n- Criação de indicadores de vendas, margem bruta e ruptura de estoque\n- Análises ad-hoc para marketing, comercial e operações (média de 8 análises/mês)\n\nConsultoria ABC\nAnalista de Dados Júnior | Fev/2022 - Dez/2022\n- Suporte em análises exploratórias para clientes do varejo\n- Construção de relatórios em Excel com funções avançadas e VBA básico\n- Apoio em projetos de migração de dados entre sistemas legados\n\nFORMAÇÃO ACADÊMICA\nBacharelado em Sistemas de Informação\nUniversidade Exemplo | 2018 - 2022\n\nHABILIDADES E COMPETÊNCIAS\n- Power BI (intermediário/avançado)\n- SQL (PostgreSQL, SQL Server)\n- Excel avançado e VBA básico\n- Python básico (pandas, numpy)\n- Metodologias ágeis (Scrum)\n- Comunicação com áreas de negócio\n\nCURSOS E CERTIFICAÇÕES\n- Microsoft PL-300 (Power BI Data Analyst) - em andamento\n- Python para Ciência de Dados - Alura\n\nIDIOMAS\nPortuguês (nativo) | Inglês (intermediário, leitura técnica)"
+  },
+  "job": {
+    "title": "Analista de Dados Sênior",
+    "company": "TechCorp BR",
+    "location": "São Paulo - Híbrido",
+    "text": "Analista de Dados Sênior - TechCorp BR\n\nDescrição da Vaga\nEstamos em busca de um(a) Analista de Dados Sênior para integrar o nosso time de Data & Analytics. O profissional terá papel fundamental na evolução da cultura data-driven, liderando iniciativas de análise complexas e influenciando decisões estratégicas do negócio.\n\nRequisitos Obrigatórios\n- 5+ anos de experiência em análise de dados ou áreas correlatas\n- Domínio avançado de Python (pandas, numpy, scikit-learn)\n- SQL avançado com experiência em data warehouses (Snowflake, BigQuery ou Redshift)\n- Experiência prática com AWS (S3, Athena, Glue) ou GCP\n- Vivência com ferramentas de orquestração de dados (Airflow ou similar)\n- Conhecimento em estatística aplicada e modelagem preditiva\n- Inglês intermediário/avançado (leitura e comunicação técnica)\n\nDiferenciais\n- Certificações AWS Data Analytics ou Google Professional Data Engineer\n- Experiência com Apache Spark e PySpark\n- Conhecimento em MLOps\n- Background em mentoria técnica de analistas júnior e pleno\n\nResponsabilidades\n- Liderar análises complexas de negócio com impacto em decisões estratégicas\n- Construir e manter data pipelines robustos em ambiente cloud\n- Mentorar analistas júnior e pleno, disseminando boas práticas\n- Atuar como ponte entre time técnico e stakeholders de negócio\n- Participar de cerimônias ágeis e definição de roadmap de dados"
+  },
+  "keywordRadar": {
+    "matched": [
+      { "keyword": "Python", "found": true, "frequency": 2 },
+      { "keyword": "SQL", "found": true, "frequency": 3 },
+      { "keyword": "Power BI", "found": true, "frequency": 2 },
+      { "keyword": "pandas", "found": true, "frequency": 1 },
+      { "keyword": "numpy", "found": true, "frequency": 1 },
+      { "keyword": "análise de dados", "found": true, "frequency": 2 },
+      { "keyword": "data-driven", "found": true, "frequency": 1 },
+      { "keyword": "Scrum", "found": true, "frequency": 1 },
+      { "keyword": "Excel", "found": true, "frequency": 2 }
+    ],
+    "missing": [
+      { "keyword": "AWS", "found": false, "frequency": 0 },
+      { "keyword": "S3 Athena Glue", "found": false, "frequency": 0 },
+      { "keyword": "Snowflake", "found": false, "frequency": 0 },
+      { "keyword": "BigQuery", "found": false, "frequency": 0 },
+      { "keyword": "Redshift", "found": false, "frequency": 0 },
+      { "keyword": "Airflow", "found": false, "frequency": 0 },
+      { "keyword": "scikit-learn", "found": false, "frequency": 0 },
+      { "keyword": "modelagem preditiva", "found": false, "frequency": 0 },
+      { "keyword": "data warehouses", "found": false, "frequency": 0 },
+      { "keyword": "data pipelines", "found": false, "frequency": 0 },
+      { "keyword": "Apache Spark", "found": false, "frequency": 0 },
+      { "keyword": "PySpark", "found": false, "frequency": 0 },
+      { "keyword": "MLOps", "found": false, "frequency": 0 }
+    ],
+    "matchPercentage": 41,
+    "totalKeywords": 22
+  },
+  "analysis": {
+    "score": 62,
+    "classification": "Aderência Parcial",
+    "matchedSkills": [
+      { "skill": "Power BI", "context": "Dashboards ativos para diretoria comercial na Varejo Plus" },
+      { "skill": "SQL (PostgreSQL e SQL Server)", "context": "Extração e tratamento de dados diário na Varejo Plus" },
+      { "skill": "Python (pandas, numpy)", "context": "Seção de habilidades, nível básico; curso de Python para Dados (Alura)" },
+      { "skill": "Excel avançado", "context": "Construção de relatórios na Consultoria ABC com VBA básico" },
+      { "skill": "Comunicação com negócio", "context": "Análises ad-hoc para marketing, comercial e operações" },
+      { "skill": "Metodologias ágeis (Scrum)", "context": "Seção de habilidades" }
+    ],
+    "gaps": [
+      {
+        "skill": "AWS (S3, Athena, Glue)",
+        "priority": "Crítico",
+        "reason": "Requisito obrigatório da vaga. A pessoa não cita experiência com cloud, o que é uma barreira para posições sênior de dados no mercado atual.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "AWS Certified Data Analytics Specialty ou o curso AWS Data Analytics Fundamentals (Coursera)",
+          "estimatedTime": "3 a 6 meses",
+          "suggestedText": "Conhecimento prático em AWS para dados: ingestão com S3 e Glue, consultas com Athena e orquestração com Step Functions."
+        }
+      },
+      {
+        "skill": "Data Warehouses modernos (Snowflake, BigQuery, Redshift)",
+        "priority": "Crítico",
+        "reason": "A vaga exige experiência em pelo menos uma plataforma de data warehouse cloud. O currículo menciona apenas PostgreSQL e SQL Server (bancos relacionais tradicionais).",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "Snowflake Free Trial com curso no Udemy (The Complete Snowflake Masterclass)",
+          "estimatedTime": "1 a 2 meses",
+          "suggestedText": "Experiência com Snowflake: modelagem de data warehouse, otimização de queries e uso de time travel para auditoria."
+        }
+      },
+      {
+        "skill": "Orquestração com Airflow",
+        "priority": "Importante",
+        "reason": "Ferramenta padrão de mercado para pipelines de dados agendados. Sem isso, a pessoa tem dificuldade em automatizar cargas e transformações em escala.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "Apache Airflow: The Hands-On Guide (Udemy) ou documentação oficial",
+          "estimatedTime": "1 mês",
+          "suggestedText": "Construção de DAGs no Apache Airflow para orquestração de pipelines ETL e agendamento de cargas diárias."
+        }
+      },
+      {
+        "skill": "Modelagem preditiva (scikit-learn)",
+        "priority": "Importante",
+        "reason": "A vaga pede estatística aplicada e modelagem preditiva. A pessoa tem Python básico, mas não demonstra experiência com modelagem.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Python básico (pandas, numpy)",
+          "after": "Python intermediário para análise e modelagem de dados (pandas, numpy, scikit-learn), com experiência em análises exploratórias, regressão linear e clustering para segmentação de clientes",
+          "keywords": ["scikit-learn", "modelagem", "regressão", "clustering"]
+        }
+      },
+      {
+        "skill": "Experiência sênior (5+ anos)",
+        "priority": "Importante",
+        "reason": "A pessoa tem 3 anos formais. A vaga pede 5+. Não é para inventar tempo de experiência, mas para reforçar impacto e autonomia dos projetos atuais.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Desenvolvimento de dashboards em Power BI para diretoria comercial",
+          "after": "Liderança técnica no desenvolvimento de 12 dashboards estratégicos em Power BI para diretoria comercial, incluindo definição de indicadores, modelagem de dados em PostgreSQL e alinhamento direto com stakeholders C-level",
+          "keywords": ["liderança", "estratégico", "stakeholders", "C-level"]
+        }
+      },
+      {
+        "skill": "Apache Spark e PySpark",
+        "priority": "Desejável",
+        "reason": "Listado como diferencial. Não é bloqueante, mas agregaria força à candidatura para volumes grandes de dados.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "PySpark Essentials for Data Scientists (Udemy) ou Databricks Community Edition",
+          "estimatedTime": "2 meses",
+          "suggestedText": "Processamento distribuído com PySpark para grandes volumes de dados, incluindo DataFrames API e Spark SQL."
+        }
+      },
+      {
+        "skill": "Mentoria técnica",
+        "priority": "Desejável",
+        "reason": "Diferencial da vaga sênior. Demonstrar liderança técnica fortalece o posicionamento como sênior.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Análises ad-hoc para marketing, comercial e operações",
+          "after": "Análises ad-hoc para marketing, comercial e operações, atuando também como referência técnica para a analista júnior recém-contratada, com code reviews de consultas SQL e mentoria em boas práticas de Power BI",
+          "keywords": ["mentoria", "referência técnica", "code review", "boas práticas"]
+        }
+      }
+    ],
+    "missingKeywords": [
+      { "keyword": "AWS", "suggestion": "Adicione após completar um curso introdutório, destacando os serviços que você explorou (S3, Athena, Glue)." },
+      { "keyword": "data warehouse", "suggestion": "Mencione na seção de habilidades assim que tiver experiência prática com Snowflake, BigQuery ou Redshift." },
+      { "keyword": "data pipelines", "suggestion": "Substitua 'automação de relatórios' por 'construção de pipelines de dados' quando aplicável, especialmente em projetos com orquestração." },
+      { "keyword": "stakeholders", "suggestion": "Reforce a interação com stakeholders nas descrições das experiências, em vez de apenas 'áreas de negócio'." }
+    ],
+    "experienceAnalysis": {
+      "required": "5+ anos de experiência em análise de dados, com domínio de Python avançado, SQL em data warehouses cloud e orquestração de pipelines. Inglês intermediário/avançado.",
+      "found": "3 anos de experiência formal (Varejo Plus e Consultoria ABC), foco em Power BI, SQL tradicional e Excel avançado. Python em nível básico. Inglês intermediário (leitura técnica).",
+      "gap": "Faltam 2 anos de senioridade formal e a stack cloud da vaga (AWS, data warehouses modernos, Airflow). Python precisa evoluir do nível básico para intermediário/avançado, com modelagem preditiva.",
+      "certifications": {
+        "required": ["AWS Data Analytics ou Google Professional Data Engineer", "Microsoft PL-300"],
+        "found": ["Microsoft PL-300 (em andamento)"],
+        "missing": ["AWS Data Analytics", "Google Professional Data Engineer"]
+      }
+    },
+    "studyPlan": [
+      {
+        "order": 1,
+        "topic": "AWS para Analistas de Dados",
+        "description": "Cobrir os serviços de dados da AWS (S3, Athena, Glue, Redshift) que são requisito obrigatório da vaga. É o gap crítico para abrir a porta dessa e de muitas outras posições sênior.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "AWS Cloud Practitioner Essentials", "url": "https://aws.amazon.com/training/learn-about/cloud-practitioner/", "platform": "AWS Training" },
+          { "name": "AWS Data Analytics Fundamentals", "url": "https://www.coursera.org/learn/aws-data-analytics-fundamentals", "platform": "Coursera" }
+        ],
+        "estimatedTime": "3 a 4 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 2,
+        "topic": "Python Intermediário para Dados",
+        "description": "Evoluir de pandas básico para modelagem preditiva com scikit-learn, visualizações com matplotlib/seaborn e boas práticas de notebooks.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "Formação Python para Dados", "url": "https://www.alura.com.br/formacao-python-data-science", "platform": "Alura" },
+          { "name": "Python for Data Analysis", "url": "https://wesmckinney.com/book/", "platform": "Wes McKinney (livro gratuito)" }
+        ],
+        "estimatedTime": "2 a 3 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 3,
+        "topic": "Snowflake e Data Warehousing Moderno",
+        "description": "Entender a arquitetura de data warehouses cloud, modelagem dimensional e otimização de queries em ambientes columnares.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "Snowflake Fundamentals", "url": "https://learn.snowflake.com/", "platform": "Snowflake Learning" },
+          { "name": "The Data Warehouse Toolkit (Kimball)", "url": "https://www.kimballgroup.com/", "platform": "Kimball Group" }
+        ],
+        "estimatedTime": "1 a 2 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 4,
+        "topic": "Apache Airflow",
+        "description": "Aprender orquestração de pipelines com DAGs, agendamento de cargas e monitoramento. Padrão de mercado em vagas sênior.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "Apache Airflow: The Hands-On Guide", "url": "https://www.udemy.com/course/the-complete-hands-on-course-to-master-apache-airflow/", "platform": "Udemy" },
+          { "name": "Airflow Documentation", "url": "https://airflow.apache.org/docs/", "platform": "Apache" }
+        ],
+        "estimatedTime": "1 mês",
+        "priority": "Média"
+      },
+      {
+        "order": 5,
+        "topic": "Estatística Aplicada para Análise de Dados",
+        "description": "Reforçar fundamentos de inferência, testes de hipótese e modelagem, para dar base teórica sólida para análises complexas.",
+        "resourceType": "Leitura",
+        "resources": [
+          { "name": "Practical Statistics for Data Scientists", "url": "https://www.oreilly.com/library/view/practical-statistics-for/9781491952955/", "platform": "O'Reilly" }
+        ],
+        "estimatedTime": "2 meses",
+        "priority": "Média"
+      }
+    ]
+  }
+}

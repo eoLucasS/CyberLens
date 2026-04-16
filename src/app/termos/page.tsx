@@ -4,7 +4,7 @@
 export const metadata = {
   title: 'Termos de Uso | CyberLens',
   description:
-    'Termos de Uso do CyberLens. Leia antes de utilizar o serviço de análise de aderência a frameworks de segurança cibernética.',
+    'Termos de Uso do CyberLens. Leia antes de utilizar o serviço de análise de aderência de currículo a vagas de emprego.',
 };
 
 // Helper component for numbered section headings
@@ -39,10 +39,17 @@ export default function TermosPage() {
           <Section number="1" title="Descrição do Serviço" />
           <p>
             O CyberLens é uma aplicação web de código aberto que utiliza modelos de linguagem de
-            inteligência artificial (IA) de terceiros para analisar a aderência de organizações a
-            frameworks de segurança cibernética, como NIST Cybersecurity Framework, ISO/IEC 27001,
-            CIS Controls e outros. O serviço processa documentos e descrições fornecidos pelo
-            próprio usuário e gera relatórios automatizados com base na saída dos modelos de IA.
+            inteligência artificial (IA) de terceiros para analisar a aderência de currículos a
+            descrições de vagas de emprego em qualquer área profissional. O serviço processa o
+            texto do currículo e da vaga fornecidos pelo próprio usuário e gera relatórios
+            automatizados com pontuação de aderência, lacunas identificadas, sugestões de
+            reescrita e plano de estudos personalizado.
+          </p>
+          <p>
+            O CyberLens também disponibiliza uma página de demonstração acessível em{' '}
+            <strong className="text-[#e4e4e7]">/demo</strong>, com análises pré-geradas a partir
+            de dados fictícios, que não consome créditos de API e não coleta nenhum dado do
+            visitante.
           </p>
           <p>
             O CyberLens é disponibilizado gratuitamente, sem garantias de disponibilidade contínua

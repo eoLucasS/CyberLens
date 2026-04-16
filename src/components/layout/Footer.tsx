@@ -54,6 +54,12 @@ export default function Footer() {
               >
                 Documentação
               </Link>
+              <Link
+                href="/demo"
+                className="text-sm text-cyber-text-secondary hover:text-cyber-accent transition-colors"
+              >
+                Demonstração
+              </Link>
             </nav>
           </div>
 
@@ -103,6 +109,10 @@ export default function Footer() {
             <span className="text-white/10">|</span>
             <Link href="/documentacao" className="text-xs text-cyber-text-secondary hover:text-cyber-accent transition-colors">
               Docs
+            </Link>
+            <span className="text-white/10">|</span>
+            <Link href="/demo" className="text-xs text-cyber-text-secondary hover:text-cyber-accent transition-colors">
+              Demo
             </Link>
           </nav>
 

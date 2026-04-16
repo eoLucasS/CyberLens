@@ -8,6 +8,7 @@ import { useLocalStorage } from '@/hooks';
 import { STORAGE_KEYS } from '@/lib/utils/storage';
 
 const EXEMPT_ROUTES = ['/privacidade', '/termos', '/sobre', '/documentacao'];
+const EXEMPT_PREFIXES = ['/demo'];
 
 interface ConsentRecord {
   accepted: boolean;
@@ -42,7 +43,9 @@ export default function ConsentModal() {
   useEffect(() => { setHydrated(true); }, []);
 
   const pathname = usePathname();
-  const isExemptRoute = EXEMPT_ROUTES.includes(pathname);
+  const isExemptRoute =
+    EXEMPT_ROUTES.includes(pathname) ||
+    EXEMPT_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
   const isOpen = hydrated && !consent.accepted && !isExemptRoute;
 
   // Lock ALL scrolling when modal is open (works on iOS Safari too)

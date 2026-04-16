@@ -44,6 +44,8 @@ const PdfExportButton = dynamic(
 interface AnalysisResultProps {
   result: AnalysisResult;
   providerLabel?: string;
+  /** When false, disables the auto-scroll-into-view on mount. Defaults to true. */
+  autoScroll?: boolean;
 }
 
 // ─── Animation hook ───────────────────────────────────────────────────────────
@@ -562,13 +564,15 @@ function StudyPlanSection({ plan, mounted }: { plan: StudyPlanItem[]; mounted: b
 
 // ─── Root component ───────────────────────────────────────────────────────────
 
-export function AnalysisResult({ result, providerLabel }: AnalysisResultProps) {
+export function AnalysisResult({ result, providerLabel, autoScroll = true }: AnalysisResultProps) {
   const mounted = useMounted();
 
   const topRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
+    if (autoScroll) {
+      topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [autoScroll]);
 
   const disclaimerText = providerLabel
     ? getAnalysisDisclaimerWithProvider(providerLabel)

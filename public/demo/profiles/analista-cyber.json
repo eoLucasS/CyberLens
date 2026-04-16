@@ -1,0 +1,229 @@
+{
+  "profile": {
+    "slug": "analista-cyber",
+    "title": "Analista de Segurança",
+    "subtitle": "De Júnior para Pleno",
+    "icon": "Shield",
+    "scoreHint": 48,
+    "narrative": "Profissional de SOC com 1.5 anos de experiência buscando posição pleno em Blue Team, com gap em certificações e threat hunting."
+  },
+  "resume": {
+    "fileName": "curriculo-exemplo-cyber.pdf",
+    "text": "RAFAEL COSTA\nAnalista de SOC Júnior\nRio de Janeiro, RJ\n\nOBJETIVO\nEvolução de carreira para posições Pleno em Blue Team, com foco em detecção de ameaças, resposta a incidentes e hardening de infraestrutura.\n\nEXPERIÊNCIA PROFISSIONAL\n\nSOC Provider Brasil\nAnalista de SOC Júnior | Ago/2023 - Atual\n- Monitoramento 24x7 de eventos de segurança no SIEM Splunk\n- Triagem de alertas (em média 60 alertas por turno)\n- Escalação de incidentes para o time de resposta N2\n- Documentação de playbooks para alertas recorrentes\n- Apoio em investigação de phishing e malware em endpoints\n\nSuporte Tech LTDA\nAnalista de Suporte N2 | Jan/2022 - Jul/2023\n- Suporte a infraestrutura Linux e Windows Server\n- Configuração de firewalls básicos e VPNs\n- Hardening inicial de servidores conforme CIS Benchmarks\n- Gestão de contas em Active Directory\n\nFORMAÇÃO ACADÊMICA\nTecnólogo em Segurança da Informação\nFaculdade Exemplo | 2019 - 2022\n\nHABILIDADES E COMPETÊNCIAS\n- SIEM Splunk (nível operacional)\n- Linux (Debian, Ubuntu, CentOS)\n- Windows Server e Active Directory\n- Firewall básico (pfSense, iptables)\n- Análise de logs\n- Wireshark (nível básico)\n- Scripts Bash e PowerShell básicos\n\nCURSOS E CERTIFICAÇÕES\n- CompTIA Security+ - em estudo\n- TryHackMe (trilhas Pre-Security e SOC Level 1)\n- Curso de SIEM Splunk - EC-Council (concluído)\n\nIDIOMAS\nPortuguês (nativo) | Inglês (leitura técnica)"
+  },
+  "job": {
+    "title": "Analista de Segurança Cibernética Pleno",
+    "company": "FinCorp Segurança",
+    "location": "Rio de Janeiro - Híbrido",
+    "text": "Analista de Segurança Cibernética Pleno - FinCorp Segurança\n\nDescrição da Vaga\nEstamos expandindo nosso time de Cyber Defense e buscamos um(a) Analista de Segurança Pleno para atuar em detecção avançada de ameaças, threat hunting e resposta a incidentes. O profissional atuará no nosso SOC interno com times globais.\n\nRequisitos Obrigatórios\n- 3+ anos de experiência em Blue Team, SOC ou resposta a incidentes\n- Vivência sólida em SIEM (Splunk, Sentinel ou QRadar), incluindo criação de regras de correlação\n- Conhecimento em MITRE ATT&CK framework\n- Experiência em threat hunting proativo\n- Análise forense básica (memória, disco, timeline)\n- Domínio em Linux, Windows e redes (TCP/IP, DNS, HTTP)\n- Certificações obrigatórias: CompTIA Security+ OU equivalente (eJPT, Blue Team Level 1)\n- Inglês intermediário (leitura e comunicação escrita)\n\nDiferenciais\n- Certificações CompTIA CySA+, GIAC GCIH ou GCFA\n- Experiência com EDR/XDR (CrowdStrike, SentinelOne, Defender)\n- Scripting em Python para automação de respostas\n- Conhecimento em cloud security (AWS ou Azure)\n- Background em compliance (PCI-DSS, ISO 27001, LGPD)\n\nResponsabilidades\n- Atuar como L2/L3 em incidentes de segurança\n- Desenvolver e tunar regras de detecção no SIEM\n- Conduzir caçadas proativas de ameaças (threat hunting)\n- Documentar runbooks e playbooks de resposta\n- Participar de exercícios de Red vs Blue\n- Apoiar auditorias e reportar KPIs de segurança para liderança"
+  },
+  "keywordRadar": {
+    "matched": [
+      { "keyword": "SIEM", "found": true, "frequency": 2 },
+      { "keyword": "Splunk", "found": true, "frequency": 2 },
+      { "keyword": "Linux", "found": true, "frequency": 2 },
+      { "keyword": "Windows", "found": true, "frequency": 2 },
+      { "keyword": "SOC", "found": true, "frequency": 3 },
+      { "keyword": "incidentes", "found": true, "frequency": 2 },
+      { "keyword": "Active Directory", "found": true, "frequency": 1 },
+      { "keyword": "firewall", "found": true, "frequency": 2 },
+      { "keyword": "CompTIA Security+", "found": true, "frequency": 1 }
+    ],
+    "missing": [
+      { "keyword": "MITRE ATT&CK", "found": false, "frequency": 0 },
+      { "keyword": "threat hunting", "found": false, "frequency": 0 },
+      { "keyword": "análise forense", "found": false, "frequency": 0 },
+      { "keyword": "regras de correlação", "found": false, "frequency": 0 },
+      { "keyword": "EDR", "found": false, "frequency": 0 },
+      { "keyword": "CrowdStrike", "found": false, "frequency": 0 },
+      { "keyword": "Python", "found": false, "frequency": 0 },
+      { "keyword": "CySA+", "found": false, "frequency": 0 },
+      { "keyword": "GCIH", "found": false, "frequency": 0 },
+      { "keyword": "cloud security", "found": false, "frequency": 0 },
+      { "keyword": "TCP/IP DNS HTTP", "found": false, "frequency": 0 },
+      { "keyword": "red vs blue", "found": false, "frequency": 0 }
+    ],
+    "matchPercentage": 43,
+    "totalKeywords": 21
+  },
+  "analysis": {
+    "score": 48,
+    "classification": "Aderência Parcial",
+    "matchedSkills": [
+      { "skill": "SIEM Splunk", "context": "Monitoramento 24x7 no SOC Provider Brasil com triagem de 60 alertas/turno" },
+      { "skill": "Linux e Windows Server", "context": "Suporte Tech e atuação atual no SOC" },
+      { "skill": "Experiência em SOC", "context": "1.5 anos como Analista de SOC Júnior" },
+      { "skill": "Resposta a incidentes (nível N1)", "context": "Escalação de incidentes para N2 e apoio em investigação de phishing" },
+      { "skill": "Active Directory", "context": "Gestão de contas no Suporte Tech LTDA" },
+      { "skill": "CompTIA Security+ (em estudo)", "context": "Listado em cursos e certificações" },
+      { "skill": "Hardening básico", "context": "Aplicação de CIS Benchmarks no Suporte Tech" }
+    ],
+    "gaps": [
+      {
+        "skill": "MITRE ATT&CK Framework",
+        "priority": "Crítico",
+        "reason": "Framework padrão de mercado para categorização de TTPs de atacantes. Obrigatório em vagas Pleno e Sênior de Blue Team. Sem isso, a pessoa não consegue comunicar investigações na linguagem do time.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "MITRE ATT&CK Defender (MAD) ou curso Applied MITRE ATT&CK (AttackIQ Academy, gratuito)",
+          "estimatedTime": "1 a 2 meses",
+          "suggestedText": "Conhecimento aplicado em MITRE ATT&CK Framework, com mapeamento de TTPs em investigações de incidentes e criação de regras de detecção baseadas em técnicas específicas."
+        }
+      },
+      {
+        "skill": "Threat Hunting",
+        "priority": "Crítico",
+        "reason": "A vaga é focada em caça proativa de ameaças, não apenas reativa. A pessoa hoje faz triagem e escalação, que é trabalho N1. Para Pleno, precisa demonstrar postura proativa.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "Threat Hunting Professional (eLearnSecurity eCTHP) ou trilha Threat Hunting no TryHackMe",
+          "estimatedTime": "2 a 3 meses",
+          "suggestedText": "Experiência em threat hunting proativo usando hipóteses baseadas em MITRE ATT&CK e queries avançadas em SIEM Splunk para detecção de atividades anômalas."
+        }
+      },
+      {
+        "skill": "Criação de regras de correlação no SIEM",
+        "priority": "Crítico",
+        "reason": "O currículo cita uso operacional do Splunk, mas não a criação de detecções. É a principal diferença entre Júnior (consome alertas) e Pleno (cria alertas).",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Monitoramento 24x7 de eventos de segurança no SIEM Splunk",
+          "after": "Monitoramento 24x7 de eventos de segurança no SIEM Splunk, com criação e tunning de regras de correlação SPL para redução de falsos positivos, além de triagem de alertas de alta severidade",
+          "keywords": ["regras de correlação", "SPL", "tunning", "falsos positivos"]
+        }
+      },
+      {
+        "skill": "Análise Forense (memória, disco, timeline)",
+        "priority": "Importante",
+        "reason": "A vaga exige forense básica. A pessoa não menciona ferramentas como Volatility, Autopsy ou Velociraptor.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "SANS SEC504 (quando possível) ou trilha Digital Forensics no TryHackMe",
+          "estimatedTime": "2 meses",
+          "suggestedText": "Análise forense básica em Windows e Linux, incluindo extração de artefatos de memória (Volatility), análise de disco (Autopsy) e construção de timelines de incidentes."
+        }
+      },
+      {
+        "skill": "EDR/XDR (CrowdStrike, SentinelOne, Defender)",
+        "priority": "Importante",
+        "reason": "Diferencial que está presente em quase toda vaga de SOC Pleno. Sem experiência com EDR, a pessoa fica limitada a análise de logs tradicionais.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "CrowdStrike University (cursos gratuitos para parceiros) ou Microsoft Defender for Endpoint Learning Path",
+          "estimatedTime": "1 a 2 meses",
+          "suggestedText": "Experiência em EDR para investigação de endpoints, incluindo análise de processos, isolamento de hosts comprometidos e extração de IOCs."
+        }
+      },
+      {
+        "skill": "Python para automação",
+        "priority": "Importante",
+        "reason": "Listado como diferencial, mas em vagas Pleno praticamente vira obrigatório. A pessoa só tem Bash e PowerShell básicos.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "Python for Cybersecurity Specialization (Coursera) ou Automate the Boring Stuff with Python",
+          "estimatedTime": "2 meses",
+          "suggestedText": "Python para automação de respostas em segurança: integração com APIs de SIEM, enriquecimento de indicadores (VirusTotal, AbuseIPDB) e scripts de triagem."
+        }
+      },
+      {
+        "skill": "Senioridade formal (3+ anos)",
+        "priority": "Importante",
+        "reason": "A pessoa tem 1.5 anos no SOC mais 1.5 anos de suporte N2 relacionado. Dá para reposicionar o tempo total destacando a continuidade na área de segurança.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Analista de Suporte N2 | Jan/2022 - Jul/2023",
+          "after": "Analista de Suporte N2 com foco em segurança de infraestrutura | Jan/2022 - Jul/2023, atuando em hardening (CIS Benchmarks), configuração de firewalls, gestão de identidades em Active Directory e primeira linha de defesa contra incidentes",
+          "keywords": ["segurança de infraestrutura", "hardening", "primeira linha de defesa", "gestão de identidades"]
+        }
+      },
+      {
+        "skill": "Certificações avançadas (CySA+, GCIH)",
+        "priority": "Desejável",
+        "reason": "Diferencial forte. A pessoa já está estudando Security+, o próximo passo natural é o CySA+.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "CompTIA CySA+ (após concluir Security+) via Jason Dion na Udemy",
+          "estimatedTime": "3 a 4 meses (após Security+)",
+          "suggestedText": "CompTIA CySA+ (Cybersecurity Analyst), com foco em detecção, análise de comportamento e resposta a incidentes."
+        }
+      }
+    ],
+    "missingKeywords": [
+      { "keyword": "threat hunting", "suggestion": "Adicione após concluir um curso prático. Mostre que você entende a diferença entre reativo e proativo." },
+      { "keyword": "MITRE ATT&CK", "suggestion": "Adicione assim que estudar o framework. Cite técnicas específicas (T1059, T1566) em descrições de investigações." },
+      { "keyword": "forense", "suggestion": "Inclua na seção de habilidades depois de praticar em laboratórios (TryHackMe Forensics)." },
+      { "keyword": "Python", "suggestion": "Reforce a seção de scripting assim que evoluir do Bash/PowerShell básico." }
+    ],
+    "experienceAnalysis": {
+      "required": "3+ anos em Blue Team, SOC ou resposta a incidentes, com criação de detecções em SIEM, MITRE ATT&CK, threat hunting, forense básica e certificação Security+ ou equivalente.",
+      "found": "1.5 anos de SOC Júnior (Splunk operacional, triagem, escalação) e 1.5 anos de suporte N2 com elementos de segurança (hardening, firewall, AD).",
+      "gap": "Falta demonstrar postura proativa (threat hunting, criação de regras) e competências mais avançadas (forense, MITRE, EDR). A Security+ ainda está em estudo.",
+      "certifications": {
+        "required": ["CompTIA Security+", "eJPT ou Blue Team Level 1 (alternativa)"],
+        "found": ["CompTIA Security+ (em estudo)", "SIEM Splunk - EC-Council"],
+        "missing": ["CompTIA Security+ (concluída)"]
+      }
+    },
+    "studyPlan": [
+      {
+        "order": 1,
+        "topic": "Concluir CompTIA Security+",
+        "description": "É o pré-requisito obrigatório da vaga. Concluir deve ser prioridade absoluta, já que você já está estudando.",
+        "resourceType": "Certificação",
+        "resources": [
+          { "name": "Jason Dion Security+ Practice Exams", "url": "https://www.udemy.com/course/comptia-security-practice-exams-sy0-701/", "platform": "Udemy" },
+          { "name": "Professor Messer Security+", "url": "https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-plus-course/", "platform": "YouTube (gratuito)" }
+        ],
+        "estimatedTime": "2 a 3 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 2,
+        "topic": "MITRE ATT&CK Framework",
+        "description": "Estudar o framework aplicado a detecção e threat hunting. Mapear alertas do seu SOC atual para TTPs do MITRE é um exercício prático excelente.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "MITRE ATT&CK Defender (MAD)", "url": "https://mad.mitre-engenuity.org/", "platform": "MITRE Engenuity" },
+          { "name": "Applied MITRE ATT&CK", "url": "https://academy.attackiq.com/", "platform": "AttackIQ Academy" }
+        ],
+        "estimatedTime": "1 a 2 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 3,
+        "topic": "Threat Hunting Hands-On",
+        "description": "Transicionar da postura reativa (triagem de alertas) para proativa (caça baseada em hipóteses). Essencial para posição Pleno.",
+        "resourceType": "Laboratório",
+        "resources": [
+          { "name": "TryHackMe - Cyber Defense Path", "url": "https://tryhackme.com/path/outline/cyberdefense", "platform": "TryHackMe" },
+          { "name": "Hunt Evil Poster (SANS)", "url": "https://www.sans.org/posters/hunt-evil/", "platform": "SANS" }
+        ],
+        "estimatedTime": "2 a 3 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 4,
+        "topic": "Forense Digital Básica",
+        "description": "Aprender ferramentas fundamentais: Volatility para memória, Autopsy para disco, KAPE para coleta. Obrigatório para vagas N2/N3.",
+        "resourceType": "Laboratório",
+        "resources": [
+          { "name": "TryHackMe - Digital Forensics", "url": "https://tryhackme.com/module/digital-forensics", "platform": "TryHackMe" },
+          { "name": "Volatility Documentation", "url": "https://volatilityfoundation.org/", "platform": "Volatility Foundation" }
+        ],
+        "estimatedTime": "2 meses",
+        "priority": "Média"
+      },
+      {
+        "order": 5,
+        "topic": "Python para Segurança",
+        "description": "Automação de tarefas repetitivas do SOC: enriquecimento de IOCs, integração com APIs, scripts de triagem.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "Python for Cybersecurity Specialization", "url": "https://www.coursera.org/specializations/pythonforcybersecurity", "platform": "Coursera" }
+        ],
+        "estimatedTime": "2 meses",
+        "priority": "Média"
+      }
+    ]
+  }
+}

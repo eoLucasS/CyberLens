@@ -15,7 +15,7 @@ import { getStorageItem, STORAGE_KEYS } from '@/lib/utils/storage';
 import { APP_NAME, APP_DESCRIPTION, STEP_TITLES } from '@/constants/ui';
 import { AI_PROVIDERS } from '@/constants/providers';
 import type { UserSettings } from '@/types';
-import { Shield, FileText, Briefcase, Sparkles, BarChart3, KeyRound, ArrowRight } from 'lucide-react';
+import { Shield, FileText, Briefcase, Sparkles, BarChart3, KeyRound, ArrowRight, PlayCircle } from 'lucide-react';
 
 const STEP_ICONS = [FileText, Briefcase, Sparkles, BarChart3];
 
@@ -81,6 +81,21 @@ export default function HomePage() {
           <span className="text-[#00ffd5]">a qualquer vaga de emprego</span>
         </h1>
         <p className="mx-auto max-w-2xl text-sm sm:text-lg text-[#9ca3af]">{APP_DESCRIPTION}</p>
+
+        {/* Hero CTA: demo link as secondary action */}
+        <div className="mt-5 sm:mt-6 flex items-center justify-center">
+          <Link
+            href="/demo"
+            className="group inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-[#141420] px-4 py-2.5 text-xs sm:text-sm font-medium text-[#e4e4e7] hover:border-[#00ffd5]/25 hover:text-white transition-all duration-200"
+          >
+            <PlayCircle size={16} className="text-[#00ffd5]" />
+            Ver demonstração em 5 segundos
+            <ArrowRight
+              size={14}
+              className="text-[#00ffd5] opacity-60 group-hover:translate-x-0.5 transition-transform"
+            />
+          </Link>
+        </div>
       </section>
 
       {/* Step indicators */}
@@ -162,6 +177,19 @@ export default function HomePage() {
                 </div>
               </div>
             </Link>
+          )}
+
+          {/* Secondary nudge: offer demo path when no API key */}
+          {!hasApiKey && (
+            <div className="mb-4 -mt-2 text-center">
+              <Link
+                href="/demo"
+                className="text-xs text-[#9ca3af] hover:text-[#00ffd5] transition-colors inline-flex items-center gap-1"
+              >
+                Ou veja uma demonstração primeiro
+                <ArrowRight size={11} />
+              </Link>
+            </div>
           )}
 
           <ResumeUpload

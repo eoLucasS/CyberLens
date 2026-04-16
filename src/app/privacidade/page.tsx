@@ -82,6 +82,12 @@ export default function PrivacidadePage() {
             e podem ser removidos a qualquer momento pelo próprio usuário por meio da página de
             Configurações ou das ferramentas nativas do navegador.
           </p>
+          <p>
+            A página de demonstração do CyberLens (<strong className="text-[#e4e4e7]">/demo</strong>)
+            utiliza dados fictícios pré-gerados, armazenados como arquivos estáticos no próprio
+            domínio. Ao acessar a demonstração, nenhum dado pessoal é coletado, processado ou
+            transmitido a qualquer provedor externo.
+          </p>
 
           <Section number="3" title="Finalidade do Tratamento" />
           <p>

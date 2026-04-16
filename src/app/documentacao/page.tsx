@@ -269,6 +269,16 @@ export default function DocumentacaoPage() {
                 </p>
               </div>
             </div>
+
+            {/* Demo callout inside "Como Funciona" */}
+            <div className="mt-6 rounded-xl border border-[#00ffd5]/15 bg-[#00ffd5]/[0.04] p-4 sm:p-5">
+              <p className="text-[13px] text-[#9ca3af] leading-relaxed">
+                <strong className="text-[#e4e4e7]">Quer ver tudo isso em ação?</strong>{' '}
+                A rota <a href="/demo" className="text-[#00ffd5] hover:underline">/demo</a>{' '}
+                mostra três análises completas pré-geradas (analista de dados, segurança
+                e dev full stack) sem precisar de cadastro ou API key.
+              </p>
+            </div>
           </section>
 
           {/* ──────── Section 2: Tecnologias ──────── */}

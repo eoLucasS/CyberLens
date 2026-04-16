@@ -93,6 +93,16 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 
 </details>
 
+<details>
+<summary><strong>Modo Demonstração</strong></summary>
+
+- 3 perfis pré-gerados (Analista de Dados, Analista de Segurança, Dev Full Stack)
+- Análises completas sem necessidade de API key ou cadastro
+- Dados fictícios estáticos, zero coleta, zero processamento externo
+- Acessível em [`/demo`](https://cyberlens-ai.vercel.app/demo)
+
+</details>
+
 ---
 
 ## Como Funciona

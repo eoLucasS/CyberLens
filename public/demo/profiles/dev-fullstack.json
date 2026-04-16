@@ -1,0 +1,220 @@
+{
+  "profile": {
+    "slug": "dev-fullstack",
+    "title": "Dev Full Stack",
+    "subtitle": "De Pleno para Sênior",
+    "icon": "Code",
+    "scoreHint": 76,
+    "narrative": "Desenvolvedor Full Stack com 4 anos de experiência, stack sólida em React e Node, tentando vaga sênior com foco em liderança técnica e arquitetura."
+  },
+  "resume": {
+    "fileName": "curriculo-exemplo-fullstack.pdf",
+    "text": "CAMILA RODRIGUES\nDesenvolvedora Full Stack\nBelo Horizonte, MG\n\nRESUMO PROFISSIONAL\nDesenvolvedora Full Stack com 4 anos de experiência em aplicações web, do design da API até a interface. Stack principal em TypeScript, React e Node.js, com exposição a arquiteturas de microserviços e deploy em cloud. Gosto de trabalhar em produtos com usuários reais e tenho prazer em mentorar colegas júnior.\n\nEXPERIÊNCIA PROFISSIONAL\n\nStartup SaaS BR\nDesenvolvedora Full Stack Pleno | Mar/2022 - Atual\n- Desenvolvimento de features em plataforma SaaS B2B (Next.js + Node.js + PostgreSQL)\n- Implementação de APIs REST e GraphQL com autenticação JWT e rate limiting\n- Migração de monólito para microserviços em containers Docker\n- Deploy automatizado via GitHub Actions em AWS (ECS, S3, CloudFront)\n- Cobertura de testes com Jest, Testing Library e Playwright (E2E)\n- Mentoria técnica de 2 desenvolvedores júnior\n- Code reviews diários e participação ativa em decisões de arquitetura\n\nAgência WebTech\nDesenvolvedora Front-End Júnior | Jan/2021 - Fev/2022\n- Construção de interfaces em React com TypeScript para clientes de varejo e fintech\n- Integração com APIs REST de terceiros (gateways de pagamento, ERPs)\n- Implementação de design system componentizado com Storybook\n- Otimização de performance (Lighthouse acima de 90 em todas as métricas)\n\nFORMAÇÃO ACADÊMICA\nBacharelado em Engenharia de Software\nUniversidade Exemplo | 2017 - 2021\n\nHABILIDADES E COMPETÊNCIAS\n- TypeScript e JavaScript (ES2020+)\n- React, Next.js, Redux Toolkit, React Query\n- Node.js, Express, NestJS\n- PostgreSQL, MongoDB, Redis\n- Docker e docker-compose\n- AWS (ECS, S3, CloudFront, Lambda básico)\n- GitHub Actions e CI/CD\n- Testes: Jest, Testing Library, Playwright\n- Metodologias ágeis (Scrum)\n\nCURSOS E CERTIFICAÇÕES\n- Rocketseat Ignite (trilha Node.js e React)\n- AWS Cloud Practitioner - concluído\n- Formação em TDD com Rodrigo Manguinho - Udemy\n\nIDIOMAS\nPortuguês (nativo) | Inglês (avançado, conversação técnica)"
+  },
+  "job": {
+    "title": "Desenvolvedor Full Stack Sênior",
+    "company": "ScaleUp Brasil",
+    "location": "Remoto (Brasil)",
+    "text": "Desenvolvedor Full Stack Sênior - ScaleUp Brasil\n\nDescrição da Vaga\nEstamos buscando um(a) Desenvolvedor(a) Full Stack Sênior para liderar tecnicamente o time de Produto. Você atuará em decisões de arquitetura, qualidade de código e mentoria, além de continuar colocando a mão na massa em features críticas do produto.\n\nRequisitos Obrigatórios\n- 5+ anos de experiência em desenvolvimento web full stack\n- Domínio avançado de TypeScript, React e Node.js\n- Experiência sólida em arquitetura de microserviços\n- Kubernetes em produção (deploys, troubleshooting, observabilidade)\n- Cloud nativa (AWS ou GCP) em escala\n- Mentoria técnica e code reviews rigorosos\n- Testes automatizados em múltiplas camadas (unit, integration, e2e)\n- CI/CD moderno com pipelines declarativos\n- Inglês avançado (reuniões técnicas com times internacionais)\n\nDiferenciais\n- Experiência em Design Patterns e Clean Architecture\n- Event-driven architecture (Kafka, RabbitMQ, EventBridge)\n- Observability stack (Datadog, New Relic, Prometheus, Grafana)\n- Contribuições open source relevantes\n- Experiência em system design para alta escala\n\nResponsabilidades\n- Liderar tecnicamente squads de 3 a 5 pessoas\n- Definir padrões de arquitetura em conjunto com outros sêniores\n- Mentorar desenvolvedores pleno e júnior\n- Participar de system design reviews\n- Elevar o padrão de qualidade e performance do código\n- Atuar em features críticas de produto\n- Influenciar roadmap técnico do time"
+  },
+  "keywordRadar": {
+    "matched": [
+      { "keyword": "TypeScript", "found": true, "frequency": 3 },
+      { "keyword": "React", "found": true, "frequency": 3 },
+      { "keyword": "Node.js", "found": true, "frequency": 2 },
+      { "keyword": "microserviços", "found": true, "frequency": 2 },
+      { "keyword": "Docker", "found": true, "frequency": 2 },
+      { "keyword": "AWS", "found": true, "frequency": 2 },
+      { "keyword": "CI/CD", "found": true, "frequency": 2 },
+      { "keyword": "GitHub Actions", "found": true, "frequency": 1 },
+      { "keyword": "testes", "found": true, "frequency": 2 },
+      { "keyword": "Jest", "found": true, "frequency": 1 },
+      { "keyword": "mentoria", "found": true, "frequency": 2 },
+      { "keyword": "code review", "found": true, "frequency": 1 },
+      { "keyword": "Scrum", "found": true, "frequency": 1 },
+      { "keyword": "inglês avançado", "found": true, "frequency": 1 }
+    ],
+    "missing": [
+      { "keyword": "Kubernetes", "found": false, "frequency": 0 },
+      { "keyword": "observability", "found": false, "frequency": 0 },
+      { "keyword": "event-driven", "found": false, "frequency": 0 },
+      { "keyword": "Kafka", "found": false, "frequency": 0 },
+      { "keyword": "Clean Architecture", "found": false, "frequency": 0 },
+      { "keyword": "system design", "found": false, "frequency": 0 },
+      { "keyword": "alta escala", "found": false, "frequency": 0 }
+    ],
+    "matchPercentage": 67,
+    "totalKeywords": 21
+  },
+  "analysis": {
+    "score": 76,
+    "classification": "Alta Aderência",
+    "matchedSkills": [
+      { "skill": "TypeScript, React e Node.js", "context": "Stack principal na Startup SaaS BR há 3 anos, com Next.js, Express e NestJS" },
+      { "skill": "Microserviços em Docker", "context": "Migração de monólito para microserviços na Startup SaaS BR" },
+      { "skill": "AWS (ECS, S3, CloudFront)", "context": "Deploy automatizado em produção na Startup SaaS BR; AWS Cloud Practitioner concluído" },
+      { "skill": "CI/CD com GitHub Actions", "context": "Pipelines automatizados na Startup SaaS BR" },
+      { "skill": "Testes em múltiplas camadas", "context": "Jest (unit), Testing Library (integration) e Playwright (E2E)" },
+      { "skill": "Mentoria técnica", "context": "Mentoria de 2 desenvolvedores júnior na Startup SaaS BR" },
+      { "skill": "Code reviews", "context": "Code reviews diários na posição atual" },
+      { "skill": "Inglês avançado", "context": "Seção de idiomas, conversação técnica" }
+    ],
+    "gaps": [
+      {
+        "skill": "Kubernetes em produção",
+        "priority": "Crítico",
+        "reason": "A vaga exige Kubernetes em produção, não apenas Docker. Troubleshooting, deploys e observabilidade em K8s são competências distintas. É o maior gap da candidatura.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "Certified Kubernetes Application Developer (CKAD) ou curso Kubernetes for the Absolute Beginners (Udemy)",
+          "estimatedTime": "2 a 3 meses",
+          "suggestedText": "Kubernetes em produção: deploy de aplicações, configuração de Services, Ingress e autoscaling, além de troubleshooting com kubectl e análise de logs."
+        }
+      },
+      {
+        "skill": "Observability stack",
+        "priority": "Importante",
+        "reason": "Vagas sênior exigem atuação em produção com ferramentas de observabilidade. Logs, métricas e tracing não aparecem no currículo.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Deploy automatizado via GitHub Actions em AWS (ECS, S3, CloudFront)",
+          "after": "Deploy automatizado via GitHub Actions em AWS (ECS, S3, CloudFront) com observabilidade via CloudWatch Logs e métricas customizadas, incluindo dashboards de saúde da aplicação e alertas de SLO",
+          "keywords": ["observabilidade", "CloudWatch", "métricas", "SLO", "alertas"]
+        }
+      },
+      {
+        "skill": "Event-Driven Architecture",
+        "priority": "Importante",
+        "reason": "Diferencial listado, mas em vagas sênior de alta escala virou praticamente obrigatório. O currículo não menciona Kafka, RabbitMQ ou EventBridge.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "Kafka: The Definitive Guide (livro) ou Apache Kafka Series - Learn Apache Kafka (Udemy)",
+          "estimatedTime": "2 meses",
+          "suggestedText": "Arquitetura event-driven com Apache Kafka e AWS EventBridge, incluindo padrões de saga e outbox para consistência eventual entre microserviços."
+        }
+      },
+      {
+        "skill": "Experiência sênior (5+ anos)",
+        "priority": "Importante",
+        "reason": "A candidata tem 4 anos formais. A vaga pede 5+. Dá para reforçar o impacto de liderança e autonomia dos projetos atuais para compensar.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Mentoria técnica de 2 desenvolvedores júnior",
+          "after": "Liderança técnica do onboarding e desenvolvimento de 2 desenvolvedores júnior, incluindo definição de plano de aprendizado, code reviews estruturados e acompanhamento de OKRs técnicos individuais",
+          "keywords": ["liderança técnica", "onboarding", "OKRs", "plano de aprendizado"]
+        }
+      },
+      {
+        "skill": "Clean Architecture e Design Patterns",
+        "priority": "Importante",
+        "reason": "Diferencial listado e esperado em vagas sênior. Mesmo quem aplica na prática muitas vezes não deixa explícito no currículo.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Implementação de APIs REST e GraphQL com autenticação JWT e rate limiting",
+          "after": "Implementação de APIs REST e GraphQL seguindo princípios de Clean Architecture (separação por camadas de domínio, aplicação e infraestrutura), com autenticação JWT, rate limiting e testes unitários dos casos de uso",
+          "keywords": ["Clean Architecture", "camadas", "domínio", "casos de uso"]
+        }
+      },
+      {
+        "skill": "System Design para alta escala",
+        "priority": "Desejável",
+        "reason": "Diferencial em vagas sênior, especialmente para liderança técnica. A candidata não menciona participação em decisões de arquitetura em escala.",
+        "rewriteSuggestion": {
+          "type": "study",
+          "resource": "System Design Interview - An Insider's Guide (Alex Xu) e Designing Data-Intensive Applications (Kleppmann)",
+          "estimatedTime": "3 a 4 meses",
+          "suggestedText": "Experiência em system design para alta escala: estratégias de caching, sharding de bancos, filas assíncronas e padrões de resiliência (circuit breaker, retry com backoff)."
+        }
+      },
+      {
+        "skill": "Contribuições open source",
+        "priority": "Desejável",
+        "reason": "Diferencial que fortalece candidaturas sênior, especialmente em ScaleUps e empresas globais. Se a pessoa tem algum projeto público ou contribuição, deveria citar.",
+        "rewriteSuggestion": {
+          "type": "rewrite",
+          "before": "Mentoria técnica de 2 desenvolvedores júnior",
+          "after": "Mentoria técnica de 2 desenvolvedores júnior e participação em comunidades open source (quando aplicável: GitHub com projetos ativos, contribuições em bibliotecas React ou Node)",
+          "keywords": ["open source", "GitHub", "comunidade", "contribuições"]
+        }
+      }
+    ],
+    "missingKeywords": [
+      { "keyword": "Kubernetes", "suggestion": "Prioridade máxima. Após concluir o curso, adicione na seção de infraestrutura com exemplos de workloads que você subiu." },
+      { "keyword": "observability", "suggestion": "Mencione CloudWatch, Datadog ou Grafana se você tem qualquer exposição, mesmo que parcial." },
+      { "keyword": "Clean Architecture", "suggestion": "Adicione explicitamente como metodologia aplicada nas APIs, se você segue separação em camadas." },
+      { "keyword": "event-driven", "suggestion": "Se a Startup SaaS tem qualquer fila ou evento assíncrono, mencione (SQS, SNS, EventBridge)." }
+    ],
+    "experienceAnalysis": {
+      "required": "5+ anos em desenvolvimento full stack sênior, com Kubernetes em produção, microserviços em escala, observability, event-driven architecture e liderança técnica.",
+      "found": "4 anos formais (3 anos Pleno full stack na Startup SaaS BR + 1 ano Front-End Júnior na Agência WebTech). Stack alinhada (TypeScript, React, Node, AWS, Docker). Experiência em mentoria e code reviews.",
+      "gap": "Falta 1 ano de senioridade formal e a pessoa não menciona Kubernetes, observability ou event-driven. Clean Architecture e system design para alta escala são diferenciais que podem ser destacados.",
+      "certifications": {
+        "required": [],
+        "found": ["AWS Cloud Practitioner", "Rocketseat Ignite (Node.js e React)"],
+        "missing": ["Certified Kubernetes Application Developer (CKAD)"]
+      }
+    },
+    "studyPlan": [
+      {
+        "order": 1,
+        "topic": "Kubernetes para Desenvolvedores",
+        "description": "O maior gap. Sem Kubernetes não passa no filtro técnico de vagas sênior modernas. Foco em CKAD por ser prático e reconhecido.",
+        "resourceType": "Certificação",
+        "resources": [
+          { "name": "Certified Kubernetes Application Developer (CKAD)", "url": "https://www.cncf.io/certification/ckad/", "platform": "CNCF" },
+          { "name": "Kubernetes for the Absolute Beginners", "url": "https://www.udemy.com/course/learn-kubernetes/", "platform": "Udemy" }
+        ],
+        "estimatedTime": "2 a 3 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 2,
+        "topic": "Observability e SRE",
+        "description": "Entender logging estruturado, métricas (Prometheus/CloudWatch) e distributed tracing. Fundamental para atuar em produção em escala.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "Google SRE Book", "url": "https://sre.google/sre-book/table-of-contents/", "platform": "Google (gratuito)" },
+          { "name": "Observability Engineering (O'Reilly)", "url": "https://www.oreilly.com/library/view/observability-engineering/9781492076438/", "platform": "O'Reilly" }
+        ],
+        "estimatedTime": "1 a 2 meses",
+        "priority": "Alta"
+      },
+      {
+        "order": 3,
+        "topic": "Event-Driven Architecture",
+        "description": "Apache Kafka é o padrão de mercado. Aprender padrões de mensageria, saga e outbox pattern.",
+        "resourceType": "Curso",
+        "resources": [
+          { "name": "Apache Kafka Series by Stephane Maarek", "url": "https://www.udemy.com/course/apache-kafka/", "platform": "Udemy" },
+          { "name": "Designing Data-Intensive Applications", "url": "https://dataintensive.net/", "platform": "Martin Kleppmann (livro)" }
+        ],
+        "estimatedTime": "2 meses",
+        "priority": "Média"
+      },
+      {
+        "order": 4,
+        "topic": "System Design para Alta Escala",
+        "description": "Estudar padrões de resiliência, caching distribuído, sharding. Crítico para passar em entrevistas de sênior em empresas grandes.",
+        "resourceType": "Leitura",
+        "resources": [
+          { "name": "System Design Interview Vol. 1 e 2", "url": "https://www.amazon.com.br/dp/B08CMF2CQF", "platform": "Alex Xu (livro)" },
+          { "name": "High Scalability Blog", "url": "https://highscalability.com/", "platform": "High Scalability" }
+        ],
+        "estimatedTime": "3 a 4 meses",
+        "priority": "Média"
+      },
+      {
+        "order": 5,
+        "topic": "Clean Architecture na prática",
+        "description": "Refatorar projetos pessoais aplicando Clean Architecture. Material do Uncle Bob combinado com exemplos práticos em TS/Node.",
+        "resourceType": "Projeto Prático",
+        "resources": [
+          { "name": "Clean Architecture (Robert C. Martin)", "url": "https://www.oreilly.com/library/view/clean-architecture-a/9780134494272/", "platform": "O'Reilly" },
+          { "name": "Clean Node API com TDD - Rodrigo Manguinho", "url": "https://www.udemy.com/course/tdd-com-mango/", "platform": "Udemy" }
+        ],
+        "estimatedTime": "2 meses",
+        "priority": "Baixa"
+      }
+    ]
+  }
+}
