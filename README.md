@@ -64,6 +64,7 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 - Detecção automática de PDFs escaneados (baseados em imagem)
 - OCR local via Tesseract.js para documentos escaneados
 - Validação de magic bytes (%PDF), extensão e tamanho (max 10MB)
+- Cache local do texto extraído para analisar o mesmo currículo contra várias vagas sem novo upload
 - Exportação do resultado em PDF profissional
 
 </details>

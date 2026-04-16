@@ -71,7 +71,11 @@ export default function PrivacidadePage() {
             <li>Chave de API do provedor de IA escolhido pelo usuário;</li>
             <li>Preferências de configuração (provedor e modelo de IA selecionados);</li>
             <li>Registro de consentimento com esta Política e os Termos de Uso;</li>
-            <li>Resultado da última análise realizada (texto gerado pela IA).</li>
+            <li>Resultado da última análise realizada (texto gerado pela IA);</li>
+            <li>
+              Texto do último currículo enviado (apenas o texto extraído do PDF, nunca o arquivo
+              binário), mantido em cache para evitar novo upload em análises subsequentes.
+            </li>
           </ul>
           <p>
             Esses dados <strong className="text-[#e4e4e7]">não são transmitidos ao CyberLens</strong>{' '}
@@ -99,7 +103,14 @@ export default function PrivacidadePage() {
             </li>
             <li>
               <strong className="text-[#e4e4e7]">Última análise:</strong> permitir que o usuário
-              consulte o resultado mais recente sem precisar reprocessar o documento.
+              consulte o resultado mais recente sem precisar reprocessar o documento;
+            </li>
+            <li>
+              <strong className="text-[#e4e4e7]">Cache de currículo:</strong> armazenar
+              localmente o texto extraído do PDF para que o usuário possa comparar o mesmo
+              currículo contra múltiplas vagas sem precisar realizar novo upload a cada análise.
+              O texto permanece exclusivamente no dispositivo do usuário e pode ser removido a
+              qualquer momento.
             </li>
           </ul>
 

@@ -7,7 +7,26 @@ export const STORAGE_KEYS = {
   SETTINGS: 'cyberlens_settings',
   CONSENT: 'cyberlens_consent',
   LAST_ANALYSIS: 'cyberlens_last_analysis',
+  RESUME_CACHE: 'cyberlens_resume_cache',
 } as const;
+
+/**
+ * Cached resume data persisted between sessions so the user does not need
+ * to re-upload the same file to analyze multiple job descriptions.
+ * Only the extracted text is stored, never the PDF binary.
+ */
+export interface CachedResume {
+  /** Original file name for display purposes. */
+  fileName: string;
+  /** File size in bytes, for display purposes. */
+  fileSize: number;
+  /** Plain text extracted from the PDF (or OCR output). */
+  text: string;
+  /** ISO 8601 timestamp of when the extraction happened. */
+  savedAt: string;
+  /** True when the text came from OCR and may contain errors. */
+  isOcr: boolean;
+}
 
 /**
  * Reads and JSON-parses an item from localStorage.

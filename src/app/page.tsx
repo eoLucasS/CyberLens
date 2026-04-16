@@ -27,7 +27,7 @@ export default function HomePage() {
 
   const { state, result, error, loadingMessage, analyze, reset } = useAnalysis();
 
-  const handleFileAccepted = useCallback((_file: File, text: string) => {
+  const handleFileAccepted = useCallback((_file: File | null, text: string) => {
     setResumeText(text);
     setCurrentStep((prev) => Math.max(prev, 1));
   }, []);

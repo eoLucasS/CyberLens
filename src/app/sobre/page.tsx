@@ -206,6 +206,10 @@ export default function SobrePage() {
                 answer="Sim. Seu currículo é lido direto no seu navegador, sem passar por nenhum servidor nosso. O único momento em que o texto sai do seu computador é quando vai para a IA que você escolheu (OpenAI, Google, etc.), usando a sua própria chave de API. Nós não armazenamos, não lemos e não temos acesso a nenhum dado seu."
               />
               <FaqItem
+                question="O CyberLens guarda o meu currículo entre sessões?"
+                answer="Sim, mas apenas no seu navegador. Depois do primeiro upload, o texto extraído fica salvo no localStorage do seu navegador para que você possa analisar o mesmo currículo contra várias vagas sem precisar fazer upload de novo. O arquivo PDF não é guardado, só o texto. Você pode remover esse cache a qualquer momento clicando em Enviar outro na tela de upload, ou usando o botão Limpar Dados em Configurações."
+              />
+              <FaqItem
                 question="Funciona para qualquer tipo de vaga?"
                 answer="Sim. Apesar do visual temático do projeto, o CyberLens funciona para qualquer área: tecnologia, dados, cibersegurança, DevOps, suporte, gestão, marketing, design, ou qualquer outra. A inteligência artificial se adapta ao contexto da vaga que você colar."
               />

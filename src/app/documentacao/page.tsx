@@ -235,7 +235,9 @@ export default function DocumentacaoPage() {
                   O PDF é processado inteiramente no seu navegador usando
                   pdfjs-dist. Nenhum arquivo é enviado para servidores do
                   CyberLens. Quando o PDF é escaneado (imagem), o sistema ativa
-                  o OCR via Tesseract.js como fallback automático.
+                  o OCR via Tesseract.js como fallback automático. O texto
+                  extraído é salvo no localStorage para que você possa
+                  comparar o mesmo currículo contra várias vagas sem novo upload.
                 </p>
               </div>
 

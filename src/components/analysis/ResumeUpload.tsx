@@ -1,17 +1,33 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { FileUp, CheckCircle, ChevronDown, ChevronUp, ScanSearch, AlertCircle } from 'lucide-react';
+import {
+  FileUp,
+  CheckCircle,
+  ChevronDown,
+  ChevronUp,
+  ScanSearch,
+  AlertCircle,
+  FileText,
+  Clock,
+} from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Spinner } from '@/components/ui/Spinner';
 import { Button } from '@/components/ui/Button';
 import { validatePdfFile } from '@/lib/utils';
 import { extractTextFromPdf, extractTextWithOcr } from '@/lib/pdf/parse';
 import type { PdfExtractionResult } from '@/lib/pdf/parse';
+import {
+  STORAGE_KEYS,
+  getStorageItem,
+  setStorageItem,
+  removeStorageItem,
+  type CachedResume,
+} from '@/lib/utils/storage';
 
 interface ResumeUploadProps {
-  onFileAccepted: (file: File, text: string) => void;
+  onFileAccepted: (file: File | null, text: string) => void;
   isComplete: boolean;
   /** When true, the dropzone is visually muted and interaction is blocked. */
   disabled?: boolean;
@@ -24,6 +40,19 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function formatCachedDate(iso: string): string {
+  try {
+    const date = new Date(iso);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${day}/${month} às ${hours}:${minutes}`;
+  } catch {
+    return 'data desconhecida';
+  }
+}
+
 export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: ResumeUploadProps) {
   const [uploadState, setUploadState] = useState<UploadState>(
     isComplete ? 'complete' : 'idle',
@@ -33,6 +62,34 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isTextOpen, setIsTextOpen] = useState(false);
   const [ocrProgress, setOcrProgress] = useState<string>('');
+
+  // Cached resume detection (runs only on client after mount)
+  const [hydrated, setHydrated] = useState(false);
+  const [cachedResume, setCachedResume] = useState<CachedResume | null>(null);
+  const [usingCache, setUsingCache] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+    if (!isComplete) {
+      const cached = getStorageItem<CachedResume | null>(STORAGE_KEYS.RESUME_CACHE, null);
+      if (cached && cached.text && cached.fileName) {
+        setCachedResume(cached);
+      }
+    }
+  }, [isComplete]);
+
+  const handleUseCached = useCallback(() => {
+    if (!cachedResume) return;
+    setExtractedText(cachedResume.text);
+    setUploadState('complete');
+    setUsingCache(true);
+    onFileAccepted(null, cachedResume.text);
+  }, [cachedResume, onFileAccepted]);
+
+  const handleReplaceCached = useCallback(() => {
+    setCachedResume(null);
+    setUploadState('idle');
+  }, []);
 
   const handleDrop = useCallback(
     async (files: File[]) => {
@@ -63,6 +120,19 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
 
         setExtractedText(result.text);
         setUploadState('complete');
+        setUsingCache(false);
+
+        // Persist to localStorage for next session
+        const cacheEntry: CachedResume = {
+          fileName: file.name,
+          fileSize: file.size,
+          text: result.text,
+          savedAt: new Date().toISOString(),
+          isOcr: false,
+        };
+        setStorageItem(STORAGE_KEYS.RESUME_CACHE, cacheEntry);
+        setCachedResume(cacheEntry);
+
         onFileAccepted(file, result.text);
       } catch {
         setErrorMessage(
@@ -95,6 +165,18 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
 
       setExtractedText(text);
       setUploadState('complete');
+      setUsingCache(false);
+
+      const cacheEntry: CachedResume = {
+        fileName: acceptedFile.name,
+        fileSize: acceptedFile.size,
+        text,
+        savedAt: new Date().toISOString(),
+        isOcr: true,
+      };
+      setStorageItem(STORAGE_KEYS.RESUME_CACHE, cacheEntry);
+      setCachedResume(cacheEntry);
+
       onFileAccepted(acceptedFile, text);
     } catch {
       setErrorMessage(
@@ -110,6 +192,15 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
     setExtractedText('');
   }, []);
 
+  const handleClearCachedAndUpload = useCallback(() => {
+    removeStorageItem(STORAGE_KEYS.RESUME_CACHE);
+    setCachedResume(null);
+    setExtractedText('');
+    setAcceptedFile(null);
+    setUploadState('idle');
+    setUsingCache(false);
+  }, []);
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
     accept: { 'application/pdf': ['.pdf'] },
@@ -117,6 +208,14 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
     multiple: false,
     disabled: disabled || uploadState === 'processing' || uploadState === 'ocr-processing',
   });
+
+  // Show cached resume restoration UI if we have a cached resume and user hasn't uploaded yet
+  const showCachedUI =
+    hydrated &&
+    cachedResume !== null &&
+    !disabled &&
+    uploadState === 'idle' &&
+    !usingCache;
 
   const renderDropzoneContent = () => {
     if (uploadState === 'processing') {
@@ -143,17 +242,22 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
       );
     }
 
-    if (uploadState === 'complete' && acceptedFile) {
+    if (uploadState === 'complete') {
+      const displayName = acceptedFile?.name ?? cachedResume?.fileName ?? 'Currículo salvo';
+      const displaySize =
+        acceptedFile?.size ?? cachedResume?.fileSize ?? 0;
+
       return (
         <div className="flex flex-col gap-4 w-full text-left">
           <div className="flex items-center gap-3">
             <CheckCircle className="shrink-0 text-[#00ff88]" size={22} />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-[#e4e4e7] truncate">
-                {acceptedFile.name}
+                {displayName}
               </p>
               <p className="text-xs text-[#9ca3af]">
-                {formatFileSize(acceptedFile.size)}
+                {displaySize > 0 ? formatFileSize(displaySize) : 'Currículo em cache'}
+                {usingCache && ' · restaurado do seu navegador'}
               </p>
             </div>
           </div>
@@ -232,6 +336,48 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         Passo 1: Currículo
       </p>
 
+      {/* Cached resume restoration banner */}
+      {showCachedUI && cachedResume && (
+        <div className="mb-4 rounded-xl border border-[#00ffd5]/20 bg-[#00ffd5]/[0.04] p-4">
+          <div className="flex items-start gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#00ffd5]/10 text-[#00ffd5]">
+              <FileText size={16} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-[#e4e4e7]">
+                Currículo detectado no seu navegador
+              </p>
+              <p className="mt-1 text-xs text-[#9ca3af] break-words">
+                <span className="font-medium text-[#e4e4e7]">{cachedResume.fileName}</span>
+                {' '}
+                ({formatFileSize(cachedResume.fileSize)})
+              </p>
+              <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-[#8b8fa3]">
+                <Clock size={11} />
+                Salvo em {formatCachedDate(cachedResume.savedAt)}
+                {cachedResume.isOcr && ' · via OCR'}
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button variant="primary" size="sm" onClick={handleUseCached}>
+                  Usar este currículo
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClearCachedAndUpload}
+                >
+                  Enviar outro
+                </Button>
+              </div>
+              <p className="mt-3 text-[11px] text-[#6b7280] leading-relaxed">
+                O currículo fica salvo apenas no localStorage do seu navegador. Você pode
+                removê-lo a qualquer momento em Configurações.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* OCR prompt banner */}
       {uploadState === 'ocr-prompt' && acceptedFile && (
         <div
@@ -260,19 +406,11 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 extraído antes de iniciar a análise.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleOcr}
-                >
+                <Button variant="primary" size="sm" onClick={handleOcr}>
                   <ScanSearch size={14} />
                   Tentar OCR
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSkipOcr}
-                >
+                <Button variant="ghost" size="sm" onClick={handleSkipOcr}>
                   Enviar outro arquivo
                 </Button>
               </div>
@@ -281,8 +419,8 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         </div>
       )}
 
-      {/* Dropzone */}
-      {uploadState !== 'ocr-prompt' && (
+      {/* Dropzone (hidden while cached UI or OCR prompt is active) */}
+      {uploadState !== 'ocr-prompt' && !showCachedUI && (
         <div
           {...getRootProps()}
           className={[
@@ -311,10 +449,25 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         </p>
       )}
 
-      {uploadState === 'complete' && (
+      {uploadState === 'complete' && !usingCache && (
         <p className="mt-2 text-xs text-[#9ca3af]">
           Clique na área acima para enviar um arquivo diferente.
         </p>
+      )}
+
+      {uploadState === 'complete' && usingCache && (
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <p className="text-xs text-[#9ca3af]">
+            Currículo restaurado do cache local.
+          </p>
+          <button
+            type="button"
+            onClick={handleClearCachedAndUpload}
+            className="text-xs text-[#00ffd5] hover:text-[#00ffd5]/80 underline underline-offset-2"
+          >
+            Enviar outro
+          </button>
+        </div>
       )}
     </Card>
   );
