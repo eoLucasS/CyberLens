@@ -269,7 +269,9 @@ export default function DocumentacaoPage() {
                   retorna um relatório estruturado com score de aderência,
                   habilidades, lacunas, palavras-chave e plano de estudos. Para
                   cada lacuna identificada, a IA também sugere como reescrever
-                  trechos do currículo para incorporar os termos faltantes.
+                  trechos do currículo para incorporar os termos faltantes. Cada
+                  sugestão tem botão de cópia com feedback visual para você
+                  aplicar no seu currículo em um clique.
                 </p>
               </div>
             </div>

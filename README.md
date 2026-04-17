@@ -44,6 +44,7 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 - Plano de estudos personalizado com cursos, certificações e recursos reais
 - Raio-X instantâneo de palavras-chave (grátis, antes da IA, milissegundos)
 - Sugestões de reescrita do currículo para cada lacuna identificada
+- Cópia com um clique das sugestões de reescrita, com feedback visual
 
 </details>
 

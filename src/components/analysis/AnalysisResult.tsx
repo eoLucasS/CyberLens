@@ -23,6 +23,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ScoreGauge } from '@/components/ui/ScoreGauge';
 import { Spinner } from '@/components/ui/Spinner';
+import { CopyButton } from '@/components/ui/CopyButton';
 import { getAnalysisDisclaimerWithProvider, ANALYSIS_DISCLAIMER } from '@/constants';
 
 // Lazy-load PDF export: never in the initial bundle (~450KB saved)
@@ -346,7 +347,15 @@ function GapsSection({ gaps, mounted }: { gaps: Gap[]; mounted: boolean }) {
                                     <p className="text-xs text-[#9ca3af] leading-relaxed">{gap.rewriteSuggestion.before}</p>
                                   </div>
                                   <div className="rounded-lg border border-[#00ffd5]/20 bg-[#141420] p-3">
-                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/70 mb-2">Sugerido</p>
+                                    <div className="flex items-center justify-between gap-2 mb-2">
+                                      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/70">Sugerido</p>
+                                      {gap.rewriteSuggestion.after && (
+                                        <CopyButton
+                                          text={gap.rewriteSuggestion.after}
+                                          ariaLabel={`Copiar sugestão de reescrita para ${gap.skill}`}
+                                        />
+                                      )}
+                                    </div>
                                     <p className="text-xs text-[#e4e4e7] leading-relaxed">{gap.rewriteSuggestion.after}</p>
                                   </div>
                                 </div>
@@ -380,9 +389,15 @@ function GapsSection({ gaps, mounted }: { gaps: Gap[]; mounted: boolean }) {
                                 )}
                                 {gap.rewriteSuggestion.suggestedText && (
                                   <div className="rounded-lg border border-[#00ffd5]/20 bg-[#141420] p-3">
-                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/60 mb-2">
-                                      Após completar este estudo, considere adicionar ao currículo:
-                                    </p>
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/60 flex-1">
+                                        Após completar este estudo, considere adicionar ao currículo:
+                                      </p>
+                                      <CopyButton
+                                        text={gap.rewriteSuggestion.suggestedText}
+                                        ariaLabel={`Copiar texto sugerido para ${gap.skill}`}
+                                      />
+                                    </div>
                                     <p className="text-xs text-[#e4e4e7] leading-relaxed italic">&quot;{gap.rewriteSuggestion.suggestedText}&quot;</p>
                                   </div>
                                 )}
