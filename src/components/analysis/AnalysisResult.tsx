@@ -24,6 +24,7 @@ import { Badge } from '@/components/ui/Badge';
 import { ScoreGauge } from '@/components/ui/ScoreGauge';
 import { Spinner } from '@/components/ui/Spinner';
 import { CopyButton } from '@/components/ui/CopyButton';
+import { normalizeStudyLink } from '@/lib/analysis/study-links';
 import { getAnalysisDisclaimerWithProvider, ANALYSIS_DISCLAIMER } from '@/constants';
 
 // Lazy-load PDF export: never in the initial bundle (~450KB saved)
@@ -557,6 +558,13 @@ function StudyPlanSection({ plan, mounted }: { plan: StudyPlanItem[]; mounted: b
 
   return (
     <Section title="Plano de Estudos" icon={<BookOpen size={18} />} delay={500} mounted={mounted}>
+      <div className="mb-4 rounded-lg border border-white/[0.04] bg-[#0d0d18] px-3 py-2">
+        <p className="text-[11px] text-[#8b8fa3] leading-relaxed">
+          Os links abaixo abrem a página de busca da plataforma quando a URL específica
+          do curso pode estar desatualizada. Se algum link direto não funcionar,
+          procure pelo nome do recurso na própria plataforma.
+        </p>
+      </div>
       <div className="relative">
         {/* Vertical connector line */}
         <div className="absolute left-[13px] sm:left-[15px] top-4 bottom-4 w-px bg-gradient-to-b from-[#00ffd5]/30 via-[#00ffd5]/10 to-transparent" />
@@ -590,19 +598,34 @@ function StudyPlanSection({ plan, mounted }: { plan: StudyPlanItem[]; mounted: b
 
                 {item.resources.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
-                    {item.resources.map((resource, i) => (
-                      <a
-                        key={i}
-                        href={resource.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 rounded-lg border border-[#00ffd5]/15 bg-[#00ffd5]/[0.03] px-2.5 py-1 text-xs text-[#00ffd5] hover:border-[#00ffd5]/30 hover:bg-[#00ffd5]/[0.06] transition-all duration-150"
-                      >
-                        {resource.name}
-                        <span className="text-[#8b8fa3] text-[10px]">({resource.platform})</span>
-                        <ExternalLink size={10} className="opacity-50" />
-                      </a>
-                    ))}
+                    {item.resources.map((resource, i) => {
+                      // Normalize the AI-provided URL. If it looks hallucinated,
+                      // we get back a safe search URL on a whitelisted platform.
+                      const safe = normalizeStudyLink(
+                        resource.url,
+                        `${resource.name} ${item.topic}`.trim(),
+                      );
+                      return (
+                        <a
+                          key={i}
+                          href={safe.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={
+                            safe.isSearchFallback
+                              ? `Abrir busca por "${resource.name}" em ${safe.platformDomain ?? 'plataforma'}`
+                              : `Abrir ${resource.name} em ${resource.platform}`
+                          }
+                          className="inline-flex items-center gap-1 rounded-lg border border-[#00ffd5]/15 bg-[#00ffd5]/[0.03] px-2.5 py-1 text-xs text-[#00ffd5] hover:border-[#00ffd5]/30 hover:bg-[#00ffd5]/[0.06] transition-all duration-150"
+                        >
+                          {safe.isSearchFallback ? `Buscar em ${resource.platform}` : resource.name}
+                          <span className="text-[#8b8fa3] text-[10px]">
+                            ({safe.isSearchFallback ? resource.name : resource.platform})
+                          </span>
+                          <ExternalLink size={10} className="opacity-50" />
+                        </a>
+                      );
+                    })}
                   </div>
                 )}
               </div>

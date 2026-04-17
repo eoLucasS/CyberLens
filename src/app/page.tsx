@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ResumeUpload } from '@/components/analysis/ResumeUpload';
 import { JobDescriptionInput } from '@/components/analysis/JobDescriptionInput';
@@ -26,7 +26,30 @@ export default function HomePage() {
   const [keywordPreview, setKeywordPreview] = useState<KeywordAnalysis | null>(null);
   const [resumeFileName, setResumeFileName] = useState<string>('');
 
+  // Ref to scroll into view when the Raio-X appears after Step 2.
+  const keywordRadarRef = useRef<HTMLElement | null>(null);
+
   const { state, result, error, loadingMessage, analyze, reset } = useAnalysis();
+
+  // Smoothly scroll the Raio-X into view the first time it becomes visible.
+  // Respects the user's reduced-motion preference.
+  useEffect(() => {
+    if (!keywordPreview || !keywordRadarRef.current) return;
+
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+
+    // Small delay so the component's own fade-in animation starts first.
+    const timer = setTimeout(() => {
+      keywordRadarRef.current?.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'center',
+      });
+    }, 120);
+
+    return () => clearTimeout(timer);
+  }, [keywordPreview]);
 
   const handleFileAccepted = useCallback((file: File | null, text: string) => {
     setResumeText(text);
@@ -211,7 +234,7 @@ export default function HomePage() {
 
         {/* Keyword Radar (instant preview) */}
         {currentStep >= 2 && keywordPreview && state !== 'success' && (
-          <section>
+          <section ref={keywordRadarRef}>
             <KeywordRadar analysis={keywordPreview} />
           </section>
         )}

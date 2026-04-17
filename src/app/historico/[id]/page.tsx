@@ -1,21 +1,29 @@
 'use client';
 
-import { useEffect, useState, use, useCallback } from 'react';
+import { useEffect, useState, use, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   ArrowLeft,
   ArrowRight,
   Briefcase,
+  Check,
   Clock,
   FileText,
   History,
+  Pencil,
   Sparkles,
   Trash2,
+  X,
 } from 'lucide-react';
 import { Spinner } from '@/components/ui/Spinner';
 import { AnalysisResult as AnalysisResultView } from '@/components/analysis/AnalysisResult';
-import { getHistoryEntry, removeFromHistory } from '@/lib/history/store';
+import {
+  getHistoryEntry,
+  removeFromHistory,
+  updateHistoryEntryTitle,
+  MAX_EDITABLE_TITLE_LENGTH,
+} from '@/lib/history/store';
 import type { AnalysisHistoryEntry } from '@/types';
 
 interface PageProps {
@@ -44,6 +52,41 @@ export default function HistoryEntryPage({ params }: PageProps) {
   const [entry, setEntry] = useState<AnalysisHistoryEntry | null>(null);
   const [confirmRemove, setConfirmRemove] = useState(false);
   const [removed, setRemoved] = useState(false);
+
+  // Title editing
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [draftTitle, setDraftTitle] = useState('');
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (editingTitle) {
+      titleInputRef.current?.focus();
+      titleInputRef.current?.select();
+    }
+  }, [editingTitle]);
+
+  const startEditingTitle = useCallback(() => {
+    if (!entry) return;
+    setDraftTitle(entry.jobTitle);
+    setEditingTitle(true);
+  }, [entry]);
+
+  const cancelEditingTitle = useCallback(() => {
+    setEditingTitle(false);
+    setDraftTitle('');
+  }, []);
+
+  const commitTitleEdit = useCallback(() => {
+    if (!entry) return;
+    const trimmed = draftTitle.trim();
+    if (trimmed.length === 0 || trimmed === entry.jobTitle) {
+      setEditingTitle(false);
+      return;
+    }
+    const updated = updateHistoryEntryTitle(entry.id, trimmed, entry.jobCompany);
+    setEditingTitle(false);
+    if (updated) setEntry(updated);
+  }, [draftTitle, entry]);
 
   useEffect(() => {
     setHydrated(true);
@@ -124,11 +167,70 @@ export default function HistoryEntryPage({ params }: PageProps) {
               <p className="text-xs font-semibold uppercase tracking-widest text-[#00ffd5] mb-0.5">
                 Análise salva
               </p>
-              <h1 className="text-sm sm:text-base font-semibold text-[#e4e4e7] flex items-center gap-1.5 break-words">
-                <Briefcase size={13} className="shrink-0 text-[#9ca3af]" />
-                {entry.jobTitle}
-              </h1>
-              {entry.jobCompany && (
+              {editingTitle ? (
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <Briefcase size={13} className="shrink-0 text-[#9ca3af]" />
+                  <input
+                    ref={titleInputRef}
+                    type="text"
+                    value={draftTitle}
+                    onChange={(e) =>
+                      setDraftTitle(e.target.value.slice(0, MAX_EDITABLE_TITLE_LENGTH))
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        commitTitleEdit();
+                      } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cancelEditingTitle();
+                      }
+                    }}
+                    onBlur={commitTitleEdit}
+                    maxLength={MAX_EDITABLE_TITLE_LENGTH}
+                    className="min-w-0 flex-1 rounded-md border border-[#00ffd5]/30 bg-[#0d0d18] px-2 py-1 text-sm font-semibold text-[#e4e4e7] focus:outline-none focus:border-[#00ffd5]/60"
+                    aria-label="Editar título da vaga"
+                  />
+                  <button
+                    type="button"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      commitTitleEdit();
+                    }}
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#00ffd5]/10 text-[#00ffd5] hover:bg-[#00ffd5]/20 transition-colors"
+                    aria-label="Salvar título"
+                  >
+                    <Check size={12} />
+                  </button>
+                  <button
+                    type="button"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      cancelEditingTitle();
+                    }}
+                    className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#ff4757]/10 text-[#ff4757] hover:bg-[#ff4757]/20 transition-colors"
+                    aria-label="Cancelar edição"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <h1 className="text-sm sm:text-base font-semibold text-[#e4e4e7] flex items-center gap-1.5 break-words">
+                    <Briefcase size={13} className="shrink-0 text-[#9ca3af]" />
+                    {entry.jobTitle}
+                  </h1>
+                  <button
+                    type="button"
+                    onClick={startEditingTitle}
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[#6b7280] hover:text-[#00ffd5] hover:bg-[#00ffd5]/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ffd5]/40"
+                    aria-label="Editar título da vaga"
+                  >
+                    <Pencil size={11} />
+                  </button>
+                </div>
+              )}
+              {!editingTitle && entry.jobCompany && (
                 <p className="text-xs text-[#8b8fa3] truncate">{entry.jobCompany}</p>
               )}
               <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[#6b7280]">

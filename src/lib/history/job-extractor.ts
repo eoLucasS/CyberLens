@@ -21,6 +21,75 @@ const MAX_HEADER_LINES = 8;
 /** Maximum length of a line to still be considered a potential title. */
 const MAX_TITLE_LINE_LENGTH = 120;
 
+/**
+ * Lines that are section headers in job descriptions, NOT the job title itself.
+ * When the first meaningful line is one of these, we skip it and try the next line.
+ * All entries are normalized (no accents, lowercase) since we compare against
+ * a normalized version of the input line.
+ */
+const HEADER_BLOCKLIST: readonly string[] = [
+  'sobre a vaga',
+  'sobre esta vaga',
+  'sobre o cargo',
+  'sobre a posicao',
+  'sobre a oportunidade',
+  'sobre a empresa',
+  'sobre a funcao',
+  'descricao da vaga',
+  'descricao do cargo',
+  'descricao da posicao',
+  'descricao',
+  'resumo da vaga',
+  'resumo',
+  'detalhes da vaga',
+  'detalhes',
+  'visao geral',
+  'oportunidade',
+  'requisitos',
+  'responsabilidades',
+  'atividades',
+  'o que voce vai fazer',
+  'o que buscamos',
+  'o que procuramos',
+  'diferenciais',
+  'beneficios',
+  // English
+  'job description',
+  'job details',
+  'about the job',
+  'about this job',
+  'about the role',
+  'about this role',
+  'about the position',
+  'overview',
+  'role overview',
+  'job overview',
+  'summary',
+  'description',
+  'requirements',
+  'responsibilities',
+  'what you will do',
+  'what we are looking for',
+  'benefits',
+];
+
+/** Normalized comparison (strip accents, lowercase, trim trailing punctuation). */
+function normalizeForHeaderMatch(line: string): string {
+  return line
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[:.·—\-–\s]+$/g, '')
+    .trim();
+}
+
+/** True when the line is a known section header and should be skipped. */
+function isHeaderLine(line: string): boolean {
+  const normalized = normalizeForHeaderMatch(line);
+  if (normalized.length === 0 || normalized.length > 60) return false;
+  return HEADER_BLOCKLIST.includes(normalized);
+}
+
 /** Trim and length-cap a candidate string before returning it. */
 function tidy(value: string, max = 160): string {
   const trimmed = value.trim();
@@ -101,7 +170,7 @@ export function extractJobMeta(description: string): ExtractedJobMeta {
   const lines = scanWindow
     .split('\n')
     .map((l) => l.trim())
-    .filter((l) => l.length > 0)
+    .filter((l) => l.length > 0 && !isHeaderLine(l))
     .slice(0, MAX_HEADER_LINES);
 
   // Pass 1: try to find a line that clearly looks like a title

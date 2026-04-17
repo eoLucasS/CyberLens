@@ -232,3 +232,47 @@ export function removeFromHistory(id: string): void {
 export function clearHistory(): void {
   removeStorageItem(STORAGE_KEYS.HISTORY);
 }
+
+/** Maximum length accepted for a user-edited job title. */
+export const MAX_EDITABLE_TITLE_LENGTH = 160;
+
+/**
+ * Updates the job title (and optionally the company) of an existing entry.
+ * Safely normalizes the input and enforces length bounds.
+ * Returns the updated entry on success, or null if the id is invalid,
+ * the new title is empty after trimming, or the write fails.
+ */
+export function updateHistoryEntryTitle(
+  id: string,
+  newTitle: string,
+  newCompany?: string,
+): AnalysisHistoryEntry | null {
+  if (typeof id !== 'string' || id.length === 0) return null;
+  if (typeof newTitle !== 'string') return null;
+
+  const trimmedTitle = newTitle.trim().slice(0, MAX_EDITABLE_TITLE_LENGTH);
+  if (trimmedTitle.length === 0) return null;
+
+  const trimmedCompany =
+    typeof newCompany === 'string' && newCompany.trim().length > 0
+      ? newCompany.trim().slice(0, MAX_EDITABLE_TITLE_LENGTH)
+      : undefined;
+
+  const current = getHistory();
+  let updated: AnalysisHistoryEntry | null = null;
+
+  const next = current.map((e) => {
+    if (e.id !== id) return e;
+    updated = {
+      ...e,
+      jobTitle: trimmedTitle,
+      jobCompany: trimmedCompany,
+    };
+    return updated;
+  });
+
+  if (updated === null) return null;
+
+  const ok = writeList(next);
+  return ok ? updated : null;
+}

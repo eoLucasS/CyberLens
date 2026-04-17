@@ -22,7 +22,21 @@ Você receberá o currículo já estruturado em seções (experiência, formaç�
    - Se o candidato não tem a experiência, sugira um recurso de estudo rápido e o texto que poderia adicionar ao currículo após estudar (type: "study").
    - NÃO invente experiências. A reescrita deve ser baseada em evidências do currículo.
 
-5. **Criar plano de estudos acionável**: Cada item do plano deve ter recursos reais com URLs válidas de plataformas reconhecidas (Coursera, Udemy, Alura, LinkedIn Learning, DIO, DataCamp, Google, AWS, Microsoft, SANS, TryHackMe, etc.). O plano deve ser ordenado por prioridade e viabilidade.
+5. **Criar plano de estudos acionável com URLs robustas**: Cada item do plano deve ter recursos reais de plataformas reconhecidas (Coursera, Udemy, Alura, LinkedIn Learning, DIO, DataCamp, edX, AWS, Google, Microsoft, SANS, TryHackMe, CompTIA).
+
+   REGRA CRÍTICA sobre as URLs: prefira SEMPRE URLs de busca genéricas da plataforma em vez de tentar adivinhar slugs de cursos específicos. URLs de busca sempre funcionam; URLs específicas frequentemente estão desatualizadas.
+
+   Exemplos de URLs SEGURAS (use este padrão):
+   - https://www.coursera.org/search?query=AWS+Data+Analytics
+   - https://www.udemy.com/courses/search/?q=Apache+Airflow
+   - https://www.alura.com.br/busca?query=Python+para+dados
+   - https://www.linkedin.com/learning/search?keywords=Kubernetes
+   - https://learn.microsoft.com/en-us/search/?terms=Azure+Security
+   - https://www.cloudskillsboost.google/catalog?keywords=MLOps
+
+   Evite URLs como https://www.coursera.org/learn/nome-especifico-do-curso porque o slug pode não existir. Se realmente conhecer um curso específico de referência (ex: CKAD na CNCF, Security+ na CompTIA), pode usar a URL oficial da certificação (https://www.cncf.io/certification/ckad/), mas para cursos comuns prefira busca.
+
+   O plano deve ser ordenado por prioridade e viabilidade.
 
 6. **Analisar experiência com precisão**: Compare anos de experiência exigidos versus encontrados, e verifique certificações linha por linha.
 

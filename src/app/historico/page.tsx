@@ -34,6 +34,10 @@ export default function HistoryListPage() {
     setEntries((prev) => prev.filter((e) => e.id !== id));
   }, []);
 
+  const handleUpdate = useCallback((updated: AnalysisHistoryEntry) => {
+    setEntries((prev) => prev.map((e) => (e.id === updated.id ? updated : e)));
+  }, []);
+
   const handleClearAll = useCallback(() => {
     clearHistory();
     setEntries([]);
@@ -183,7 +187,12 @@ export default function HistoryListPage() {
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {entries.map((entry) => (
-              <HistoryCard key={entry.id} entry={entry} onRemove={handleRemove} />
+              <HistoryCard
+                key={entry.id}
+                entry={entry}
+                onRemove={handleRemove}
+                onUpdate={handleUpdate}
+              />
             ))}
           </div>
         </>
