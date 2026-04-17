@@ -143,6 +143,29 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
 
+  // --- executive summary block ---
+  summaryBlock: {
+    backgroundColor: C.tealLight,
+    borderLeftWidth: 3,
+    borderLeftColor: C.teal,
+    borderRadius: 4,
+    padding: 14,
+    marginBottom: 20,
+  },
+  summaryLabel: {
+    fontSize: 9,
+    fontWeight: 700,
+    color: C.teal,
+    letterSpacing: 1.2,
+    marginBottom: 6,
+    textTransform: 'uppercase',
+  },
+  summaryText: {
+    fontSize: 11,
+    lineHeight: 1.5,
+    color: C.dark,
+  },
+
   // --- skill rows ---
   skillRow: {
     flexDirection: 'row',
@@ -444,11 +467,20 @@ interface ScoreSectionProps {
 
 function ScoreSection({ result }: ScoreSectionProps) {
   const color = scoreColor(result.score);
+  const hasSummary =
+    typeof result.executiveSummary === 'string' &&
+    result.executiveSummary.trim().length > 0;
   return (
     <>
       <Text style={styles.reportTitle}>
         Relatório de Aderência: CyberLens
       </Text>
+      {hasSummary && (
+        <View style={styles.summaryBlock} wrap={false}>
+          <Text style={styles.summaryLabel}>Resumo Executivo</Text>
+          <Text style={styles.summaryText}>{result.executiveSummary}</Text>
+        </View>
+      )}
       <View style={styles.scoreBlock}>
         <View>
           <Text style={[styles.scoreNumber, { color }]}>{result.score}</Text>

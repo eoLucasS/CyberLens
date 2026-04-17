@@ -1,7 +1,7 @@
 // About page: static Server Component, zero client-side JavaScript.
 
 import Link from 'next/link';
-import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap, Pencil } from 'lucide-react';
+import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap, Pencil, TrendingUp } from 'lucide-react';
 
 export const metadata = {
   title: 'Sobre o CyberLens',
@@ -97,6 +97,10 @@ export default function SobrePage() {
                 currículo com a vaga e te entregar um diagnóstico completo:
               </p>
               <ul className="space-y-2 ml-1">
+                <li className="flex items-start gap-2">
+                  <TrendingUp size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
+                  <span><strong className="text-[#e4e4e7]">Resumo executivo</strong> no topo, com diagnóstico, gap principal e próxima ação em 3 frases</span>
+                </li>
                 <li className="flex items-start gap-2">
                   <BarChart3 size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
                   <span><strong className="text-[#e4e4e7]">Nota de compatibilidade</strong> de 0 a 100%, com classificação visual</span>

@@ -50,6 +50,7 @@
   "analysis": {
     "score": 62,
     "classification": "Aderência Parcial",
+    "executiveSummary": "Sua candidatura tem aderência parcial à vaga, com base sólida em Power BI e SQL tradicional já comprovada na Varejo Plus. O principal gap é AWS, classificado como crítico: a vaga exige experiência em cloud (S3, Athena, Glue) que ainda não aparece no seu histórico. Como próximo passo, priorize a trilha AWS para Analistas de Dados nos próximos 3 meses e reposicione no currículo sua liderança em automação de relatórios, que hoje está subvalorizada.",
     "matchedSkills": [
       { "skill": "Power BI", "context": "Dashboards ativos para diretoria comercial na Varejo Plus" },
       { "skill": "SQL (PostgreSQL e SQL Server)", "context": "Extração e tratamento de dados diário na Varejo Plus" },

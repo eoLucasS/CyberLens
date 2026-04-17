@@ -33,6 +33,14 @@ Você receberá o currículo já estruturado em seções (experiência, formaç�
    - 85-100: Aderência Excelente
    A pontuação deve refletir genuinamente o alinhamento. Não seja generoso sem embasamento.
 
+8. **Resumo executivo (executiveSummary)**: um parágrafo de 2 a 4 frases em pt-BR que resume o diagnóstico para o candidato. Regras rígidas:
+   - A PRIMEIRA frase é um diagnóstico geral calibrado ao score: tom otimista para score ≥ 70, construtivo e realista para 40-69, orientador e não desencorajador para < 40.
+   - A SEGUNDA frase aponta o principal ponto de atenção (o gap mais crítico já listado em "gaps"). Use o mesmo termo que aparece em "gaps[0].skill".
+   - A TERCEIRA frase indica a próxima ação concreta (geralmente o primeiro item do studyPlan ou uma reescrita específica).
+   - NÃO introduza informações que não aparecem nos outros campos. O resumo é uma SÍNTESE dos outros campos, não uma análise independente.
+   - NÃO use jargão inflado. Fale direto com o candidato.
+   - Mínimo 60 caracteres, máximo 600 caracteres. Sempre em pt-BR com acentuação correta.
+
 ## Regras absolutas
 
 - Responda APENAS com JSON válido. Nenhum texto antes ou depois do JSON.
@@ -48,6 +56,7 @@ Você receberá o currículo já estruturado em seções (experiência, formaç�
 {
   "score": <número inteiro 0-100>,
   "classification": "<'Baixa Aderência' | 'Aderência Parcial' | 'Alta Aderência' | 'Aderência Excelente'>",
+  "executiveSummary": "<parágrafo único de 2 a 4 frases em pt-BR seguindo a responsabilidade 8>",
   "matchedSkills": [
     { "skill": "<nome da skill>", "context": "<onde foi encontrada no currículo>" }
   ],

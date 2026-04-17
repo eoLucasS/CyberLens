@@ -49,6 +49,7 @@
   "analysis": {
     "score": 48,
     "classification": "Aderência Parcial",
+    "executiveSummary": "Sua candidatura tem aderência parcial: a base operacional de SOC com Splunk, Linux e Active Directory está presente, mas a vaga Pleno exige postura proativa que ainda não aparece no seu histórico. O principal gap é MITRE ATT&CK, classificado como crítico, seguido de threat hunting e criação de regras de correlação. Como próximo passo, conclua a CompTIA Security+ que já está em estudo e inicie a trilha de MITRE ATT&CK aplicado para acelerar a transição de Júnior para Pleno.",
     "matchedSkills": [
       { "skill": "SIEM Splunk", "context": "Monitoramento 24x7 no SOC Provider Brasil com triagem de 60 alertas/turno" },
       { "skill": "Linux e Windows Server", "context": "Suporte Tech e atuação atual no SOC" },

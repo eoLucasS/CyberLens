@@ -1,5 +1,6 @@
 import type { AnalysisResult, AIProviderName } from '@/types';
 import { ANALYSIS_SYSTEM_PROMPT, USER_PROMPT_TEMPLATE } from '@/constants/prompts';
+import { resolveExecutiveSummary } from '@/lib/analysis/summary';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -106,6 +107,16 @@ function extractFieldsManually(raw: string): Partial<AnalysisResult> {
     partial.classification = classificationMatch[1] as AnalysisResult['classification'];
   }
 
+  // Best-effort executive summary extraction (handles escaped quotes inside the string)
+  const summaryMatch = raw.match(/"executiveSummary"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+  if (summaryMatch) {
+    try {
+      partial.executiveSummary = JSON.parse(`"${summaryMatch[1]}"`) as string;
+    } catch {
+      partial.executiveSummary = summaryMatch[1];
+    }
+  }
+
   // Try to extract matchedSkills array as empty fallback if not parseable
   const matchedSkillsMatch = raw.match(/"matchedSkills"\s*:\s*\[/);
   if (matchedSkillsMatch) {
@@ -154,7 +165,12 @@ function parseAIResponse(raw: string): AnalysisResult {
     );
   }
 
-  return parsed as AnalysisResult;
+  // Executive summary: prefer AI output, fall back to deterministic synthesis.
+  // This guarantees the field is always a non-empty, coherent pt-BR string.
+  const result = parsed as AnalysisResult;
+  result.executiveSummary = resolveExecutiveSummary(parsed.executiveSummary, result);
+
+  return result;
 }
 
 // ─── Provider callers (with timeout + retry) ─────────────────────────────────

@@ -57,6 +57,13 @@ export interface StudyPlanItem {
 export interface AnalysisResult {
   score: number;
   classification: 'Baixa Aderência' | 'Aderência Parcial' | 'Alta Aderência' | 'Aderência Excelente';
+  /**
+   * Executive summary shown at the top of the result. Must be 2 to 4 sentences in pt-BR:
+   * 1) diagnostic calibrated to the score, 2) main gap or opportunity, 3) next concrete step.
+   * Always present: if the AI fails to produce it, a deterministic fallback is synthesized
+   * by `resolveExecutiveSummary` in `@/lib/analysis/summary`.
+   */
+  executiveSummary: string;
   matchedSkills: MatchedSkill[];
   gaps: Gap[];
   missingKeywords: MissingKeyword[];

@@ -161,6 +161,43 @@ function ScoreSection({
   );
 }
 
+// ─── Executive Summary (rendered ABOVE the score) ────────────────────────────
+
+function ExecutiveSummarySection({
+  summary,
+  mounted,
+}: {
+  summary: string;
+  mounted: boolean;
+}) {
+  return (
+    <div
+      style={{
+        opacity: mounted ? 1 : 0,
+        transform: mounted ? 'translateY(0)' : 'translateY(20px)',
+        transition: 'opacity 0.6s ease, transform 0.6s ease',
+      }}
+    >
+      <div className="relative overflow-hidden rounded-2xl border border-[#00ffd5]/15 bg-gradient-to-br from-[#00ffd5]/[0.06] via-[#0f0f1a] to-[#7c3aed]/[0.04] p-5 sm:p-6 shadow-lg shadow-black/20">
+        {/* Header row */}
+        <div className="mb-3 flex items-center gap-2">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#00ffd5]/10 text-[#00ffd5]">
+            <TrendingUp size={16} />
+          </div>
+          <h2 className="text-sm font-semibold text-[#e4e4e7]">
+            Resumo Executivo
+          </h2>
+        </div>
+
+        {/* Summary text */}
+        <p className="text-[14px] sm:text-[15px] leading-relaxed text-[#e4e4e7]">
+          {summary}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Section 2: Matched Skills ────────────────────────────────────────────────
 
 function SkillCard({ skill }: { skill: MatchedSkill }) {
@@ -580,6 +617,12 @@ export function AnalysisResult({ result, providerLabel, autoScroll = true }: Ana
 
   return (
     <div ref={topRef} className="flex flex-col gap-6">
+      {/* Executive Summary (only when present; parser guarantees it, but we guard
+          against malformed cached data from before this feature existed) */}
+      {result.executiveSummary && result.executiveSummary.trim().length > 0 && (
+        <ExecutiveSummarySection summary={result.executiveSummary} mounted={mounted} />
+      )}
+
       {/* Score */}
       <ScoreSection
         score={result.score}

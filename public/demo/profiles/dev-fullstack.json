@@ -49,6 +49,7 @@
   "analysis": {
     "score": 76,
     "classification": "Alta Aderência",
+    "executiveSummary": "Sua candidatura tem alta aderência à vaga, com stack técnica sólida (TypeScript, React, Node.js), cloud em AWS e mentoria de júniors já comprovada. O principal gap é Kubernetes em produção, classificado como crítico: a vaga exige operação real em K8s, não apenas Docker. Como próximo passo, priorize a certificação CKAD nos próximos 2 a 3 meses e reforce no currículo sua atuação em liderança técnica, que hoje aparece de forma tímida.",
     "matchedSkills": [
       { "skill": "TypeScript, React e Node.js", "context": "Stack principal na Startup SaaS BR há 3 anos, com Next.js, Express e NestJS" },
       { "skill": "Microserviços em Docker", "context": "Migração de monólito para microserviços na Startup SaaS BR" },

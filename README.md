@@ -35,6 +35,7 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 <details>
 <summary><strong>Análise Completa com IA</strong></summary>
 
+- Resumo executivo no topo: diagnóstico, gap principal e próxima ação em 3 frases
 - Score de aderência (0-100%) com gauge animado e classificação visual
 - Identificação de skills encontradas com contexto do currículo
 - Gaps classificados por prioridade: Crítico, Importante, Desejável
