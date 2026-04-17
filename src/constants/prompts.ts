@@ -65,6 +65,16 @@ Você receberá o currículo já estruturado em seções (experiência, formaç�
 - O campo "score" deve ser um número inteiro entre 0 e 100.
 - O campo "classification" deve corresponder exatamente ao intervalo do score.
 
+## Limites obrigatórios de cada array
+
+Para manter o relatório enxuto e útil, respeite estes limites rigorosamente. Se houver mais itens candidatos, escolha apenas os mais relevantes e descarte o restante:
+
+- "matchedSkills": no máximo 12 itens, priorizando as skills mais centrais à vaga
+- "gaps": no máximo 8 itens, priorizando os críticos e importantes
+- "missingKeywords": no máximo 10 itens, priorizando palavras-chave de maior peso
+- "studyPlan": no máximo 6 itens, priorizando o que destrava os gaps críticos
+- "certifications.required", "certifications.found" e "certifications.missing": no máximo 8 itens cada
+
 ## Estrutura JSON obrigatória
 
 {

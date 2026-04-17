@@ -1,6 +1,29 @@
-import type { AnalysisResult, AIProviderName } from '@/types';
+import type { AnalysisResult, AIProviderName, Classification } from '@/types';
 import { ANALYSIS_SYSTEM_PROMPT, USER_PROMPT_TEMPLATE } from '@/constants/prompts';
 import { resolveExecutiveSummary } from '@/lib/analysis/summary';
+
+/**
+ * Derives the classification label from the score using the canonical
+ * thresholds. This is used to overwrite whatever the AI returned, so we
+ * always render a label that is consistent with the numeric score.
+ *
+ * Thresholds match the prompt and the Classification union type exactly.
+ */
+export function deriveClassification(score: number): Classification {
+  const clamped = Math.max(0, Math.min(100, Math.round(score)));
+  if (clamped >= 85) return 'Aderência Excelente';
+  if (clamped >= 70) return 'Alta Aderência';
+  if (clamped >= 40) return 'Aderência Parcial';
+  return 'Baixa Aderência';
+}
+
+/** Output caps applied as a defensive slice after parsing. */
+const OUTPUT_CAPS = {
+  matchedSkills: 12,
+  gaps: 8,
+  missingKeywords: 10,
+  studyPlan: 6,
+} as const;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -28,15 +51,47 @@ export interface TestConnectionResult {
 
 // ─── Error message helpers ────────────────────────────────────────────────────
 
+/**
+ * Maps an HTTP status code to an actionable pt-BR message.
+ * The raw message from the provider is intentionally NOT included to avoid
+ * leaking internal URLs or partial credentials in error text.
+ */
 function getHttpErrorMessage(status: number): string {
-  if (status === 401 || status === 403) {
-    return 'Chave de API inválida ou sem permissão. Verifique a chave nas Configurações.';
+  if (status === 400) {
+    return 'A requisição foi rejeitada pelo provedor. Tente reduzir o tamanho do currículo ou da descrição da vaga.';
+  }
+  if (status === 401) {
+    return 'Sua chave de API parece inválida ou expirada. Verifique a chave em Configurações.';
+  }
+  if (status === 403) {
+    return 'Sua chave não tem permissão para o modelo selecionado. Tente outro modelo em Configurações.';
+  }
+  if (status === 404) {
+    return 'O modelo selecionado não foi encontrado no provedor. Escolha outro modelo em Configurações.';
+  }
+  if (status === 408) {
+    return 'O provedor demorou demais para responder. Tente de novo em alguns segundos.';
+  }
+  if (status === 413) {
+    return 'O texto enviado é maior do que o modelo aceita. Reduza o currículo ou a descrição da vaga.';
+  }
+  if (status === 422) {
+    return 'O provedor rejeitou o formato da requisição. Tente de novo e, se persistir, troque de modelo.';
   }
   if (status === 429) {
-    return 'Limite de requisições atingido. Aguarde alguns instantes e tente novamente.';
+    return 'Muitas requisições em pouco tempo. Aguarde cerca de 1 minuto e tente de novo.';
   }
   if (status === 500 || status === 502 || status === 503) {
-    return 'O provedor de IA está temporariamente indisponível. Tente novamente em alguns minutos.';
+    return 'O provedor de IA está instável no momento. Tente outro provedor em Configurações ou aguarde alguns minutos.';
+  }
+  if (status === 504) {
+    return 'O provedor excedeu o tempo de resposta. Se o currículo for grande, edite o texto para reduzi-lo antes de analisar.';
+  }
+  if (status >= 500) {
+    return 'O provedor retornou um erro interno. Tente outro provedor ou aguarde alguns minutos.';
+  }
+  if (status >= 400) {
+    return 'O provedor rejeitou a requisição. Verifique sua chave e o modelo selecionado em Configurações.';
   }
   return `Erro inesperado na API (HTTP ${status}).`;
 }
@@ -44,29 +99,21 @@ function getHttpErrorMessage(status: number): string {
 function getNetworkErrorMessage(err: unknown): string {
   if (err instanceof Error) {
     if (err.name === 'AbortError') {
-      return 'A análise excedeu o tempo limite de 60 segundos. Tente novamente ou use um modelo mais rápido.';
+      return 'A análise excedeu 60 segundos. Tente um modelo mais rápido ou reduza o tamanho do texto enviado.';
     }
     if (err instanceof TypeError) {
       if (typeof navigator !== 'undefined' && !navigator.onLine) {
         return 'Sem conexão com a internet. Verifique sua rede e tente novamente.';
       }
-      return 'Erro de conexão com o provedor de IA. Verifique sua internet e tente novamente.';
+      return 'Não foi possível conectar ao provedor de IA. Verifique sua conexão ou tente outro provedor.';
     }
   }
-  return err instanceof Error ? err.message : 'Erro desconhecido.';
+  return err instanceof Error ? err.message : 'Erro desconhecido. Tente novamente.';
 }
 
+/** Test-connection uses the same mapping as the analysis flow. */
 function getTestHttpErrorMessage(status: number): string {
-  if (status === 401 || status === 403) {
-    return 'Chave de API inválida ou sem permissão. Verifique a chave nas Configurações.';
-  }
-  if (status === 429) {
-    return 'Limite de requisições atingido. Aguarde alguns instantes e tente novamente.';
-  }
-  if (status === 500 || status === 502 || status === 503) {
-    return 'O provedor de IA está temporariamente indisponível. Tente novamente em alguns minutos.';
-  }
-  return `Erro inesperado na API (HTTP ${status}).`;
+  return getHttpErrorMessage(status);
 }
 
 // ─── Retry logic ─────────────────────────────────────────────────────────────
@@ -136,7 +183,9 @@ function parseAIResponse(raw: string): AnalysisResult {
   const lastBrace = raw.lastIndexOf('}');
 
   if (firstBrace === -1 || lastBrace === -1 || lastBrace <= firstBrace) {
-    throw new Error('A resposta da IA não contém JSON válido.');
+    throw new Error(
+      'A resposta da IA veio em formato inesperado. Tente novamente ou escolha outro modelo em Configurações.',
+    );
   }
 
   const extracted = raw.slice(firstBrace, lastBrace + 1);
@@ -157,17 +206,40 @@ function parseAIResponse(raw: string): AnalysisResult {
 
   // Validate required fields
   if (typeof parsed?.score !== 'number' || parsed.score < 0 || parsed.score > 100) {
-    throw new Error('A resposta da IA não segue o formato esperado (campo "score" inválido).');
+    throw new Error(
+      'A IA não retornou uma pontuação válida. Tente novamente ou escolha outro modelo em Configurações.',
+    );
   }
   if (!Array.isArray(parsed?.matchedSkills)) {
     throw new Error(
-      'A resposta da IA não segue o formato esperado (campo "matchedSkills" inválido).',
+      'A IA retornou um formato inesperado para as skills. Tente novamente ou escolha outro modelo.',
     );
+  }
+
+  const result = parsed as AnalysisResult;
+
+  // Always derive classification from the numeric score. Prevents the AI
+  // from returning a label that contradicts the score (e.g. score 72 with
+  // "Aderência Parcial"). Zero trust on the AI-provided classification.
+  result.classification = deriveClassification(result.score);
+
+  // Defensive output caps. The prompt already asks the AI to respect these
+  // limits, but we slice as a safety net in case the model over-generates.
+  if (Array.isArray(result.matchedSkills)) {
+    result.matchedSkills = result.matchedSkills.slice(0, OUTPUT_CAPS.matchedSkills);
+  }
+  if (Array.isArray(result.gaps)) {
+    result.gaps = result.gaps.slice(0, OUTPUT_CAPS.gaps);
+  }
+  if (Array.isArray(result.missingKeywords)) {
+    result.missingKeywords = result.missingKeywords.slice(0, OUTPUT_CAPS.missingKeywords);
+  }
+  if (Array.isArray(result.studyPlan)) {
+    result.studyPlan = result.studyPlan.slice(0, OUTPUT_CAPS.studyPlan);
   }
 
   // Executive summary: prefer AI output, fall back to deterministic synthesis.
   // This guarantees the field is always a non-empty, coherent pt-BR string.
-  const result = parsed as AnalysisResult;
   result.executiveSummary = resolveExecutiveSummary(parsed.executiveSummary, result);
 
   return result;

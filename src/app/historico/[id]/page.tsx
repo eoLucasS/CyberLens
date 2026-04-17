@@ -24,6 +24,7 @@ import {
   updateHistoryEntryTitle,
   MAX_EDITABLE_TITLE_LENGTH,
 } from '@/lib/history/store';
+import { deriveClassification } from '@/lib/ai';
 import type { AnalysisHistoryEntry } from '@/types';
 
 interface PageProps {
@@ -91,7 +92,18 @@ export default function HistoryEntryPage({ params }: PageProps) {
   useEffect(() => {
     setHydrated(true);
     const found = getHistoryEntry(id);
-    setEntry(found);
+    if (found) {
+      // Protect against legacy entries saved before classification was
+      // derived from score. Always render the label consistent with the score.
+      const consistentClassification = deriveClassification(found.result.score);
+      setEntry({
+        ...found,
+        classification: consistentClassification,
+        result: { ...found.result, classification: consistentClassification },
+      });
+    } else {
+      setEntry(null);
+    }
   }, [id]);
 
   const handleRemove = useCallback(() => {

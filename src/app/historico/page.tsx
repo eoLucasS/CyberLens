@@ -13,8 +13,23 @@ import {
 import { Spinner } from '@/components/ui/Spinner';
 import { HistoryCard } from '@/components/history/HistoryCard';
 import { getHistory, clearHistory, removeFromHistory, MAX_HISTORY_ENTRIES } from '@/lib/history/store';
+import { deriveClassification } from '@/lib/ai';
 import { getStorageItem, STORAGE_KEYS } from '@/lib/utils/storage';
 import type { AnalysisHistoryEntry, UserSettings } from '@/types';
+
+/**
+ * Keeps the classification label consistent with the score even for entries
+ * saved before this derivation existed. Legacy entries with a mismatched
+ * label are transparently healed at render time.
+ */
+function normalizeEntry(entry: AnalysisHistoryEntry): AnalysisHistoryEntry {
+  const classification = deriveClassification(entry.result.score);
+  return {
+    ...entry,
+    classification,
+    result: { ...entry.result, classification },
+  };
+}
 
 export default function HistoryListPage() {
   const [hydrated, setHydrated] = useState(false);
@@ -24,7 +39,7 @@ export default function HistoryListPage() {
 
   useEffect(() => {
     setHydrated(true);
-    setEntries(getHistory());
+    setEntries(getHistory().map(normalizeEntry));
     const settings = getStorageItem<UserSettings | null>(STORAGE_KEYS.SETTINGS, null);
     setSaveEnabled(settings?.saveHistory === true);
   }, []);
