@@ -62,8 +62,11 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 <summary><strong>PDF e OCR</strong></summary>
 
 - PDF parsing 100% client-side via pdfjs-dist (Mozilla)
+- Detecção automática de layout multi-coluna com reordenação de leitura
+- Normalização de texto (bullets unificados, hifenização corrigida, caracteres invisíveis removidos)
 - Detecção automática de PDFs escaneados (baseados em imagem)
-- OCR local via Tesseract.js para documentos escaneados
+- OCR local via Tesseract.js com score de confiança por página
+- Correção manual opcional do texto extraído antes da análise
 - Validação de magic bytes (%PDF), extensão e tamanho (max 10MB)
 - Cache local do texto extraído para analisar o mesmo currículo contra várias vagas sem novo upload
 - Exportação do resultado em PDF profissional

@@ -11,6 +11,9 @@ import {
   AlertCircle,
   FileText,
   Clock,
+  Pencil,
+  Save,
+  X,
 } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Spinner } from '@/components/ui/Spinner';
@@ -23,8 +26,10 @@ import {
   getStorageItem,
   setStorageItem,
   removeStorageItem,
+  isValidCachedResume,
   type CachedResume,
 } from '@/lib/utils/storage';
+import { normalizeExtractedText } from '@/lib/pdf/normalize';
 
 interface ResumeUploadProps {
   onFileAccepted: (file: File | null, text: string) => void;
@@ -33,7 +38,23 @@ interface ResumeUploadProps {
   disabled?: boolean;
 }
 
-type UploadState = 'idle' | 'processing' | 'complete' | 'error' | 'ocr-prompt' | 'ocr-processing';
+type UploadState =
+  | 'idle'
+  | 'processing'
+  | 'complete'
+  | 'error'
+  | 'ocr-prompt'
+  | 'ocr-processing';
+
+/** Hard cap on text the user can submit (either via extraction or manual edit). */
+const MAX_TEXT_LENGTH = 50_000;
+
+/** Minimum extracted text length that is considered "analyzable". */
+const MIN_TEXT_LENGTH = 100;
+
+/** OCR confidence thresholds used to show quality warnings. */
+const OCR_CONFIDENCE_GOOD = 80;
+const OCR_CONFIDENCE_FAIR = 60;
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
@@ -63,6 +84,13 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
   const [isTextOpen, setIsTextOpen] = useState(false);
   const [ocrProgress, setOcrProgress] = useState<string>('');
 
+  // OCR confidence: 0-100, only set when text came from OCR
+  const [ocrConfidence, setOcrConfidence] = useState<number | null>(null);
+
+  // Manual edit flow
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState<string>('');
+
   // Cached resume detection (runs only on client after mount)
   const [hydrated, setHydrated] = useState(false);
   const [cachedResume, setCachedResume] = useState<CachedResume | null>(null);
@@ -71,9 +99,13 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
   useEffect(() => {
     setHydrated(true);
     if (!isComplete) {
-      const cached = getStorageItem<CachedResume | null>(STORAGE_KEYS.RESUME_CACHE, null);
-      if (cached && cached.text && cached.fileName) {
+      // Validate the cache entry before trusting it. Defends against tampered localStorage.
+      const cached = getStorageItem<unknown>(STORAGE_KEYS.RESUME_CACHE, null);
+      if (isValidCachedResume(cached)) {
         setCachedResume(cached);
+      } else if (cached !== null) {
+        // Corrupted entry, remove to prevent repeated load attempts.
+        removeStorageItem(STORAGE_KEYS.RESUME_CACHE);
       }
     }
   }, [isComplete]);
@@ -83,13 +115,9 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
     setExtractedText(cachedResume.text);
     setUploadState('complete');
     setUsingCache(true);
+    setOcrConfidence(null);
     onFileAccepted(null, cachedResume.text);
   }, [cachedResume, onFileAccepted]);
-
-  const handleReplaceCached = useCallback(() => {
-    setCachedResume(null);
-    setUploadState('idle');
-  }, []);
 
   const handleDrop = useCallback(
     async (files: File[]) => {
@@ -107,12 +135,13 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
 
       setAcceptedFile(file);
       setUploadState('processing');
+      setOcrConfidence(null);
 
       try {
         const result: PdfExtractionResult = await extractTextFromPdf(file);
 
         if (result.isImageBased) {
-          // PDF appears to be image-based, offer OCR
+          // PDF appears to be image-based, offer OCR.
           setExtractedText(result.text);
           setUploadState('ocr-prompt');
           return;
@@ -122,7 +151,8 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         setUploadState('complete');
         setUsingCache(false);
 
-        // Persist to localStorage for next session
+        // Persist to localStorage for next session. Text is already normalized
+        // and the validator enforces size bounds on read.
         const cacheEntry: CachedResume = {
           fileName: file.name,
           fileSize: file.size,
@@ -151,11 +181,11 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
     setOcrProgress('Iniciando OCR...');
 
     try {
-      const text = await extractTextWithOcr(acceptedFile, (page, total) => {
+      const result = await extractTextWithOcr(acceptedFile, (page, total) => {
         setOcrProgress(`Processando página ${page} de ${total}...`);
       });
 
-      if (text.trim().length < 30) {
+      if (result.text.trim().length < 30) {
         setErrorMessage(
           'O OCR não conseguiu extrair texto suficiente. O PDF pode estar com qualidade muito baixa ou conter apenas elementos gráficos.',
         );
@@ -163,21 +193,22 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         return;
       }
 
-      setExtractedText(text);
+      setExtractedText(result.text);
+      setOcrConfidence(result.averageConfidence);
       setUploadState('complete');
       setUsingCache(false);
 
       const cacheEntry: CachedResume = {
         fileName: acceptedFile.name,
         fileSize: acceptedFile.size,
-        text,
+        text: result.text,
         savedAt: new Date().toISOString(),
         isOcr: true,
       };
       setStorageItem(STORAGE_KEYS.RESUME_CACHE, cacheEntry);
       setCachedResume(cacheEntry);
 
-      onFileAccepted(acceptedFile, text);
+      onFileAccepted(acceptedFile, result.text);
     } catch {
       setErrorMessage(
         'Erro durante o OCR. Tente novamente ou use um PDF com texto selecionável.',
@@ -190,6 +221,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
     setUploadState('idle');
     setAcceptedFile(null);
     setExtractedText('');
+    setOcrConfidence(null);
   }, []);
 
   const handleClearCachedAndUpload = useCallback(() => {
@@ -199,7 +231,68 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
     setAcceptedFile(null);
     setUploadState('idle');
     setUsingCache(false);
+    setOcrConfidence(null);
+    setIsEditing(false);
+    setEditedText('');
   }, []);
+
+  // ── Manual edit flow ─────────────────────────────────────────────────────
+
+  const handleStartEdit = useCallback(() => {
+    setEditedText(extractedText);
+    setIsEditing(true);
+    setIsTextOpen(true);
+  }, [extractedText]);
+
+  const handleCancelEdit = useCallback(() => {
+    setIsEditing(false);
+    setEditedText('');
+  }, []);
+
+  const handleEditChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    // Hard cap defense. The maxLength attribute also enforces in the UI,
+    // but a paste action can exceed it in some edge cases.
+    if (value.length > MAX_TEXT_LENGTH) {
+      setEditedText(value.slice(0, MAX_TEXT_LENGTH));
+    } else {
+      setEditedText(value);
+    }
+  }, []);
+
+  const handleSaveEdit = useCallback(() => {
+    const cleaned = normalizeExtractedText(editedText);
+
+    if (cleaned.length < MIN_TEXT_LENGTH) {
+      setErrorMessage(
+        `O texto precisa ter pelo menos ${MIN_TEXT_LENGTH} caracteres para ser analisado.`,
+      );
+      return;
+    }
+    if (cleaned.length > MAX_TEXT_LENGTH) {
+      setErrorMessage(
+        `O texto excede o limite de ${MAX_TEXT_LENGTH.toLocaleString('pt-BR')} caracteres.`,
+      );
+      return;
+    }
+
+    setErrorMessage('');
+    setExtractedText(cleaned);
+    setIsEditing(false);
+
+    // Update cache with the corrected text.
+    if (cachedResume) {
+      const updated: CachedResume = {
+        ...cachedResume,
+        text: cleaned,
+        savedAt: new Date().toISOString(),
+      };
+      setStorageItem(STORAGE_KEYS.RESUME_CACHE, updated);
+      setCachedResume(updated);
+    }
+
+    onFileAccepted(acceptedFile, cleaned);
+  }, [editedText, cachedResume, acceptedFile, onFileAccepted]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleDrop,
@@ -209,13 +302,14 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
     disabled: disabled || uploadState === 'processing' || uploadState === 'ocr-processing',
   });
 
-  // Show cached resume restoration UI if we have a cached resume and user hasn't uploaded yet
   const showCachedUI =
     hydrated &&
     cachedResume !== null &&
     !disabled &&
     uploadState === 'idle' &&
     !usingCache;
+
+  // ── Renderers ────────────────────────────────────────────────────────────
 
   const renderDropzoneContent = () => {
     if (uploadState === 'processing') {
@@ -244,17 +338,14 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
 
     if (uploadState === 'complete') {
       const displayName = acceptedFile?.name ?? cachedResume?.fileName ?? 'Currículo salvo';
-      const displaySize =
-        acceptedFile?.size ?? cachedResume?.fileSize ?? 0;
+      const displaySize = acceptedFile?.size ?? cachedResume?.fileSize ?? 0;
 
       return (
         <div className="flex flex-col gap-4 w-full text-left">
           <div className="flex items-center gap-3">
             <CheckCircle className="shrink-0 text-[#00ff88]" size={22} />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-[#e4e4e7] truncate">
-                {displayName}
-              </p>
+              <p className="text-sm font-medium text-[#e4e4e7] truncate">{displayName}</p>
               <p className="text-xs text-[#9ca3af]">
                 {displaySize > 0 ? formatFileSize(displaySize) : 'Currículo em cache'}
                 {usingCache && ' · restaurado do seu navegador'}
@@ -262,29 +353,68 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
             </div>
           </div>
 
-          <div>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsTextOpen((prev) => !prev);
-              }}
-              className="flex items-center gap-1.5 text-xs text-[#00ffd5] hover:text-[#00ffd5]/80 transition-colors"
+          {/* OCR confidence notice */}
+          {ocrConfidence !== null && ocrConfidence < OCR_CONFIDENCE_GOOD && (
+            <div
+              className={`rounded-lg border px-3 py-2 ${
+                ocrConfidence < OCR_CONFIDENCE_FAIR
+                  ? 'border-[#ff4757]/20 bg-[#ff4757]/5'
+                  : 'border-[#ffd32a]/20 bg-[#ffd32a]/5'
+              }`}
+              onClick={(e) => e.stopPropagation()}
             >
-              {isTextOpen ? (
-                <>
-                  <ChevronUp size={14} />
-                  Ocultar texto extraído
-                </>
-              ) : (
-                <>
-                  <ChevronDown size={14} />
-                  Ver texto extraído
-                </>
-              )}
-            </button>
+              <p
+                className={`text-xs leading-relaxed ${
+                  ocrConfidence < OCR_CONFIDENCE_FAIR ? 'text-[#ff4757]/90' : 'text-[#ffd32a]/90'
+                }`}
+              >
+                Qualidade do OCR: <strong>{ocrConfidence}%</strong>.{' '}
+                {ocrConfidence < OCR_CONFIDENCE_FAIR
+                  ? 'Recomendamos revisar o texto extraído antes de analisar, ou usar um PDF com texto selecionável.'
+                  : 'O texto pode conter pequenos erros. Revise se algo importante não aparece como esperado.'}
+              </p>
+            </div>
+          )}
 
-            {isTextOpen && (
+          <div>
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsTextOpen((prev) => !prev);
+                }}
+                className="flex items-center gap-1.5 text-xs text-[#00ffd5] hover:text-[#00ffd5]/80 transition-colors"
+              >
+                {isTextOpen ? (
+                  <>
+                    <ChevronUp size={14} />
+                    Ocultar texto extraído
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown size={14} />
+                    Ver texto extraído
+                  </>
+                )}
+              </button>
+
+              {!isEditing && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleStartEdit();
+                  }}
+                  className="flex items-center gap-1.5 text-xs text-[#9ca3af] hover:text-[#e4e4e7] transition-colors"
+                >
+                  <Pencil size={12} />
+                  Corrigir texto extraído
+                </button>
+              )}
+            </div>
+
+            {isTextOpen && !isEditing && (
               <div
                 onClick={(e) => e.stopPropagation()}
                 className="mt-2 max-h-48 overflow-y-auto rounded-lg bg-[#0d1117] border border-white/10 p-3"
@@ -292,6 +422,58 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 <pre className="font-mono text-xs text-[#9ca3af] whitespace-pre-wrap break-words leading-relaxed">
                   {extractedText || '(Nenhum texto encontrado no PDF)'}
                 </pre>
+              </div>
+            )}
+
+            {isEditing && (
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="mt-3 rounded-lg border border-[#00ffd5]/20 bg-[#0d0d18] p-3"
+              >
+                <p className="mb-2 text-[11px] text-[#9ca3af] leading-relaxed">
+                  Edite para <strong className="text-[#e4e4e7]">corrigir erros de extração</strong>{' '}
+                  (palavras quebradas, acentos trocados, linhas embaralhadas). Não invente
+                  experiências que não existem no currículo.
+                </p>
+                <textarea
+                  value={editedText}
+                  onChange={handleEditChange}
+                  maxLength={MAX_TEXT_LENGTH}
+                  spellCheck={false}
+                  autoComplete="off"
+                  className="w-full min-h-[240px] resize-y rounded-md bg-[#0a0a0f] border border-white/10 px-3 py-2 font-mono text-xs text-[#e4e4e7] leading-relaxed focus:outline-none focus:border-[#00ffd5]/40"
+                  aria-label="Editar texto extraído do currículo"
+                />
+                <div className="mt-2 flex items-center justify-between flex-wrap gap-2">
+                  <p className="text-[11px] text-[#6b7280]">
+                    {editedText.length.toLocaleString('pt-BR')} / {MAX_TEXT_LENGTH.toLocaleString('pt-BR')}{' '}
+                    caracteres
+                    {editedText.trim().length < MIN_TEXT_LENGTH && (
+                      <span className="text-[#ffd32a] ml-2">
+                        Mínimo: {MIN_TEXT_LENGTH}
+                      </span>
+                    )}
+                  </p>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleCancelEdit}
+                    >
+                      <X size={14} />
+                      Cancelar
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      onClick={handleSaveEdit}
+                      disabled={editedText.trim().length < MIN_TEXT_LENGTH}
+                    >
+                      <Save size={14} />
+                      Salvar alterações
+                    </Button>
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -304,9 +486,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         <div
           className={[
             'rounded-full p-3 transition-colors duration-200',
-            isDragActive
-              ? 'bg-[#00ffd5]/20 text-[#00ffd5]'
-              : 'bg-white/5 text-[#9ca3af]',
+            isDragActive ? 'bg-[#00ffd5]/20 text-[#00ffd5]' : 'bg-white/5 text-[#9ca3af]',
           ].join(' ')}
         >
           <FileUp size={28} />
@@ -322,9 +502,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
               ? 'Solte o arquivo aqui'
               : 'Arraste seu currículo em PDF ou clique para selecionar'}
           </p>
-          <p className="mt-1 text-xs text-[#9ca3af]">
-            Somente PDF, máximo 10 MB
-          </p>
+          <p className="mt-1 text-xs text-[#9ca3af]">Somente PDF, máximo 10 MB</p>
         </div>
       </div>
     );
@@ -348,8 +526,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 Currículo detectado no seu navegador
               </p>
               <p className="mt-1 text-xs text-[#9ca3af] break-words">
-                <span className="font-medium text-[#e4e4e7]">{cachedResume.fileName}</span>
-                {' '}
+                <span className="font-medium text-[#e4e4e7]">{cachedResume.fileName}</span>{' '}
                 ({formatFileSize(cachedResume.fileSize)})
               </p>
               <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-[#8b8fa3]">
@@ -361,11 +538,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 <Button variant="primary" size="sm" onClick={handleUseCached}>
                   Usar este currículo
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleClearCachedAndUpload}
-                >
+                <Button variant="ghost" size="sm" onClick={handleClearCachedAndUpload}>
                   Enviar outro
                 </Button>
               </div>
@@ -396,14 +569,17 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 diretamente.
               </p>
               <p className="mt-2 text-xs text-[#9ca3af] leading-relaxed">
-                Podemos tentar ler o texto usando <strong className="text-[#e4e4e7]">OCR
-                (reconhecimento óptico de caracteres)</strong>. O processamento acontece
-                inteiramente no seu navegador, nenhum dado é enviado a servidores externos.
+                Podemos tentar ler o texto usando{' '}
+                <strong className="text-[#e4e4e7]">
+                  OCR (reconhecimento óptico de caracteres)
+                </strong>
+                . O processamento acontece inteiramente no seu navegador, nenhum dado é enviado a
+                servidores externos.
               </p>
               <p className="mt-2 text-xs text-[#ffd32a]/80">
                 O OCR pode não ser 100% preciso, especialmente em documentos com baixa qualidade
-                de imagem, layouts complexos ou fontes incomuns. Recomendamos revisar o texto
-                extraído antes de iniciar a análise.
+                de imagem, layouts complexos ou fontes incomuns. Você poderá revisar e corrigir o
+                texto antes de analisar.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Button variant="primary" size="sm" onClick={handleOcr}>
@@ -449,17 +625,15 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         </p>
       )}
 
-      {uploadState === 'complete' && !usingCache && (
+      {uploadState === 'complete' && !usingCache && !isEditing && (
         <p className="mt-2 text-xs text-[#9ca3af]">
           Clique na área acima para enviar um arquivo diferente.
         </p>
       )}
 
-      {uploadState === 'complete' && usingCache && (
+      {uploadState === 'complete' && usingCache && !isEditing && (
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <p className="text-xs text-[#9ca3af]">
-            Currículo restaurado do cache local.
-          </p>
+          <p className="text-xs text-[#9ca3af]">Currículo restaurado do cache local.</p>
           <button
             type="button"
             onClick={handleClearCachedAndUpload}

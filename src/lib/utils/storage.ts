@@ -28,6 +28,36 @@ export interface CachedResume {
   isOcr: boolean;
 }
 
+/** Hard cap on cached resume text length. Protects against tampered localStorage. */
+export const MAX_CACHED_RESUME_TEXT_LENGTH = 500_000;
+
+/** Hard cap on cached file name length. */
+const MAX_CACHED_FILE_NAME_LENGTH = 256;
+
+/**
+ * Type guard that validates a value read from localStorage is a well-formed
+ * CachedResume. Protects the app against tampered or corrupted cache entries
+ * without throwing.
+ */
+export function isValidCachedResume(value: unknown): value is CachedResume {
+  if (typeof value !== 'object' || value === null) return false;
+  const v = value as Record<string, unknown>;
+
+  if (typeof v.fileName !== 'string' || v.fileName.length === 0) return false;
+  if (v.fileName.length > MAX_CACHED_FILE_NAME_LENGTH) return false;
+
+  if (typeof v.fileSize !== 'number' || !Number.isFinite(v.fileSize)) return false;
+  if (v.fileSize < 0) return false;
+
+  if (typeof v.text !== 'string' || v.text.length === 0) return false;
+  if (v.text.length > MAX_CACHED_RESUME_TEXT_LENGTH) return false;
+
+  if (typeof v.savedAt !== 'string') return false;
+  if (typeof v.isOcr !== 'boolean') return false;
+
+  return true;
+}
+
 /**
  * Reads and JSON-parses an item from localStorage.
  * Returns `fallback` when running on the server, when the key is absent,
