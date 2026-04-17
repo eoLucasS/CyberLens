@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import {
   Eye,
   EyeOff,
@@ -12,12 +13,15 @@ import {
   Radio,
   ShieldCheck,
   AlertCircle,
+  History,
+  ArrowRight,
 } from 'lucide-react';
 import { useLocalStorage } from '@/hooks';
 import { AI_PROVIDERS, DEFAULT_PROVIDER, DEFAULT_MODEL } from '@/constants/providers';
 import { validateApiKey } from '@/lib/utils/validators';
 import { STORAGE_KEYS, clearAllData } from '@/lib/utils/storage';
 import { testConnection } from '@/lib/ai';
+import { getHistory, clearHistory } from '@/lib/history/store';
 import type { UserSettings, AIProviderName, AIProviderConfig } from '@/types';
 
 const DEFAULT_SETTINGS: UserSettings = {
@@ -25,6 +29,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   model: DEFAULT_MODEL,
   apiKey: '',
   hasAcceptedTerms: false,
+  saveHistory: false,
 };
 
 type TestStatus = 'idle' | 'success' | 'error';
@@ -197,6 +202,17 @@ export function SettingsForm() {
   const [testLoading, setTestLoading] = useState(false);
   const [confirmClear, setConfirmClear] = useState(false);
   const [toast, setToast] = useState<ToastState>({ visible: false, message: '', variant: 'success' });
+
+  // History toggle state
+  const [historyCount, setHistoryCount] = useState<number>(0);
+  const [hydrated, setHydrated] = useState(false);
+  const [askDeleteHistoryOnDisable, setAskDeleteHistoryOnDisable] = useState(false);
+
+  // Refresh count after mount and whenever we mutate the list
+  useEffect(() => {
+    setHydrated(true);
+    setHistoryCount(getHistory().length);
+  }, []);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const selectedProvider = AI_PROVIDERS.find((p) => p.name === settings.provider) ?? DEFAULT_PROVIDER;
@@ -253,8 +269,42 @@ export function SettingsForm() {
     setSettings(DEFAULT_SETTINGS);
     setApiKeyInput('');
     setConfirmClear(false);
+    setHistoryCount(0);
     showToast('Dados limpos.', 'success');
     setTimeout(() => window.location.reload(), 500);
+  }
+
+  function handleToggleSaveHistory(next: boolean) {
+    // Enabling: persist the new preference immediately.
+    if (next) {
+      setSettings((prev) => ({ ...prev, saveHistory: true }));
+      showToast('Histórico ativado.', 'success');
+      return;
+    }
+
+    // Disabling while there are entries: ask the user if they want to delete.
+    if (historyCount > 0) {
+      setAskDeleteHistoryOnDisable(true);
+      return;
+    }
+
+    // Disabling with empty history: just flip the flag.
+    setSettings((prev) => ({ ...prev, saveHistory: false }));
+    showToast('Histórico desativado.', 'success');
+  }
+
+  function handleConfirmDisableAndDelete() {
+    clearHistory();
+    setHistoryCount(0);
+    setSettings((prev) => ({ ...prev, saveHistory: false }));
+    setAskDeleteHistoryOnDisable(false);
+    showToast('Histórico apagado e desativado.', 'success');
+  }
+
+  function handleConfirmDisableKeepEntries() {
+    setSettings((prev) => ({ ...prev, saveHistory: false }));
+    setAskDeleteHistoryOnDisable(false);
+    showToast('Histórico desativado. Entradas anteriores mantidas.', 'success');
   }
 
   return (
@@ -399,7 +449,82 @@ export function SettingsForm() {
         </p>
       </div>
 
-      {/* ── 5. Danger zone ─────────────────────────────────────────────────── */}
+      {/* ── 5. History (opt-in) ────────────────────────────────────────────── */}
+      <SettingsCard>
+        <div className="flex items-start justify-between gap-4 mb-1">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-[15px] font-semibold text-white flex items-center gap-2">
+              <History size={16} className="text-[#00ffd5] shrink-0" />
+              Histórico de análises
+            </h2>
+            <p className="text-xs text-[#8b8fa3] mt-1 leading-relaxed">
+              Quando ativado, suas análises são salvas localmente no seu navegador (até 10,
+              FIFO). Nenhum dado é enviado a servidores. Você pode desativar ou apagar o
+              histórico a qualquer momento.
+            </p>
+          </div>
+
+          {/* Toggle */}
+          <button
+            type="button"
+            role="switch"
+            aria-checked={settings.saveHistory === true}
+            aria-label={settings.saveHistory === true ? 'Desativar histórico' : 'Ativar histórico'}
+            onClick={() => handleToggleSaveHistory(!settings.saveHistory)}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ffd5]/40 ${
+              settings.saveHistory === true ? 'bg-[#00ffd5]/80' : 'bg-[#2a2a3a]'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                settings.saveHistory === true ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+
+        {hydrated && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-[11px] text-[#6b7280]">
+              {historyCount === 0
+                ? 'Nenhuma análise salva no momento.'
+                : `${historyCount} ${historyCount === 1 ? 'análise salva' : 'análises salvas'} no seu navegador.`}
+            </p>
+            {historyCount > 0 && (
+              <Link
+                href="/historico"
+                className="inline-flex items-center gap-1 text-[11px] text-[#00ffd5] hover:text-[#00ffd5]/80 transition-colors"
+              >
+                Ver histórico
+                <ArrowRight size={10} />
+              </Link>
+            )}
+          </div>
+        )}
+
+        {/* Inline prompt when user disables with entries present */}
+        {askDeleteHistoryOnDisable && (
+          <div className="mt-4 rounded-xl border border-[#ffd32a]/20 bg-[#ffd32a]/5 px-4 py-3">
+            <p className="text-xs text-[#ffd32a]/90 leading-relaxed mb-3">
+              Você tem {historyCount} {historyCount === 1 ? 'análise salva' : 'análises salvas'}.
+              Deseja apagar essas entradas ao desativar?
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Btn variant="danger" onClick={handleConfirmDisableAndDelete}>
+                Apagar e desativar
+              </Btn>
+              <Btn variant="secondary" onClick={handleConfirmDisableKeepEntries}>
+                Manter e desativar
+              </Btn>
+              <Btn variant="ghost" onClick={() => setAskDeleteHistoryOnDisable(false)}>
+                Cancelar
+              </Btn>
+            </div>
+          </div>
+        )}
+      </SettingsCard>
+
+      {/* ── 6. Danger zone ─────────────────────────────────────────────────── */}
       <SettingsCard className="!border-[#ff4757]/10">
         <h2 className="text-[15px] font-semibold text-white mb-1">Zona de perigo</h2>
         <p className="text-xs text-[#8b8fa3] mb-4">

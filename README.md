@@ -45,6 +45,7 @@ Em segundos, você recebe um diagnóstico completo: nota de compatibilidade, hab
 - Raio-X instantâneo de palavras-chave (grátis, antes da IA, milissegundos)
 - Sugestões de reescrita do currículo para cada lacuna identificada
 - Cópia com um clique das sugestões de reescrita, com feedback visual
+- Histórico opcional de até 10 análises salvas localmente (opt-in via toggle)
 
 </details>
 

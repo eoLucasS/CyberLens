@@ -20,4 +20,10 @@ export interface UserSettings {
   model: string;
   apiKey: string;
   hasAcceptedTerms: boolean;
+  /**
+   * When true, each successful analysis is persisted in the local history
+   * (up to 10 entries, FIFO). Defaults to false so nothing is ever saved
+   * without explicit user consent.
+   */
+  saveHistory?: boolean;
 }

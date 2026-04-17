@@ -8,10 +8,20 @@ import { analyzeKeywords } from '@/lib/nlp/keywords';
 import { parseResumeSections } from '@/lib/nlp/sections';
 import { cleanJobDescription } from '@/lib/nlp/cleaner';
 import { analyzeWithAI } from '@/lib/ai';
+import { addToHistory } from '@/lib/history/store';
+import { extractJobMeta } from '@/lib/history/job-extractor';
+import { AI_PROVIDERS } from '@/constants/providers';
 import type { UserSettings } from '@/types';
 import type { KeywordAnalysis } from '@/lib/nlp/keywords';
 
 type AnalysisState = 'idle' | 'loading' | 'success' | 'error';
+
+export interface AnalyzeOptions {
+  /** Optional original resume file name. Used to label the history entry. */
+  resumeFileName?: string;
+  /** Set when the resume text came from OCR. Influences the AI prompt. */
+  isOcr?: boolean;
+}
 
 export interface UseAnalysisReturn {
   state: AnalysisState;
@@ -20,7 +30,11 @@ export interface UseAnalysisReturn {
   loadingMessage: string;
   /** Pre-analysis keyword data (available after NLP runs, before AI call) */
   keywordAnalysis: KeywordAnalysis | null;
-  analyze: (resumeText: string, jobDescription: string, isOcr?: boolean) => Promise<void>;
+  analyze: (
+    resumeText: string,
+    jobDescription: string,
+    options?: AnalyzeOptions,
+  ) => Promise<void>;
   reset: () => void;
 }
 
@@ -53,12 +67,18 @@ export function useAnalysis(): UseAnalysisReturn {
   }, []);
 
   const analyze = useCallback(
-    async (resumeText: string, jobDescription: string, isOcr: boolean = false): Promise<void> => {
+    async (
+      resumeText: string,
+      jobDescription: string,
+      options?: AnalyzeOptions,
+    ): Promise<void> => {
+      const isOcr = options?.isOcr ?? false;
       const defaultSettings: UserSettings = {
         provider: 'openai',
         model: 'gpt-4o-mini',
         apiKey: '',
         hasAcceptedTerms: false,
+        saveHistory: false,
       };
       const settings = getStorageItem<UserSettings>(STORAGE_KEYS.SETTINGS, defaultSettings);
 
@@ -102,6 +122,28 @@ export function useAnalysis(): UseAnalysisReturn {
         stopMessageRotation();
         setResult(analysisResult);
         setState('success');
+
+        // Step 4: Persist to history if the user opted in. Any failure
+        // here is silent so the main flow is never blocked by storage issues.
+        if (settings.saveHistory === true) {
+          try {
+            const providerLabel =
+              AI_PROVIDERS.find((p) => p.name === settings.provider)?.label ?? settings.provider;
+            const { title: jobTitle, company: jobCompany } = extractJobMeta(cleanedJob);
+
+            addToHistory({
+              jobTitle,
+              jobCompany,
+              resumeFileName: options?.resumeFileName?.trim() || 'Currículo sem nome',
+              score: analysisResult.score,
+              classification: analysisResult.classification,
+              provider: providerLabel,
+              result: analysisResult,
+            });
+          } catch {
+            // Ignore history persistence errors.
+          }
+        }
       } catch (err: unknown) {
         stopMessageRotation();
         const message =

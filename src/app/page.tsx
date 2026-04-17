@@ -24,11 +24,13 @@ export default function HomePage() {
   const [jobDescription, setJobDescription] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
   const [keywordPreview, setKeywordPreview] = useState<KeywordAnalysis | null>(null);
+  const [resumeFileName, setResumeFileName] = useState<string>('');
 
   const { state, result, error, loadingMessage, analyze, reset } = useAnalysis();
 
-  const handleFileAccepted = useCallback((_file: File | null, text: string) => {
+  const handleFileAccepted = useCallback((file: File | null, text: string) => {
     setResumeText(text);
+    setResumeFileName(file?.name ?? 'Currículo em cache');
     setCurrentStep((prev) => Math.max(prev, 1));
   }, []);
 
@@ -43,13 +45,14 @@ export default function HomePage() {
   }, [resumeText]);
 
   const handleAnalyze = useCallback(async () => {
-    await analyze(resumeText, jobDescription);
+    await analyze(resumeText, jobDescription, { resumeFileName });
     setCurrentStep(3);
-  }, [analyze, resumeText, jobDescription]);
+  }, [analyze, resumeText, jobDescription, resumeFileName]);
 
   const handleReset = useCallback(() => {
     reset();
     setResumeText('');
+    setResumeFileName('');
     setJobDescription('');
     setCurrentStep(0);
     setKeywordPreview(null);

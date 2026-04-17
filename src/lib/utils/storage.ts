@@ -6,8 +6,8 @@
 export const STORAGE_KEYS = {
   SETTINGS: 'cyberlens_settings',
   CONSENT: 'cyberlens_consent',
-  LAST_ANALYSIS: 'cyberlens_last_analysis',
   RESUME_CACHE: 'cyberlens_resume_cache',
+  HISTORY: 'cyberlens_history',
 } as const;
 
 /**

@@ -52,6 +52,13 @@ export default function TermosPage() {
             visitante.
           </p>
           <p>
+            O usuário pode optar por salvar localmente suas análises através da rota /historico,
+            ativando o toggle &apos;Salvar histórico&apos; nas Configurações. O histórico é
+            armazenado exclusivamente no navegador do usuário (localStorage), com limite de 10
+            entradas em rotação FIFO. O usuário tem controle total para desativar, apagar
+            individualmente ou limpar todo o histórico a qualquer momento.
+          </p>
+          <p>
             O CyberLens é disponibilizado gratuitamente, sem garantias de disponibilidade contínua
             ou suporte técnico formal.
           </p>

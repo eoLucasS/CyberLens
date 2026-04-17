@@ -54,9 +54,15 @@ export interface StudyPlanItem {
   priority: 'Alta' | 'Média' | 'Baixa';
 }
 
+export type Classification =
+  | 'Baixa Aderência'
+  | 'Aderência Parcial'
+  | 'Alta Aderência'
+  | 'Aderência Excelente';
+
 export interface AnalysisResult {
   score: number;
-  classification: 'Baixa Aderência' | 'Aderência Parcial' | 'Alta Aderência' | 'Aderência Excelente';
+  classification: Classification;
   /**
    * Executive summary shown at the top of the result. Must be 2 to 4 sentences in pt-BR:
    * 1) diagnostic calibrated to the score, 2) main gap or opportunity, 3) next concrete step.
@@ -69,4 +75,31 @@ export interface AnalysisResult {
   missingKeywords: MissingKeyword[];
   experienceAnalysis: ExperienceAnalysis;
   studyPlan: StudyPlanItem[];
+}
+
+/**
+ * A saved analysis entry. Persisted in localStorage only when the user
+ * opts in via the "Salvar histórico" toggle in Settings. FIFO-managed
+ * with a hard cap of 10 entries. Each entry is self-contained so it can
+ * be rendered independently from the original resume/job text.
+ */
+export interface AnalysisHistoryEntry {
+  /** Client-generated UUID (crypto.randomUUID). Stable key for routing. */
+  id: string;
+  /** ISO 8601 timestamp of when the entry was saved. */
+  savedAt: string;
+  /** Extracted job title, or "Vaga sem título" if no title could be derived. */
+  jobTitle: string;
+  /** Optional company name when detected by the extractor. */
+  jobCompany?: string;
+  /** Resume file name at the moment of analysis. */
+  resumeFileName: string;
+  /** Cached score for list rendering without loading the full result. */
+  score: number;
+  /** Cached classification for list rendering. */
+  classification: AnalysisResult['classification'];
+  /** Provider label (for example, "OpenAI (GPT)"). Useful context when comparing runs. */
+  provider?: string;
+  /** Full analysis result. Required so the viewer can render a saved entry offline. */
+  result: AnalysisResult;
 }

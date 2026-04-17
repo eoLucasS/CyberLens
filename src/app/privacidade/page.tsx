@@ -71,7 +71,13 @@ export default function PrivacidadePage() {
             <li>Chave de API do provedor de IA escolhido pelo usuário;</li>
             <li>Preferências de configuração (provedor e modelo de IA selecionados);</li>
             <li>Registro de consentimento com esta Política e os Termos de Uso;</li>
-            <li>Resultado da última análise realizada (texto gerado pela IA);</li>
+            <li>
+              Histórico de análises (até 10 entradas), salvo APENAS quando o usuário ativa
+              expressamente a opção &apos;Salvar histórico&apos; nas Configurações. Cada entrada
+              contém: título da vaga extraído automaticamente, nome do arquivo do currículo,
+              pontuação, classificação e o relatório completo gerado pela IA. Em nenhum momento
+              é armazenado o PDF original ou a descrição bruta da vaga;
+            </li>
             <li>
               Texto do último currículo enviado (apenas o texto extraído do PDF, nunca o arquivo
               binário), mantido em cache para evitar novo upload em análises subsequentes.
@@ -81,6 +87,14 @@ export default function PrivacidadePage() {
             Esses dados <strong className="text-[#e4e4e7]">não são transmitidos ao CyberLens</strong>{' '}
             e podem ser removidos a qualquer momento pelo próprio usuário por meio da página de
             Configurações ou das ferramentas nativas do navegador.
+          </p>
+          <p>
+            Em relação ao histórico opcional especificamente, o usuário pode: (i) desativar o
+            salvamento automático a qualquer momento nas Configurações; (ii) apagar entradas
+            individualmente na página /historico; (iii) limpar todo o histórico de uma vez;
+            (iv) ao desativar o salvamento, o sistema oferece a opção de apagar as entradas
+            existentes. Essas ações atendem ao direito de eliminação previsto no art. 18, VI
+            da LGPD.
           </p>
           <p>
             A página de demonstração do CyberLens (<strong className="text-[#e4e4e7]">/demo</strong>)
@@ -108,8 +122,10 @@ export default function PrivacidadePage() {
               leu e concordou com esta Política e os Termos de Uso, conforme exigido pela LGPD;
             </li>
             <li>
-              <strong className="text-[#e4e4e7]">Última análise:</strong> permitir que o usuário
-              consulte o resultado mais recente sem precisar reprocessar o documento;
+              <strong className="text-[#e4e4e7]">Histórico de análises (opcional):</strong> permitir
+              que o usuário consulte análises anteriores, compare scores entre vagas e retome
+              relatórios sem refazer o processamento. Só é persistido mediante consentimento
+              explícito via toggle em Configurações, que por padrão está desativado.
             </li>
             <li>
               <strong className="text-[#e4e4e7]">Cache de currículo:</strong> armazenar

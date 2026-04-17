@@ -1,7 +1,7 @@
 // About page: static Server Component, zero client-side JavaScript.
 
 import Link from 'next/link';
-import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap, Pencil, TrendingUp } from 'lucide-react';
+import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap, Pencil, TrendingUp, History } from 'lucide-react';
 
 export const metadata = {
   title: 'Sobre o CyberLens',
@@ -125,6 +125,10 @@ export default function SobrePage() {
                   <Pencil size={16} className="shrink-0 text-[#7c3aed] mt-0.5" />
                   <span><strong className="text-[#e4e4e7]">Sugestões de reescrita</strong> para cada lacuna, mostrando como reformular trechos do seu currículo</span>
                 </li>
+                <li className="flex items-start gap-2">
+                  <History size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
+                  <span><strong className="text-[#e4e4e7]">Histórico opcional</strong> com até 10 análises salvas localmente, ativável por toggle nas Configurações</span>
+                </li>
               </ul>
               <p>
                 Funciona para <strong className="text-[#e4e4e7]">qualquer área</strong>: TI,
@@ -212,6 +216,10 @@ export default function SobrePage() {
               <FaqItem
                 question="O CyberLens guarda o meu currículo entre sessões?"
                 answer="Sim, mas apenas no seu navegador. Depois do primeiro upload, o texto extraído fica salvo no localStorage do seu navegador para que você possa analisar o mesmo currículo contra várias vagas sem precisar fazer upload de novo. O arquivo PDF não é guardado, só o texto. Você pode remover esse cache a qualquer momento clicando em Enviar outro na tela de upload, ou usando o botão Limpar Dados em Configurações."
+              />
+              <FaqItem
+                question="Posso salvar um histórico das minhas análises?"
+                answer="Sim, mas é opt-in. Por padrão nada é salvo. Se você ativar o toggle 'Salvar histórico de análises' nas Configurações, cada nova análise vai para um histórico local (até 10 entradas, rotação FIFO). Tudo fica apenas no seu navegador, nada é enviado a servidores. Você pode apagar entradas individualmente, limpar tudo, ou desativar o salvamento a qualquer momento. Acesse em /historico."
               />
               <FaqItem
                 question="Posso testar o CyberLens sem criar API key?"

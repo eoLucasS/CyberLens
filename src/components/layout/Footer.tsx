@@ -60,6 +60,12 @@ export default function Footer() {
               >
                 Demonstração
               </Link>
+              <Link
+                href="/historico"
+                className="text-sm text-cyber-text-secondary hover:text-cyber-accent transition-colors"
+              >
+                Histórico
+              </Link>
             </nav>
           </div>
 
@@ -113,6 +119,10 @@ export default function Footer() {
             <span className="text-white/10">|</span>
             <Link href="/demo" className="text-xs text-cyber-text-secondary hover:text-cyber-accent transition-colors">
               Demo
+            </Link>
+            <span className="text-white/10">|</span>
+            <Link href="/historico" className="text-xs text-cyber-text-secondary hover:text-cyber-accent transition-colors">
+              Histórico
             </Link>
           </nav>
 

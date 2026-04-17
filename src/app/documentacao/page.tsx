@@ -271,7 +271,10 @@ export default function DocumentacaoPage() {
                   cada lacuna identificada, a IA também sugere como reescrever
                   trechos do currículo para incorporar os termos faltantes. Cada
                   sugestão tem botão de cópia com feedback visual para você
-                  aplicar no seu currículo em um clique.
+                  aplicar no seu currículo em um clique. O usuário pode
+                  opcionalmente salvar cada análise num histórico local (até 10
+                  entradas) ativando o toggle em Configurações. O histórico fica
+                  inteiramente no navegador.
                 </p>
               </div>
             </div>
