@@ -2,32 +2,31 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
-import {
-  ArrowLeft,
-  History,
-  Settings,
-  Trash2,
-  Info,
-  Sparkles,
-} from 'lucide-react';
+import { ArrowLeft, History, Settings, Trash2, Info, Sparkles } from 'lucide-react';
 import { Spinner } from '@/components/ui/Spinner';
 import { HistoryCard } from '@/components/history/HistoryCard';
-import { getHistory, clearHistory, removeFromHistory, MAX_HISTORY_ENTRIES } from '@/lib/history/store';
-import { deriveClassification } from '@/lib/ai';
+import {
+  getHistory,
+  clearHistory,
+  removeFromHistory,
+  MAX_HISTORY_ENTRIES,
+} from '@/lib/history/store';
+import { sanitizeAnalysisResult } from '@/lib/analysis/validators';
 import { getStorageItem, STORAGE_KEYS } from '@/lib/utils/storage';
 import type { AnalysisHistoryEntry, UserSettings } from '@/types';
 
 /**
- * Keeps the classification label consistent with the score even for entries
- * saved before this derivation existed. Legacy entries with a mismatched
- * label are transparently healed at render time.
+ * Runs every persisted entry through the sanitizer before render. Legacy
+ * entries saved before the sanitizer existed, or corrupted localStorage
+ * entries, are transparently healed at render time. The derived score-based
+ * classification is propagated to the list-level cache.
  */
 function normalizeEntry(entry: AnalysisHistoryEntry): AnalysisHistoryEntry {
-  const classification = deriveClassification(entry.result.score);
+  const safeResult = sanitizeAnalysisResult(entry.result);
   return {
     ...entry,
-    classification,
-    result: { ...entry.result, classification },
+    classification: safeResult.classification,
+    result: safeResult,
   };
 }
 
@@ -90,8 +89,8 @@ export default function HistoryListPage() {
               Suas análises salvas
             </h1>
             <p className="mt-2 text-sm sm:text-[15px] text-[#9ca3af] leading-relaxed max-w-2xl">
-              Até {MAX_HISTORY_ENTRIES} análises guardadas no seu próprio navegador. Nada é enviado a
-              servidores. Ao atingir o limite, a mais antiga é removida automaticamente.
+              Até {MAX_HISTORY_ENTRIES} análises guardadas no seu próprio navegador. Nada é enviado
+              a servidores. Ao atingir o limite, a mais antiga é removida automaticamente.
             </p>
           </div>
 

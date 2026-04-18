@@ -1,6 +1,6 @@
 import type { AnalysisResult, AIProviderName, Classification } from '@/types';
 import { ANALYSIS_SYSTEM_PROMPT, USER_PROMPT_TEMPLATE } from '@/constants/prompts';
-import { resolveExecutiveSummary } from '@/lib/analysis/summary';
+import { sanitizeAnalysisResult } from '@/lib/analysis/validators';
 
 /**
  * Derives the classification label from the score using the canonical
@@ -16,14 +16,6 @@ export function deriveClassification(score: number): Classification {
   if (clamped >= 40) return 'Aderência Parcial';
   return 'Baixa Aderência';
 }
-
-/** Output caps applied as a defensive slice after parsing. */
-const OUTPUT_CAPS = {
-  matchedSkills: 12,
-  gaps: 8,
-  missingKeywords: 10,
-  studyPlan: 6,
-} as const;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -204,7 +196,8 @@ function parseAIResponse(raw: string): AnalysisResult {
     }
   }
 
-  // Validate required fields
+  // Fail loud on severely broken responses: no score at all, or matchedSkills
+  // absent. Anything less catastrophic is repaired by the sanitizer below.
   if (typeof parsed?.score !== 'number' || parsed.score < 0 || parsed.score > 100) {
     throw new Error(
       'A IA não retornou uma pontuação válida. Tente novamente ou escolha outro modelo em Configurações.',
@@ -216,33 +209,9 @@ function parseAIResponse(raw: string): AnalysisResult {
     );
   }
 
-  const result = parsed as AnalysisResult;
-
-  // Always derive classification from the numeric score. Prevents the AI
-  // from returning a label that contradicts the score (e.g. score 72 with
-  // "Aderência Parcial"). Zero trust on the AI-provided classification.
-  result.classification = deriveClassification(result.score);
-
-  // Defensive output caps. The prompt already asks the AI to respect these
-  // limits, but we slice as a safety net in case the model over-generates.
-  if (Array.isArray(result.matchedSkills)) {
-    result.matchedSkills = result.matchedSkills.slice(0, OUTPUT_CAPS.matchedSkills);
-  }
-  if (Array.isArray(result.gaps)) {
-    result.gaps = result.gaps.slice(0, OUTPUT_CAPS.gaps);
-  }
-  if (Array.isArray(result.missingKeywords)) {
-    result.missingKeywords = result.missingKeywords.slice(0, OUTPUT_CAPS.missingKeywords);
-  }
-  if (Array.isArray(result.studyPlan)) {
-    result.studyPlan = result.studyPlan.slice(0, OUTPUT_CAPS.studyPlan);
-  }
-
-  // Executive summary: prefer AI output, fall back to deterministic synthesis.
-  // This guarantees the field is always a non-empty, coherent pt-BR string.
-  result.executiveSummary = resolveExecutiveSummary(parsed.executiveSummary, result);
-
-  return result;
+  // Single source of truth for output validation, coercion, caps, deduping,
+  // URL safety, enum whitelisting, and deterministic summary fallback.
+  return sanitizeAnalysisResult(parsed);
 }
 
 // ─── Provider callers (with timeout + retry) ─────────────────────────────────
@@ -303,7 +272,11 @@ async function callAnthropic(params: AnalyzeParams): Promise<string> {
         apiKey: params.apiKey,
         model: params.model,
         systemPrompt: ANALYSIS_SYSTEM_PROMPT,
-        userPrompt: USER_PROMPT_TEMPLATE(params.resumeText, params.jobDescription, params.preAnalysis),
+        userPrompt: USER_PROMPT_TEMPLATE(
+          params.resumeText,
+          params.jobDescription,
+          params.preAnalysis,
+        ),
       }),
     });
 
@@ -331,7 +304,11 @@ async function callOpenAI(params: AnalyzeParams): Promise<string> {
           { role: 'system', content: ANALYSIS_SYSTEM_PROMPT },
           {
             role: 'user',
-            content: USER_PROMPT_TEMPLATE(params.resumeText, params.jobDescription, params.preAnalysis),
+            content: USER_PROMPT_TEMPLATE(
+              params.resumeText,
+              params.jobDescription,
+              params.preAnalysis,
+            ),
           },
         ],
         temperature: 0.3,
@@ -363,7 +340,13 @@ async function callGoogle(params: AnalyzeParams): Promise<string> {
           contents: [
             {
               parts: [
-                { text: USER_PROMPT_TEMPLATE(params.resumeText, params.jobDescription, params.preAnalysis) },
+                {
+                  text: USER_PROMPT_TEMPLATE(
+                    params.resumeText,
+                    params.jobDescription,
+                    params.preAnalysis,
+                  ),
+                },
               ],
             },
           ],
@@ -396,7 +379,11 @@ async function callHuggingFace(params: AnalyzeParams): Promise<string> {
           { role: 'system', content: ANALYSIS_SYSTEM_PROMPT },
           {
             role: 'user',
-            content: USER_PROMPT_TEMPLATE(params.resumeText, params.jobDescription, params.preAnalysis),
+            content: USER_PROMPT_TEMPLATE(
+              params.resumeText,
+              params.jobDescription,
+              params.preAnalysis,
+            ),
           },
         ],
         temperature: 0.3,

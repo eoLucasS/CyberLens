@@ -15,6 +15,7 @@ import {
 import { KeywordRadar } from '@/components/analysis/KeywordRadar';
 import { AnalysisResult as AnalysisResultView } from '@/components/analysis/AnalysisResult';
 import { Spinner } from '@/components/ui/Spinner';
+import { sanitizeAnalysisResult } from '@/lib/analysis/validators';
 import type { AnalysisResult as AnalysisResultType } from '@/types';
 
 const VALID_SLUGS = ['analista-dados', 'analista-cyber', 'dev-fullstack'] as const;
@@ -70,7 +71,11 @@ export default function DemoViewerPage({ params }: PageProps) {
         return r.json();
       })
       .then((json: DemoProfile) => {
-        if (!cancelled) setData(json);
+        if (cancelled) return;
+        // Sanitize the static analysis payload defensively: guards against
+        // accidental drift between the demo JSON files and the AnalysisResult
+        // schema, and keeps the rendering path identical to real analyses.
+        setData({ ...json, analysis: sanitizeAnalysisResult(json.analysis) });
       })
       .catch(() => {
         if (!cancelled) setError('Não foi possível carregar a demonstração.');
@@ -85,10 +90,7 @@ export default function DemoViewerPage({ params }: PageProps) {
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="text-center">
           <p className="text-sm text-[#ff4757] mb-3">{error}</p>
-          <Link
-            href="/demo"
-            className="text-sm text-[#00ffd5] hover:underline"
-          >
+          <Link href="/demo" className="text-sm text-[#00ffd5] hover:underline">
             Voltar à seleção de perfis
           </Link>
         </div>
@@ -109,7 +111,6 @@ export default function DemoViewerPage({ params }: PageProps) {
 
   return (
     <div className="mx-auto w-full max-w-[1200px] px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
-
       {/* Demo persistent banner (sticky visual) */}
       <div className="mb-6 rounded-2xl border border-[#7c3aed]/30 bg-gradient-to-r from-[#7c3aed]/[0.08] via-[#00ffd5]/[0.04] to-[#7c3aed]/[0.08] p-4 sm:p-5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
@@ -117,12 +118,10 @@ export default function DemoViewerPage({ params }: PageProps) {
             <Sparkles size={18} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[#e4e4e7]">
-              Você está no modo demonstração
-            </p>
+            <p className="text-sm font-semibold text-[#e4e4e7]">Você está no modo demonstração</p>
             <p className="mt-0.5 text-xs sm:text-[13px] text-[#9ca3af] leading-relaxed">
-              Esta análise foi gerada com dados de exemplo. Para analisar seu currículo
-              real, clique no botão ao lado.
+              Esta análise foi gerada com dados de exemplo. Para analisar seu currículo real, clique
+              no botão ao lado.
             </p>
           </div>
           <Link
@@ -189,12 +188,10 @@ export default function DemoViewerPage({ params }: PageProps) {
 
       {/* Final CTA */}
       <div className="mt-10 rounded-2xl border border-[#00ffd5]/20 bg-gradient-to-br from-[#00ffd5]/[0.06] via-[#0f0f1a] to-[#7c3aed]/[0.04] p-6 sm:p-8 text-center">
-        <h2 className="text-lg sm:text-xl font-bold text-white mb-2">
-          Gostou do que viu?
-        </h2>
+        <h2 className="text-lg sm:text-xl font-bold text-white mb-2">Gostou do que viu?</h2>
         <p className="text-sm text-[#9ca3af] mb-5 max-w-md mx-auto leading-relaxed">
-          Agora é sua vez. Configure um provedor de IA em menos de 1 minuto e analise
-          seu próprio currículo contra a vaga dos seus sonhos.
+          Agora é sua vez. Configure um provedor de IA em menos de 1 minuto e analise seu próprio
+          currículo contra a vaga dos seus sonhos.
         </p>
         <Link
           href="/"

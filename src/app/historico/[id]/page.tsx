@@ -24,7 +24,7 @@ import {
   updateHistoryEntryTitle,
   MAX_EDITABLE_TITLE_LENGTH,
 } from '@/lib/history/store';
-import { deriveClassification } from '@/lib/ai';
+import { sanitizeAnalysisResult } from '@/lib/analysis/validators';
 import type { AnalysisHistoryEntry } from '@/types';
 
 interface PageProps {
@@ -93,13 +93,15 @@ export default function HistoryEntryPage({ params }: PageProps) {
     setHydrated(true);
     const found = getHistoryEntry(id);
     if (found) {
-      // Protect against legacy entries saved before classification was
-      // derived from score. Always render the label consistent with the score.
-      const consistentClassification = deriveClassification(found.result.score);
+      // Full sanitizer pass heals legacy entries, strips any malformed
+      // fields from older saves, and keeps the classification consistent
+      // with the numeric score. The list-level classification cache is
+      // synced with the sanitized result.
+      const safeResult = sanitizeAnalysisResult(found.result);
       setEntry({
         ...found,
-        classification: consistentClassification,
-        result: { ...found.result, classification: consistentClassification },
+        classification: safeResult.classification,
+        result: safeResult,
       });
     } else {
       setEntry(null);
@@ -126,12 +128,8 @@ export default function HistoryEntryPage({ params }: PageProps) {
         <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#00ff88]/10 text-[#00ff88]">
           <Trash2 size={22} />
         </div>
-        <h1 className="text-xl sm:text-2xl font-bold text-white mb-2">
-          Entrada removida
-        </h1>
-        <p className="text-sm text-[#9ca3af] mb-6">
-          A análise foi apagada do seu histórico local.
-        </p>
+        <h1 className="text-xl sm:text-2xl font-bold text-white mb-2">Entrada removida</h1>
+        <p className="text-sm text-[#9ca3af] mb-6">A análise foi apagada do seu histórico local.</p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link
             href="/historico"
@@ -300,11 +298,7 @@ export default function HistoryEntryPage({ params }: PageProps) {
       </div>
 
       {/* Full analysis view */}
-      <AnalysisResultView
-        result={entry.result}
-        providerLabel={entry.provider}
-        autoScroll={false}
-      />
+      <AnalysisResultView result={entry.result} providerLabel={entry.provider} autoScroll={false} />
     </div>
   );
 }

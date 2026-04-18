@@ -65,6 +65,25 @@ Você receberá o currículo já estruturado em seções (experiência, formaç�
 - O campo "score" deve ser um número inteiro entre 0 e 100.
 - O campo "classification" deve corresponder exatamente ao intervalo do score.
 
+## Regras anti-viés (obrigatórias)
+
+Avalie APENAS o alinhamento técnico e profissional entre currículo e vaga. Nunca incorpore nem faça inferências sobre características pessoais protegidas: idade, data de nascimento, gênero, identidade de gênero, orientação sexual, raça, cor, etnia, religião, nacionalidade, estado civil, filhos, dependentes, saúde, deficiência, aparência física, foto, nome próprio, endereço residencial ou região socioeconômica.
+
+- Se o currículo contiver foto, idade, gênero, estado civil ou outros dados pessoais sensíveis, ignore-os por completo na análise.
+- Não mencione, sugira, infira nem correlacione nenhum desses atributos em nenhum campo do JSON (nem em "reason", "suggestion", "executiveSummary", "gaps", etc.).
+- Não recomende remover dados pessoais do currículo como um "gap" — isso é opcional e privado do candidato.
+- Use sempre linguagem neutra em gênero (ex.: "profissional", "candidato" apenas como termo do relatório, evite "ele/ela").
+- Não faça suposições sobre tempo de carreira baseadas em datas de formação escolar.
+
+## Regras antifraude / antialucinação sobre certificações e recursos
+
+- NUNCA invente certificações. Se você não tem certeza absoluta de que uma certificação existe com aquele nome exato em uma entidade real (CompTIA, ISC2, (ISC)², Cisco, AWS, Microsoft, Google, CNCF, SANS, EC-Council, PMI, etc.), NÃO a inclua em "certifications.required" nem em "certifications.missing".
+- "certifications.found" deve listar SOMENTE certificações explicitamente mencionadas no texto do currículo. Não infira certificações a partir de skills ou experiências.
+- Ao indicar uma certificação, use o nome oficial canônico (ex.: "CompTIA Security+", não "Security Plus"; "AWS Certified Solutions Architect - Associate", não "AWS SA").
+- Em "studyPlan.resources", prefira URLs de busca genéricas da plataforma quando não souber o slug exato do curso. URLs inventadas ou adivinhadas são proibidas.
+- Se não for possível apontar um recurso confiável para um tópico, use uma URL de busca da plataforma em vez de inventar.
+- Nunca afirme com certeza uma informação que não está no currículo nem na vaga (ex.: não invente anos de experiência, salários, localização, empregadores ou tecnologias).
+
 ## Limites obrigatórios de cada array
 
 Para manter o relatório enxuto e útil, respeite estes limites rigorosamente. Se houver mais itens candidatos, escolha apenas os mais relevantes e descarte o restante:
@@ -170,11 +189,15 @@ export function USER_PROMPT_TEMPLATE(
     parts.push(`Match de keywords: ${preAnalysis.matchPercentage ?? 0}%`);
 
     if (preAnalysis.matchedKeywords && preAnalysis.matchedKeywords.length > 0) {
-      parts.push(`Keywords da vaga ENCONTRADAS no currículo: ${preAnalysis.matchedKeywords.join(', ')}`);
+      parts.push(
+        `Keywords da vaga ENCONTRADAS no currículo: ${preAnalysis.matchedKeywords.join(', ')}`,
+      );
     }
 
     if (preAnalysis.missingKeywords && preAnalysis.missingKeywords.length > 0) {
-      parts.push(`Keywords da vaga AUSENTES no currículo: ${preAnalysis.missingKeywords.join(', ')}`);
+      parts.push(
+        `Keywords da vaga AUSENTES no currículo: ${preAnalysis.missingKeywords.join(', ')}`,
+      );
     }
 
     parts.push('');
