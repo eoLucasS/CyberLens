@@ -377,8 +377,15 @@ export function SettingsForm() {
       <SettingsCard>
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h2 className="text-[15px] font-semibold text-white">Chave de API</h2>
-            <p className="text-xs text-[#8b8fa3] mt-0.5">
+            {/*
+              Use a real <label htmlFor> so screen readers announce
+              "Chave de API" when the input gains focus. Visually styled
+              to keep the same heading-like appearance for sighted users.
+            */}
+            <label htmlFor="api-key" className="block text-[15px] font-semibold text-white">
+              Chave de API
+            </label>
+            <p id="api-key-hint" className="text-xs text-[#8b8fa3] mt-0.5">
               Sua chave fica apenas no navegador, nunca sai do seu dispositivo.
             </p>
           </div>
@@ -402,6 +409,8 @@ export function SettingsForm() {
             placeholder={selectedProvider.apiKeyPlaceholder}
             autoComplete="off"
             spellCheck={false}
+            aria-describedby={keyError ? 'api-key-hint api-key-error' : 'api-key-hint'}
+            aria-invalid={Boolean(keyError) || undefined}
             className={`w-full rounded-xl bg-[#0d0d18] border px-4 py-2.5 pr-10 text-sm font-mono text-[#e4e4e7] placeholder:text-[#8b8fa3]/30 transition-colors focus:outline-none focus:ring-1 ${
               keyError
                 ? 'border-[#ff4757]/40 focus:border-[#ff4757] focus:ring-[#ff4757]/15'
@@ -423,7 +432,11 @@ export function SettingsForm() {
         </div>
 
         {keyError && (
-          <div className="mb-3 flex items-center gap-2 text-xs text-[#ff4757]" role="alert">
+          <div
+            id="api-key-error"
+            className="mb-3 flex items-center gap-2 text-xs text-[#ff4757]"
+            role="alert"
+          >
             <AlertCircle size={13} className="shrink-0" aria-hidden="true" />
             {keyError}
           </div>
