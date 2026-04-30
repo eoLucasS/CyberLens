@@ -31,6 +31,9 @@ export function Modal({
   // Gate: only render into the portal once the component is mounted client-side
   const [mounted, setMounted] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
+  // Element that had focus right before the modal opened. We restore focus
+  // there on close so keyboard users don't get dumped at the top of the page.
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
 
   // Mark as client-mounted (needed for createPortal)
   useEffect(() => {
@@ -48,14 +51,30 @@ export function Modal({
     }
   }, [isOpen]);
 
-  // Auto-focus the first focusable element when the modal opens
+  // Auto-focus the first focusable element when the modal opens, and restore
+  // focus to the previous element on close. The cleanup of this effect runs
+  // when isOpen flips from true to false, which is exactly when we want to
+  // hand focus back.
   useEffect(() => {
-    if (isOpen && dialogRef.current) {
-      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
-      focusable[0]?.focus();
-    }
+    if (!isOpen || !dialogRef.current) return;
+
+    // Capture the currently focused element BEFORE moving focus into the modal.
+    previouslyFocusedRef.current =
+      typeof document !== 'undefined' ? (document.activeElement as HTMLElement | null) : null;
+
+    const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    );
+    focusable[0]?.focus();
+
+    return () => {
+      // Only restore if the element is still in the DOM and is focusable.
+      const previous = previouslyFocusedRef.current;
+      previouslyFocusedRef.current = null;
+      if (previous && document.contains(previous) && typeof previous.focus === 'function') {
+        previous.focus();
+      }
+    };
   }, [isOpen]);
 
   // Close on Escape key
