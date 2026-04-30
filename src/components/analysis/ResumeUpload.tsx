@@ -576,11 +576,25 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
       {/* Dropzone (hidden while cached UI or OCR prompt is active) */}
       {uploadState !== 'ocr-prompt' && !showCachedUI && (
         <div
-          {...getRootProps()}
+          {...getRootProps({
+            // Expose the dropzone as an actual button to assistive tech.
+            // react-dropzone already wires tabIndex and the Enter/Space key
+            // handler, but does not set role or an accessible name by default.
+            role: 'button',
+            'aria-label':
+              uploadState === 'complete'
+                ? 'Substituir currículo enviado. Pressione Enter para selecionar outro PDF.'
+                : 'Enviar currículo em PDF. Pressione Enter ou solte um arquivo aqui.',
+            'aria-disabled': disabled || undefined,
+          })}
           className={[
             'flex flex-col items-center justify-center rounded-xl border-2 border-dashed',
             'p-4 sm:p-6 text-center',
             'transition-all duration-200',
+            // Visible focus ring on the dropzone itself, since the real
+            // <input type="file"> is visually hidden and would otherwise leave
+            // keyboard users without any focus indicator.
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ffd5]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0f]',
             disabled
               ? 'border-white/5 bg-white/[0.02] cursor-not-allowed opacity-40 pointer-events-none'
               : isDragActive
