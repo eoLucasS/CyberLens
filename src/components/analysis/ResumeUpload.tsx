@@ -300,7 +300,15 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
   const renderDropzoneContent = () => {
     if (uploadState === 'processing') {
       return (
-        <div className="flex flex-col items-center gap-3 py-2">
+        // role="status" + aria-live="polite" so screen readers announce
+        // the extraction state without stealing focus. aria-atomic ensures
+        // the spinner-plus-message pair is read as a single update.
+        <div
+          className="flex flex-col items-center gap-3 py-2"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <Spinner size="lg" />
           <p className="text-sm text-[#9ca3af]">Extraindo texto do PDF...</p>
         </div>
@@ -309,7 +317,15 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
 
     if (uploadState === 'ocr-processing') {
       return (
-        <div className="flex flex-col items-center gap-3 py-4">
+        // OCR progress updates per-page (e.g., "Processando página 2 de 5"),
+        // so the polite live region keeps the user informed throughout the
+        // long-running operation.
+        <div
+          className="flex flex-col items-center gap-3 py-4"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <Spinner size="lg" />
           <div className="text-center">
             <p className="text-sm font-medium text-[#00ffd5]">OCR em andamento</p>

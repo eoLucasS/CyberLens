@@ -48,7 +48,19 @@ export function AnalysisButton({
         <div className="relative rounded-lg overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-[#00ffd5]/10 via-[#7c3aed]/10 to-[#00ffd5]/10 animate-pulse" />
 
-          <div className="relative flex flex-col items-center gap-4 py-6 px-4">
+          {/*
+            Live region for the analysis progress. The rotating loadingMessage
+            ("Lendo currículo...", "Comparando com a vaga..." etc.) is the
+            only signal of progress for users who can't see the spinner.
+            aria-live="polite" announces each new message without interrupting
+            other screen reader output.
+          */}
+          <div
+            className="relative flex flex-col items-center gap-4 py-6 px-4"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {/* Spinner with glow */}
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-[#00ffd5]/20 blur-xl animate-pulse" />
@@ -59,7 +71,7 @@ export function AnalysisButton({
             <div className="flex flex-col items-center gap-1 text-center">
               <p className="text-sm font-medium text-[#00ffd5]">{loadingMessage}</p>
               {/* Animated dots */}
-              <span className="flex gap-1 mt-1" aria-hidden>
+              <span className="flex gap-1 mt-1" aria-hidden="true">
                 {[0, 1, 2].map((i) => (
                   <span
                     key={i}
