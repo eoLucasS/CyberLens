@@ -13,9 +13,12 @@ interface KeywordRadarProps {
 }
 
 function getVerdict(pct: number): string {
-  if (pct >= 80) return 'Excelente compatibilidade textual! A análise com IA confirmará se a experiência descrita é relevante ao contexto da vaga.';
-  if (pct >= 60) return 'Boa compatibilidade! Seu currículo cobre a maioria dos termos da vaga. A análise com IA mostrará o contexto e sugerirá melhorias pontuais.';
-  if (pct >= 30) return 'Seu currículo cobre parte dos requisitos. A análise com IA revelará quais gaps são mais críticos e como abordá-los.';
+  if (pct >= 80)
+    return 'Excelente compatibilidade textual! A análise com IA confirmará se a experiência descrita é relevante ao contexto da vaga.';
+  if (pct >= 60)
+    return 'Boa compatibilidade! Seu currículo cobre a maioria dos termos da vaga. A análise com IA mostrará o contexto e sugerirá melhorias pontuais.';
+  if (pct >= 30)
+    return 'Seu currículo cobre parte dos requisitos. A análise com IA revelará quais gaps são mais críticos e como abordá-los.';
   return 'A análise com IA pode identificar experiências transferíveis que não aparecem como palavras-chave diretas.';
 }
 
@@ -54,7 +57,7 @@ export function KeywordRadar({ analysis }: KeywordRadarProps) {
       {/* Header */}
       <div className="flex items-center gap-2 mb-4">
         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#00ffd5]/10">
-          <Zap className="h-4 w-4 text-[#00ffd5]" />
+          <Zap className="h-4 w-4 text-[#00ffd5]" aria-hidden="true" />
         </div>
         <h3 className="text-sm font-semibold text-white">Raio-X de Compatibilidade</h3>
         <span className="ml-auto rounded-md bg-[#00ffd5]/10 px-2 py-0.5 text-[10px] font-semibold text-[#00ffd5] uppercase tracking-wider">
@@ -70,7 +73,10 @@ export function KeywordRadar({ analysis }: KeywordRadarProps) {
             style={{ width: `${animatedPercent}%`, backgroundColor: barColor }}
           />
         </div>
-        <span className="min-w-[3ch] text-right text-sm font-bold tabular-nums" style={{ color: barColor }}>
+        <span
+          className="min-w-[3ch] text-right text-sm font-bold tabular-nums"
+          style={{ color: barColor }}
+        >
           {animatedPercent}%
         </span>
       </div>
@@ -86,7 +92,9 @@ export function KeywordRadar({ analysis }: KeywordRadarProps) {
           <div>
             <div className="mb-2 flex items-center gap-1.5">
               <div className="h-2 w-2 rounded-full bg-[#00ff88]" />
-              <span className="text-xs font-medium text-[#00ff88]">Encontradas ({matched.length})</span>
+              <span className="text-xs font-medium text-[#00ff88]">
+                Encontradas ({matched.length})
+              </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {matched.map((m) => (
@@ -94,7 +102,7 @@ export function KeywordRadar({ analysis }: KeywordRadarProps) {
                   key={m.keyword}
                   className="inline-flex items-center gap-1 rounded-md border border-[#00ff88]/15 bg-[#00ff88]/5 px-2 py-1 text-[11px] text-[#00ff88]"
                 >
-                  <CheckCircle className="h-2.5 w-2.5 shrink-0" />
+                  <CheckCircle className="h-2.5 w-2.5 shrink-0" aria-hidden="true" />
                   {m.keyword}
                 </span>
               ))}
@@ -107,7 +115,9 @@ export function KeywordRadar({ analysis }: KeywordRadarProps) {
           <div>
             <div className="mb-2 flex items-center gap-1.5">
               <div className="h-2 w-2 rounded-full bg-[#ffd32a]" />
-              <span className="text-xs font-medium text-[#ffd32a]">Para melhorar ({missing.length})</span>
+              <span className="text-xs font-medium text-[#ffd32a]">
+                Para melhorar ({missing.length})
+              </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {visibleMissing.map((m) => (
@@ -125,7 +135,7 @@ export function KeywordRadar({ analysis }: KeywordRadarProps) {
                 onClick={() => setShowAllMissing(true)}
                 className="mt-2 flex items-center gap-1 text-[11px] text-[#9ca3af] hover:text-[#e4e4e7] transition-colors"
               >
-                <ChevronDown className="h-3 w-3" />
+                <ChevronDown className="h-3 w-3" aria-hidden="true" />
                 Mostrar mais {hiddenCount} termos
               </button>
             )}
@@ -134,9 +144,7 @@ export function KeywordRadar({ analysis }: KeywordRadarProps) {
       </div>
 
       {/* Verdict */}
-      <p className="text-xs italic text-[#8b8fa3] leading-relaxed">
-        {getVerdict(matchPercentage)}
-      </p>
+      <p className="text-xs italic text-[#8b8fa3] leading-relaxed">{getVerdict(matchPercentage)}</p>
 
       <p className="mt-3 text-center text-[10px] text-[#6b7280]">
         Este raio-X é instantâneo e gratuito. Para a análise completa, clique em Analisar abaixo.

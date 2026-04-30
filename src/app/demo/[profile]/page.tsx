@@ -115,7 +115,7 @@ export default function DemoViewerPage({ params }: PageProps) {
       <div className="mb-6 rounded-2xl border border-[#7c3aed]/30 bg-gradient-to-r from-[#7c3aed]/[0.08] via-[#00ffd5]/[0.04] to-[#7c3aed]/[0.08] p-4 sm:p-5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#7c3aed]/15 text-[#a855f7]">
-            <Sparkles size={18} />
+            <Sparkles size={18} aria-hidden="true" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-[#e4e4e7]">Você está no modo demonstração</p>
@@ -129,7 +129,7 @@ export default function DemoViewerPage({ params }: PageProps) {
             className="inline-flex shrink-0 items-center gap-2 px-4 py-2 rounded-xl bg-[#00ffd5] text-[#0a0a0f] font-semibold text-sm hover:bg-[#00e6c0] transition-colors"
           >
             Analisar meu currículo
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -140,7 +140,7 @@ export default function DemoViewerPage({ params }: PageProps) {
           href="/demo"
           className="inline-flex items-center gap-1.5 text-[#9ca3af] hover:text-[#e4e4e7] transition-colors"
         >
-          <ArrowLeft size={14} />
+          <ArrowLeft size={14} aria-hidden="true" />
           Outros perfis
         </Link>
       </div>
@@ -161,7 +161,7 @@ export default function DemoViewerPage({ params }: PageProps) {
       {/* Resume + Job panels (collapsible). items-start prevents the other panel from stretching when one expands. */}
       <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
         <CollapsiblePanel
-          icon={<FileText size={16} />}
+          icon={<FileText size={16} aria-hidden="true" />}
           title="Currículo de exemplo"
           subtitle={data.resume.fileName}
           open={resumeOpen}
@@ -169,7 +169,7 @@ export default function DemoViewerPage({ params }: PageProps) {
           content={data.resume.text}
         />
         <CollapsiblePanel
-          icon={<Briefcase size={16} />}
+          icon={<Briefcase size={16} aria-hidden="true" />}
           title="Vaga de exemplo"
           subtitle={`${data.job.title} · ${data.job.company}`}
           open={jobOpen}
@@ -198,7 +198,7 @@ export default function DemoViewerPage({ params }: PageProps) {
           className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#00ffd5] text-[#0a0a0f] font-semibold text-sm hover:bg-[#00e6c0] transition-colors"
         >
           Começar análise real
-          <ArrowRight size={14} />
+          <ArrowRight size={14} aria-hidden="true" />
         </Link>
         <p className="mt-4 text-[11px] text-[#6b7280]">
           Hugging Face oferece créditos gratuitos para começar sem custo.
@@ -240,9 +240,9 @@ function CollapsiblePanel({
           <p className="text-[11px] text-[#8b8fa3] truncate">{subtitle}</p>
         </div>
         {open ? (
-          <ChevronUp size={16} className="text-[#9ca3af] shrink-0" />
+          <ChevronUp size={16} className="text-[#9ca3af] shrink-0" aria-hidden="true" />
         ) : (
-          <ChevronDown size={16} className="text-[#9ca3af] shrink-0" />
+          <ChevronDown size={16} className="text-[#9ca3af] shrink-0" aria-hidden="true" />
         )}
       </button>
       {open && (

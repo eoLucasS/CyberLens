@@ -131,27 +131,27 @@ function ScoreSection({
 
         <div className="relative flex flex-col items-center gap-6">
           <div className="flex items-center gap-2 text-sm font-medium text-[#00ffd5]">
-            <Sparkles size={16} />
+            <Sparkles size={16} aria-hidden="true" />
             Pontuação de Aderência
           </div>
 
           <ScoreGauge score={score} size={160} />
 
           <p className="text-sm text-[#9ca3af]">
-            Classificação:{' '}
-            <span className="font-semibold text-[#e4e4e7]">{classification}</span>
+            Classificação: <span className="font-semibold text-[#e4e4e7]">{classification}</span>
           </p>
 
           {/* Quick stats row */}
           <div className="flex flex-wrap justify-center gap-4 sm:gap-6 pt-2">
             <div className="flex items-center gap-2 text-sm">
-              <CheckCircle size={14} className="text-[#00ff88]" />
+              <CheckCircle size={14} className="text-[#00ff88]" aria-hidden="true" />
               <span className="text-[#9ca3af]">
-                <span className="font-semibold text-[#e4e4e7]">{matchCount}</span> skills encontradas
+                <span className="font-semibold text-[#e4e4e7]">{matchCount}</span> skills
+                encontradas
               </span>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <AlertTriangle size={14} className="text-[#ffd32a]" />
+              <AlertTriangle size={14} className="text-[#ffd32a]" aria-hidden="true" />
               <span className="text-[#9ca3af]">
                 <span className="font-semibold text-[#e4e4e7]">{gapCount}</span> lacunas
               </span>
@@ -165,13 +165,7 @@ function ScoreSection({
 
 // ─── Executive Summary (rendered ABOVE the score) ────────────────────────────
 
-function ExecutiveSummarySection({
-  summary,
-  mounted,
-}: {
-  summary: string;
-  mounted: boolean;
-}) {
+function ExecutiveSummarySection({ summary, mounted }: { summary: string; mounted: boolean }) {
   return (
     <div
       style={{
@@ -184,17 +178,13 @@ function ExecutiveSummarySection({
         {/* Header row */}
         <div className="mb-3 flex items-center gap-2">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#00ffd5]/10 text-[#00ffd5]">
-            <TrendingUp size={16} />
+            <TrendingUp size={16} aria-hidden="true" />
           </div>
-          <h2 className="text-sm font-semibold text-[#e4e4e7]">
-            Resumo Executivo
-          </h2>
+          <h2 className="text-sm font-semibold text-[#e4e4e7]">Resumo Executivo</h2>
         </div>
 
         {/* Summary text */}
-        <p className="text-[14px] sm:text-[15px] leading-relaxed text-[#e4e4e7]">
-          {summary}
-        </p>
+        <p className="text-[14px] sm:text-[15px] leading-relaxed text-[#e4e4e7]">{summary}</p>
       </div>
     </div>
   );
@@ -214,7 +204,7 @@ function SkillCard({ skill }: { skill: MatchedSkill }) {
     >
       <div className="flex items-center gap-2.5">
         <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#00ff88]/10">
-          <CheckCircle size={13} className="text-[#00ff88]" />
+          <CheckCircle size={13} className="text-[#00ff88]" aria-hidden="true" />
         </div>
         <span className="text-sm font-medium text-[#e4e4e7] group-hover:text-white transition-colors">
           {skill.skill}
@@ -235,7 +225,7 @@ function MatchedSkillsSection({ skills, mounted }: { skills: MatchedSkill[]; mou
   return (
     <Section
       title="Skills Identificadas"
-      icon={<ShieldCheck size={18} />}
+      icon={<ShieldCheck size={18} aria-hidden="true" />}
       count={skills.length}
       delay={100}
       mounted={mounted}
@@ -259,17 +249,17 @@ const GAP_CONFIG: Record<
   { icon: React.ReactNode; badgeVariant: 'error' | 'warning' | 'default'; color: string }
 > = {
   Crítico: {
-    icon: <AlertTriangle size={14} />,
+    icon: <AlertTriangle size={14} aria-hidden="true" />,
     badgeVariant: 'error',
     color: '#ff4757',
   },
   Importante: {
-    icon: <AlertCircle size={14} />,
+    icon: <AlertCircle size={14} aria-hidden="true" />,
     badgeVariant: 'warning',
     color: '#ffd32a',
   },
   Desejável: {
-    icon: <Info size={14} />,
+    icon: <Info size={14} aria-hidden="true" />,
     badgeVariant: 'default',
     color: '#9ca3af',
   },
@@ -286,7 +276,7 @@ function GapsSection({ gaps, mounted }: { gaps: Gap[]; mounted: boolean }) {
   return (
     <Section
       title="Lacunas Identificadas"
-      icon={<AlertTriangle size={18} />}
+      icon={<AlertTriangle size={18} aria-hidden="true" />}
       count={gaps.length}
       delay={200}
       mounted={mounted}
@@ -328,28 +318,38 @@ function GapsSection({ gaps, mounted }: { gaps: Gap[]; mounted: boolean }) {
                           <summary className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-[#00ffd5] cursor-pointer hover:bg-white/[0.02] transition-colors list-none [&::-webkit-details-marker]:hidden select-none">
                             {gap.rewriteSuggestion.type === 'rewrite' ? (
                               <span className="flex items-center gap-1.5">
-                                <Pencil size={12} />
+                                <Pencil size={12} aria-hidden="true" />
                                 Sugestão de reescrita
                               </span>
                             ) : (
                               <span className="flex items-center gap-1.5">
-                                <BookOpen size={12} />
+                                <BookOpen size={12} aria-hidden="true" />
                                 Plano de ação
                               </span>
                             )}
-                            <ChevronDown size={12} className="ml-auto transition-transform group-open:rotate-180" />
+                            <ChevronDown
+                              size={12}
+                              className="ml-auto transition-transform group-open:rotate-180"
+                              aria-hidden="true"
+                            />
                           </summary>
                           <div className="border-t border-white/[0.06] bg-[#0d0d18] p-3 sm:p-4 overflow-hidden break-words">
                             {gap.rewriteSuggestion.type === 'rewrite' ? (
                               <div className="space-y-3">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                   <div className="rounded-lg border border-white/[0.06] bg-[#141420] p-3">
-                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#ff4757]/70 mb-2">Antes</p>
-                                    <p className="text-xs text-[#9ca3af] leading-relaxed">{gap.rewriteSuggestion.before}</p>
+                                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[#ff4757]/70 mb-2">
+                                      Antes
+                                    </p>
+                                    <p className="text-xs text-[#9ca3af] leading-relaxed">
+                                      {gap.rewriteSuggestion.before}
+                                    </p>
                                   </div>
                                   <div className="rounded-lg border border-[#00ffd5]/20 bg-[#141420] p-3">
                                     <div className="flex items-center justify-between gap-2 mb-2">
-                                      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/70">Sugerido</p>
+                                      <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/70">
+                                        Sugerido
+                                      </p>
                                       {gap.rewriteSuggestion.after && (
                                         <CopyButton
                                           text={gap.rewriteSuggestion.after}
@@ -357,31 +357,48 @@ function GapsSection({ gaps, mounted }: { gaps: Gap[]; mounted: boolean }) {
                                         />
                                       )}
                                     </div>
-                                    <p className="text-xs text-[#e4e4e7] leading-relaxed">{gap.rewriteSuggestion.after}</p>
+                                    <p className="text-xs text-[#e4e4e7] leading-relaxed">
+                                      {gap.rewriteSuggestion.after}
+                                    </p>
                                   </div>
                                 </div>
-                                {gap.rewriteSuggestion.keywords && gap.rewriteSuggestion.keywords.length > 0 && (
-                                  <div className="flex flex-wrap items-center gap-1.5">
-                                    <span className="text-[10px] text-[#8b8fa3]">Keywords incorporadas:</span>
-                                    {gap.rewriteSuggestion.keywords.map((kw, j) => (
-                                      <span key={j} className="rounded-md bg-[#00ffd5]/10 px-1.5 py-0.5 text-[10px] font-medium text-[#00ffd5]">{kw}</span>
-                                    ))}
-                                  </div>
-                                )}
+                                {gap.rewriteSuggestion.keywords &&
+                                  gap.rewriteSuggestion.keywords.length > 0 && (
+                                    <div className="flex flex-wrap items-center gap-1.5">
+                                      <span className="text-[10px] text-[#8b8fa3]">
+                                        Keywords incorporadas:
+                                      </span>
+                                      {gap.rewriteSuggestion.keywords.map((kw, j) => (
+                                        <span
+                                          key={j}
+                                          className="rounded-md bg-[#00ffd5]/10 px-1.5 py-0.5 text-[10px] font-medium text-[#00ffd5]"
+                                        >
+                                          {kw}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  )}
                                 <p className="text-[10px] text-[#8b8fa3] leading-relaxed">
-                                  Esta sugestão reformula o texto existente. Não adiciona experiências fictícias.
+                                  Esta sugestão reformula o texto existente. Não adiciona
+                                  experiências fictícias.
                                 </p>
                               </div>
                             ) : (
                               <div className="space-y-3">
                                 {gap.rewriteSuggestion.resource && (
                                   <div className="flex items-start gap-2">
-                                    <BookOpen size={13} className="shrink-0 text-[#00ffd5] mt-0.5" />
+                                    <BookOpen
+                                      size={13}
+                                      className="shrink-0 text-[#00ffd5] mt-0.5"
+                                      aria-hidden="true"
+                                    />
                                     <div>
-                                      <p className="text-xs font-medium text-[#e4e4e7]">{gap.rewriteSuggestion.resource}</p>
+                                      <p className="text-xs font-medium text-[#e4e4e7]">
+                                        {gap.rewriteSuggestion.resource}
+                                      </p>
                                       {gap.rewriteSuggestion.estimatedTime && (
                                         <p className="text-[11px] text-[#8b8fa3] flex items-center gap-1 mt-0.5">
-                                          <Clock size={10} />
+                                          <Clock size={10} aria-hidden="true" />
                                           Tempo estimado: {gap.rewriteSuggestion.estimatedTime}
                                         </p>
                                       )}
@@ -392,14 +409,17 @@ function GapsSection({ gaps, mounted }: { gaps: Gap[]; mounted: boolean }) {
                                   <div className="rounded-lg border border-[#00ffd5]/20 bg-[#141420] p-3">
                                     <div className="flex items-start justify-between gap-2 mb-2">
                                       <p className="text-[10px] font-semibold uppercase tracking-widest text-[#00ffd5]/60 flex-1">
-                                        Após completar este estudo, considere adicionar ao currículo:
+                                        Após completar este estudo, considere adicionar ao
+                                        currículo:
                                       </p>
                                       <CopyButton
                                         text={gap.rewriteSuggestion.suggestedText}
                                         ariaLabel={`Copiar texto sugerido para ${gap.skill}`}
                                       />
                                     </div>
-                                    <p className="text-xs text-[#e4e4e7] leading-relaxed italic">&quot;{gap.rewriteSuggestion.suggestedText}&quot;</p>
+                                    <p className="text-xs text-[#e4e4e7] leading-relaxed italic">
+                                      &quot;{gap.rewriteSuggestion.suggestedText}&quot;
+                                    </p>
                                   </div>
                                 )}
                               </div>
@@ -433,7 +453,7 @@ function MissingKeywordsSection({
   return (
     <Section
       title="Palavras-chave Ausentes"
-      icon={<Tag size={18} />}
+      icon={<Tag size={18} aria-hidden="true" />}
       count={keywords.length}
       delay={300}
       mounted={mounted}
@@ -444,7 +464,7 @@ function MissingKeywordsSection({
             key={`kwbadge-${i}`}
             className="inline-flex items-center gap-1.5 rounded-lg border border-[#7c3aed]/20 bg-[#7c3aed]/5 px-3 py-1.5 text-xs font-medium text-[#a78bfa]"
           >
-            <Tag size={11} className="shrink-0" />
+            <Tag size={11} className="shrink-0" aria-hidden="true" />
             {kw.keyword}
           </span>
         ))}
@@ -456,7 +476,7 @@ function MissingKeywordsSection({
               key={`kwsug-${i}`}
               className="flex items-start gap-3 rounded-xl bg-[#0d1117]/60 px-4 py-2.5"
             >
-              <TrendingUp size={13} className="shrink-0 text-[#7c3aed] mt-0.5" />
+              <TrendingUp size={13} className="shrink-0 text-[#7c3aed] mt-0.5" aria-hidden="true" />
               <p className="text-xs text-[#9ca3af] leading-relaxed">
                 <span className="font-medium text-[#e4e4e7]">{kw.keyword}:</span> {kw.suggestion}
               </p>
@@ -480,7 +500,12 @@ function ExperienceSection({
   const { required, found, gap, certifications } = experience;
 
   return (
-    <Section title="Análise de Experiência" icon={<Award size={18} />} delay={400} mounted={mounted}>
+    <Section
+      title="Análise de Experiência"
+      icon={<Award size={18} aria-hidden="true" />}
+      delay={400}
+      mounted={mounted}
+    >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
         <div className="rounded-xl border border-white/[0.04] bg-[#0d1117]/80 p-3 sm:p-4">
           <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.15em] text-[#ff4757]">
@@ -507,7 +532,7 @@ function ExperienceSection({
 
       <div>
         <p className="flex items-center gap-2 mb-3 text-[10px] font-bold uppercase tracking-[0.15em] text-[#9ca3af]">
-          <Award size={12} />
+          <Award size={12} aria-hidden="true" />
           Certificações
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -516,12 +541,17 @@ function ExperienceSection({
             { label: 'Encontradas', items: certifications.found, variant: 'success' as const },
             { label: 'Faltando', items: certifications.missing, variant: 'error' as const },
           ].map(({ label, items, variant }) => (
-            <div key={label} className="rounded-xl border border-white/[0.04] bg-[#0d1117]/80 p-2.5 sm:p-3">
+            <div
+              key={label}
+              className="rounded-xl border border-white/[0.04] bg-[#0d1117]/80 p-2.5 sm:p-3"
+            >
               <p className="text-xs font-medium text-[#9ca3af] mb-2">{label}</p>
               {items.length > 0 ? (
                 <div className="flex flex-wrap gap-1">
                   {items.map((c, i) => (
-                    <Badge key={i} variant={variant}>{c}</Badge>
+                    <Badge key={i} variant={variant}>
+                      {c}
+                    </Badge>
                   ))}
                 </div>
               ) : (
@@ -537,7 +567,10 @@ function ExperienceSection({
 
 // ─── Section 6: Study Plan ────────────────────────────────────────────────────
 
-const RESOURCE_TYPE_VARIANT: Record<StudyPlanItem['resourceType'], 'info' | 'warning' | 'success' | 'default'> = {
+const RESOURCE_TYPE_VARIANT: Record<
+  StudyPlanItem['resourceType'],
+  'info' | 'warning' | 'success' | 'default'
+> = {
   Curso: 'info',
   Certificação: 'warning',
   'Projeto Prático': 'success',
@@ -557,12 +590,17 @@ function StudyPlanSection({ plan, mounted }: { plan: StudyPlanItem[]; mounted: b
   const sorted = [...plan].sort((a, b) => a.order - b.order);
 
   return (
-    <Section title="Plano de Estudos" icon={<BookOpen size={18} />} delay={500} mounted={mounted}>
+    <Section
+      title="Plano de Estudos"
+      icon={<BookOpen size={18} aria-hidden="true" />}
+      delay={500}
+      mounted={mounted}
+    >
       <div className="mb-4 rounded-lg border border-white/[0.04] bg-[#0d0d18] px-3 py-2">
         <p className="text-[11px] text-[#8b8fa3] leading-relaxed">
-          Os links abaixo abrem a página de busca da plataforma quando a URL específica
-          do curso pode estar desatualizada. Se algum link direto não funcionar,
-          procure pelo nome do recurso na própria plataforma.
+          Os links abaixo abrem a página de busca da plataforma quando a URL específica do curso
+          pode estar desatualizada. Se algum link direto não funcionar, procure pelo nome do recurso
+          na própria plataforma.
         </p>
       </div>
       <div className="relative">
@@ -583,16 +621,14 @@ function StudyPlanSection({ plan, mounted }: { plan: StudyPlanItem[]; mounted: b
                     <Badge variant={RESOURCE_TYPE_VARIANT[item.resourceType]}>
                       {item.resourceType}
                     </Badge>
-                    <Badge variant={PRIORITY_VARIANT[item.priority]}>
-                      {item.priority}
-                    </Badge>
+                    <Badge variant={PRIORITY_VARIANT[item.priority]}>{item.priority}</Badge>
                   </div>
                 </div>
 
                 <p className="text-xs text-[#9ca3af] leading-relaxed mb-3">{item.description}</p>
 
                 <div className="flex items-center gap-1.5 mb-3 text-xs text-[#8b8fa3]">
-                  <Clock size={12} />
+                  <Clock size={12} aria-hidden="true" />
                   <span>{item.estimatedTime}</span>
                 </div>
 
@@ -622,7 +658,7 @@ function StudyPlanSection({ plan, mounted }: { plan: StudyPlanItem[]; mounted: b
                           <span className="text-[#8b8fa3] text-[10px]">
                             ({safe.isSearchFallback ? resource.name : resource.platform})
                           </span>
-                          <ExternalLink size={10} className="opacity-50" />
+                          <ExternalLink size={10} className="opacity-50" aria-hidden="true" />
                         </a>
                       );
                     })}

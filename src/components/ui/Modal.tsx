@@ -126,10 +126,7 @@ export function Modal({
         {(title || showCloseButton) && (
           <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-white/10">
             {title && (
-              <h2
-                id="modal-title"
-                className="text-base font-semibold text-[#f4f4f5]"
-              >
+              <h2 id="modal-title" className="text-base font-semibold text-[#f4f4f5]">
                 {title}
               </h2>
             )}
@@ -146,7 +143,7 @@ export function Modal({
                   preventClose && 'opacity-40 cursor-not-allowed',
                 ].join(' ')}
               >
-                <X size={16} />
+                <X size={16} aria-hidden="true" />
               </button>
             )}
           </div>

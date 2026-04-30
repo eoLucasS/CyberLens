@@ -1,7 +1,23 @@
 // About page: static Server Component, zero client-side JavaScript.
 
 import Link from 'next/link';
-import { Shield, ExternalLink, Code, ChevronDown, Upload, Search, BarChart3, BookOpen, Lock, Eye, Database, Zap, Pencil, TrendingUp, History } from 'lucide-react';
+import {
+  Shield,
+  ExternalLink,
+  Code,
+  ChevronDown,
+  Upload,
+  Search,
+  BarChart3,
+  BookOpen,
+  Lock,
+  Eye,
+  Database,
+  Zap,
+  Pencil,
+  TrendingUp,
+  History,
+} from 'lucide-react';
 
 export const metadata = {
   title: 'Sobre o CyberLens',
@@ -14,7 +30,11 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
     <details className="group rounded-xl border border-white/[0.06] bg-[#141420]">
       <summary className="flex items-center justify-between cursor-pointer px-4 py-3.5 sm:px-5 sm:py-4 text-[13px] sm:text-sm font-medium text-[#e4e4e7] hover:text-white transition-colors list-none [&::-webkit-details-marker]:hidden min-h-[44px]">
         {question}
-        <ChevronDown size={16} className="shrink-0 ml-3 text-[#9ca3af] transition-transform duration-200 group-open:rotate-180" />
+        <ChevronDown
+          size={16}
+          className="shrink-0 ml-3 text-[#9ca3af] transition-transform duration-200 group-open:rotate-180"
+          aria-hidden="true"
+        />
       </summary>
       <div className="px-4 pb-3.5 sm:px-5 sm:pb-4 text-[13px] text-[#9ca3af] leading-relaxed border-t border-white/[0.04] pt-3">
         {answer}
@@ -23,7 +43,17 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   );
 }
 
-function StepCard({ number, icon, title, description }: { number: string; icon: React.ReactNode; title: string; description: string }) {
+function StepCard({
+  number,
+  icon,
+  title,
+  description,
+}: {
+  number: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
   return (
     <div className="flex gap-4">
       <div className="flex flex-col items-center">
@@ -33,7 +63,9 @@ function StepCard({ number, icon, title, description }: { number: string; icon: 
         <div className="mt-2 w-px flex-1 bg-[#00ffd5]/10" />
       </div>
       <div className="pb-8">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[#00ffd5] mb-1">Passo {number}</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#00ffd5] mb-1">
+          Passo {number}
+        </p>
         <h3 className="text-sm font-semibold text-[#e4e4e7] mb-1.5">{title}</h3>
         <p className="text-[13px] text-[#9ca3af] leading-relaxed">{description}</p>
       </div>
@@ -54,26 +86,23 @@ export default function SobrePage() {
   return (
     <div className="min-h-screen py-8 sm:py-12 px-4">
       <div className="max-w-3xl mx-auto">
-
         {/* Hero */}
         <div className="mb-10 sm:mb-14 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00ffd5]/10 text-[#00ffd5] text-xs font-medium mb-4">
-            <Shield size={14} />
+            <Shield size={14} aria-hidden="true" />
             Gratuito e open source
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
             Descubra o quanto seu currículo
-            <br className="hidden sm:block" />
-            {' '}combina com a vaga dos seus sonhos
+            <br className="hidden sm:block" /> combina com a vaga dos seus sonhos
           </h1>
           <p className="mt-3 text-sm sm:text-[15px] text-[#9ca3af] max-w-xl mx-auto leading-relaxed">
-            O CyberLens lê seu currículo, compara com a descrição da vaga e te mostra
-            exatamente o que está bom, o que falta, e como se preparar.
+            O CyberLens lê seu currículo, compara com a descrição da vaga e te mostra exatamente o
+            que está bom, o que falta, e como se preparar.
           </p>
         </div>
 
         <div className="space-y-10 sm:space-y-14">
-
           {/* Numbers */}
           <section>
             <div className="grid grid-cols-3 gap-2 sm:gap-3">
@@ -85,7 +114,9 @@ export default function SobrePage() {
 
           {/* What it does (user-focused) */}
           <section>
-            <h2 className="text-lg font-semibold text-[#e4e4e7] mb-3">O que o CyberLens faz por você</h2>
+            <h2 className="text-lg font-semibold text-[#e4e4e7] mb-3">
+              O que o CyberLens faz por você
+            </h2>
             <div className="text-sm text-[#9ca3af] leading-relaxed space-y-3">
               <p>
                 Você já ficou sem resposta depois de se candidatar a uma vaga? Sem saber se seu
@@ -98,42 +129,82 @@ export default function SobrePage() {
               </p>
               <ul className="space-y-2 ml-1">
                 <li className="flex items-start gap-2">
-                  <TrendingUp size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Resumo executivo</strong> no topo, com diagnóstico, gap principal e próxima ação em 3 frases</span>
+                  <TrendingUp
+                    size={16}
+                    className="shrink-0 text-[#00ffd5] mt-0.5"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Resumo executivo</strong> no topo, com
+                    diagnóstico, gap principal e próxima ação em 3 frases
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <BarChart3 size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Nota de compatibilidade</strong> de 0 a 100%, com classificação visual</span>
+                  <BarChart3
+                    size={16}
+                    className="shrink-0 text-[#00ffd5] mt-0.5"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Nota de compatibilidade</strong> de 0 a 100%,
+                    com classificação visual
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Search size={16} className="shrink-0 text-[#00ff88] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Habilidades encontradas</strong> no seu currículo que combinam com a vaga</span>
+                  <Search size={16} className="shrink-0 text-[#00ff88] mt-0.5" aria-hidden="true" />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Habilidades encontradas</strong> no seu
+                    currículo que combinam com a vaga
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Zap size={16} className="shrink-0 text-[#ffd32a] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Lacunas identificadas</strong>, classificadas por importância (crítica, importante, desejável)</span>
+                  <Zap size={16} className="shrink-0 text-[#ffd32a] mt-0.5" aria-hidden="true" />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Lacunas identificadas</strong>, classificadas
+                    por importância (crítica, importante, desejável)
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <BookOpen size={16} className="shrink-0 text-[#a855f7] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Plano de estudos personalizado</strong> com cursos, certificações e recursos reais</span>
+                  <BookOpen
+                    size={16}
+                    className="shrink-0 text-[#a855f7] mt-0.5"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Plano de estudos personalizado</strong> com
+                    cursos, certificações e recursos reais
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Zap size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Raio-X instantâneo</strong> que mostra em 2 segundos quais palavras-chave da vaga estão no seu currículo, grátis e sem IA</span>
+                  <Zap size={16} className="shrink-0 text-[#00ffd5] mt-0.5" aria-hidden="true" />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Raio-X instantâneo</strong> que mostra em 2
+                    segundos quais palavras-chave da vaga estão no seu currículo, grátis e sem IA
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Pencil size={16} className="shrink-0 text-[#7c3aed] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Sugestões de reescrita</strong> para cada lacuna, mostrando como reformular trechos do seu currículo</span>
+                  <Pencil size={16} className="shrink-0 text-[#7c3aed] mt-0.5" aria-hidden="true" />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Sugestões de reescrita</strong> para cada
+                    lacuna, mostrando como reformular trechos do seu currículo
+                  </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <History size={16} className="shrink-0 text-[#00ffd5] mt-0.5" />
-                  <span><strong className="text-[#e4e4e7]">Histórico opcional</strong> com até 10 análises salvas localmente, ativável por toggle nas Configurações</span>
+                  <History
+                    size={16}
+                    className="shrink-0 text-[#00ffd5] mt-0.5"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    <strong className="text-[#e4e4e7]">Histórico opcional</strong> com até 10
+                    análises salvas localmente, ativável por toggle nas Configurações
+                  </span>
                 </li>
               </ul>
               <p>
-                Funciona para <strong className="text-[#e4e4e7]">qualquer área</strong>: TI,
-                dados, cibersegurança, DevOps, suporte, gestão, desenvolvimento, ou qualquer
-                outra. Você escolhe a vaga, o CyberLens se adapta.
+                Funciona para <strong className="text-[#e4e4e7]">qualquer área</strong>: TI, dados,
+                cibersegurança, DevOps, suporte, gestão, desenvolvimento, ou qualquer outra. Você
+                escolhe a vaga, o CyberLens se adapta.
               </p>
             </div>
           </section>
@@ -144,32 +215,39 @@ export default function SobrePage() {
             <div>
               <StepCard
                 number="1"
-                icon={<Upload size={18} />}
+                icon={<Upload size={18} aria-hidden="true" />}
                 title="Envie seu currículo"
                 description="Faça upload do PDF. O texto é extraído direto no seu navegador, sem enviar para nenhum servidor. Se for um PDF escaneado (imagem), o sistema detecta automaticamente e oferece leitura por reconhecimento de caracteres."
               />
               <StepCard
                 number="2"
-                icon={<Search size={18} />}
+                icon={<Search size={18} aria-hidden="true" />}
                 title="Cole a descrição da vaga"
                 description="Copie e cole o texto da vaga que você quer se candidatar. Pode ser de qualquer site (LinkedIn, Gupy, Catho, Indeed, Glassdoor, ou direto da empresa)."
               />
               <StepCard
                 number="3"
-                icon={<Zap size={18} />}
+                icon={<Zap size={18} aria-hidden="true" />}
                 title="O CyberLens analisa"
                 description="Antes de consultar a IA, o sistema analisa instantaneamente as palavras-chave da vaga e mostra um raio-X de compatibilidade. Depois, envia tudo organizado para a inteligência artificial."
               />
               <div className="flex gap-4">
                 <div className="flex flex-col items-center">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#00ffd5]/10 border border-[#00ffd5]/20 text-[#00ffd5]">
-                    <BarChart3 size={18} />
+                    <BarChart3 size={18} aria-hidden="true" />
                   </div>
                 </div>
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#00ffd5] mb-1">Passo 4</p>
-                  <h3 className="text-sm font-semibold text-[#e4e4e7] mb-1.5">Receba seu diagnóstico</h3>
-                  <p className="text-[13px] text-[#9ca3af] leading-relaxed">Visualize sua nota, habilidades encontradas, gaps, palavras-chave ausentes, análise de experiência e um plano de estudos completo. Tudo exportável em PDF.</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-[#00ffd5] mb-1">
+                    Passo 4
+                  </p>
+                  <h3 className="text-sm font-semibold text-[#e4e4e7] mb-1.5">
+                    Receba seu diagnóstico
+                  </h3>
+                  <p className="text-[13px] text-[#9ca3af] leading-relaxed">
+                    Visualize sua nota, habilidades encontradas, gaps, palavras-chave ausentes,
+                    análise de experiência e um plano de estudos completo. Tudo exportável em PDF.
+                  </p>
                 </div>
               </div>
             </div>
@@ -180,19 +258,25 @@ export default function SobrePage() {
             <h2 className="text-lg font-semibold text-[#e4e4e7] mb-4">Seus dados, suas regras</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
               <div className="rounded-xl border border-white/[0.06] bg-[#141420] p-4 text-center">
-                <Lock size={20} className="mx-auto text-[#00ffd5] mb-2" />
+                <Lock size={20} className="mx-auto text-[#00ffd5] mb-2" aria-hidden="true" />
                 <p className="text-xs font-semibold text-[#e4e4e7] mb-1">Sem servidores</p>
-                <p className="text-[11px] text-[#9ca3af] leading-relaxed">Seu currículo é processado no seu navegador. Não passa por nenhum servidor nosso.</p>
+                <p className="text-[11px] text-[#9ca3af] leading-relaxed">
+                  Seu currículo é processado no seu navegador. Não passa por nenhum servidor nosso.
+                </p>
               </div>
               <div className="rounded-xl border border-white/[0.06] bg-[#141420] p-4 text-center">
-                <Eye size={20} className="mx-auto text-[#00ffd5] mb-2" />
+                <Eye size={20} className="mx-auto text-[#00ffd5] mb-2" aria-hidden="true" />
                 <p className="text-xs font-semibold text-[#e4e4e7] mb-1">Você no controle</p>
-                <p className="text-[11px] text-[#9ca3af] leading-relaxed">Você escolhe qual IA usar e sua chave de API fica salva só no seu navegador.</p>
+                <p className="text-[11px] text-[#9ca3af] leading-relaxed">
+                  Você escolhe qual IA usar e sua chave de API fica salva só no seu navegador.
+                </p>
               </div>
               <div className="rounded-xl border border-white/[0.06] bg-[#141420] p-4 text-center">
-                <Database size={20} className="mx-auto text-[#00ffd5] mb-2" />
+                <Database size={20} className="mx-auto text-[#00ffd5] mb-2" aria-hidden="true" />
                 <p className="text-xs font-semibold text-[#e4e4e7] mb-1">Zero rastreamento</p>
-                <p className="text-[11px] text-[#9ca3af] leading-relaxed">Sem cookies, sem analytics, sem coleta de dados. O CyberLens não sabe quem você é.</p>
+                <p className="text-[11px] text-[#9ca3af] leading-relaxed">
+                  Sem cookies, sem analytics, sem coleta de dados. O CyberLens não sabe quem você é.
+                </p>
               </div>
             </div>
           </section>
@@ -260,16 +344,19 @@ export default function SobrePage() {
           <section className="rounded-xl border border-white/[0.06] bg-[#141420] p-5 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold text-[#e4e4e7]">Quer saber como funciona por dentro?</p>
+                <p className="text-sm font-semibold text-[#e4e4e7]">
+                  Quer saber como funciona por dentro?
+                </p>
                 <p className="text-xs text-[#9ca3af] mt-1">
-                  Veja a documentação técnica com o pipeline completo, tecnologias e guia para desenvolvedores.
+                  Veja a documentação técnica com o pipeline completo, tecnologias e guia para
+                  desenvolvedores.
                 </p>
               </div>
               <Link
                 href="/documentacao"
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#00ffd5]/10 border border-[#00ffd5]/20 text-sm font-medium text-[#00ffd5] hover:bg-[#00ffd5]/15 transition-colors shrink-0"
               >
-                <Code size={16} />
+                <Code size={16} aria-hidden="true" />
                 Documentação
               </Link>
             </div>
@@ -283,9 +370,9 @@ export default function SobrePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-[#141420] border border-white/[0.06] text-[#e4e4e7] font-medium text-sm hover:border-[#00ffd5]/20 hover:text-white transition-all duration-200"
             >
-              <Code size={18} />
+              <Code size={18} aria-hidden="true" />
               Ver código no GitHub
-              <ExternalLink size={14} className="text-[#9ca3af]" />
+              <ExternalLink size={14} className="text-[#9ca3af]" aria-hidden="true" />
             </a>
             <p className="text-xs text-[#9ca3af]">
               Licença MIT. Código aberto, livre para usar e contribuir.
@@ -294,9 +381,7 @@ export default function SobrePage() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-white/[0.06] text-center">
-          <p className="text-xs text-[#9ca3af]">
-            CyberLens. Código aberto sob Licença MIT.
-          </p>
+          <p className="text-xs text-[#9ca3af]">CyberLens. Código aberto sob Licença MIT.</p>
         </div>
       </div>
     </div>

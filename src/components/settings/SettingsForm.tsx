@@ -62,8 +62,10 @@ function Btn({
 
   const styles: Record<string, string> = {
     primary: 'bg-[#00ffd5] text-[#0a0a0f] hover:bg-[#00e6c0] active:scale-[0.98]',
-    secondary: 'bg-[#1e1e2e] text-[#e4e4e7] border border-[#2e2e3e] hover:bg-[#262638] hover:border-[#3e3e4e] active:scale-[0.98]',
-    danger: 'bg-[#1e1e2e] text-[#ff6b7a] border border-[#ff4757]/20 hover:bg-[#ff4757]/10 hover:border-[#ff4757]/30 active:scale-[0.98]',
+    secondary:
+      'bg-[#1e1e2e] text-[#e4e4e7] border border-[#2e2e3e] hover:bg-[#262638] hover:border-[#3e3e4e] active:scale-[0.98]',
+    danger:
+      'bg-[#1e1e2e] text-[#ff6b7a] border border-[#ff4757]/20 hover:bg-[#ff4757]/10 hover:border-[#ff4757]/30 active:scale-[0.98]',
     ghost: 'text-[#9ca3af] hover:text-[#e4e4e7] hover:bg-white/5',
   };
 
@@ -74,7 +76,7 @@ function Btn({
       disabled={disabled || loading}
       className={`${base} ${styles[variant]} ${className}`}
     >
-      {loading && <Loader2 size={14} className="animate-spin" />}
+      {loading && <Loader2 size={14} className="animate-spin" aria-hidden="true" />}
       {children}
     </button>
   );
@@ -120,21 +122,19 @@ function ModelCard({
       {/* Radio indicator */}
       <div
         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
-          selected ? 'border-[#00ffd5] bg-[#00ffd5]' : 'border-[#3a3a4a] group-hover:border-[#5a5a6a]'
+          selected
+            ? 'border-[#00ffd5] bg-[#00ffd5]'
+            : 'border-[#3a3a4a] group-hover:border-[#5a5a6a]'
         }`}
       >
-        {selected && (
-          <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0f]" />
-        )}
+        {selected && <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0f]" />}
       </div>
 
       <div className="flex-1 min-w-0">
         <p className={`text-sm font-semibold ${selected ? 'text-white' : 'text-[#e4e4e7]'}`}>
           {model.name}
         </p>
-        <p className="text-xs text-[#8b8fa3] mt-0.5 leading-relaxed">
-          {model.description}
-        </p>
+        <p className="text-xs text-[#8b8fa3] mt-0.5 leading-relaxed">{model.description}</p>
       </div>
     </button>
   );
@@ -164,12 +164,12 @@ function ProviderCard({
       {/* Radio indicator */}
       <div
         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
-          selected ? 'border-[#00ffd5] bg-[#00ffd5]' : 'border-[#3a3a4a] group-hover:border-[#5a5a6a]'
+          selected
+            ? 'border-[#00ffd5] bg-[#00ffd5]'
+            : 'border-[#3a3a4a] group-hover:border-[#5a5a6a]'
         }`}
       >
-        {selected && (
-          <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0f]" />
-        )}
+        {selected && <div className="h-1.5 w-1.5 rounded-full bg-[#0a0a0f]" />}
       </div>
 
       <div className="flex-1 min-w-0">
@@ -193,7 +193,10 @@ function ProviderCard({
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function SettingsForm() {
-  const [settings, setSettings] = useLocalStorage<UserSettings>(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
+  const [settings, setSettings] = useLocalStorage<UserSettings>(
+    STORAGE_KEYS.SETTINGS,
+    DEFAULT_SETTINGS,
+  );
   const [apiKeyInput, setApiKeyInput] = useState<string>(settings.apiKey);
   const [showKey, setShowKey] = useState(false);
   const [keyError, setKeyError] = useState('');
@@ -201,7 +204,11 @@ export function SettingsForm() {
   const [testMessage, setTestMessage] = useState('');
   const [testLoading, setTestLoading] = useState(false);
   const [confirmClear, setConfirmClear] = useState(false);
-  const [toast, setToast] = useState<ToastState>({ visible: false, message: '', variant: 'success' });
+  const [toast, setToast] = useState<ToastState>({
+    visible: false,
+    message: '',
+    variant: 'success',
+  });
 
   // History toggle state
   const [historyCount, setHistoryCount] = useState<number>(0);
@@ -215,15 +222,24 @@ export function SettingsForm() {
   }, []);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const selectedProvider = AI_PROVIDERS.find((p) => p.name === settings.provider) ?? DEFAULT_PROVIDER;
+  const selectedProvider =
+    AI_PROVIDERS.find((p) => p.name === settings.provider) ?? DEFAULT_PROVIDER;
 
   function showToast(message: string, variant: 'success' | 'error') {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     setToast({ visible: true, message, variant });
-    toastTimerRef.current = setTimeout(() => setToast((prev) => ({ ...prev, visible: false })), 3000);
+    toastTimerRef.current = setTimeout(
+      () => setToast((prev) => ({ ...prev, visible: false })),
+      3000,
+    );
   }
 
-  useEffect(() => () => { if (toastTimerRef.current) clearTimeout(toastTimerRef.current); }, []);
+  useEffect(
+    () => () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    },
+    [],
+  );
 
   function handleProviderChange(name: AIProviderName) {
     const p = AI_PROVIDERS.find((x) => x.name === name) ?? DEFAULT_PROVIDER;
@@ -235,7 +251,10 @@ export function SettingsForm() {
 
   function handleSaveKey() {
     const v = validateApiKey(apiKeyInput, selectedProvider.label);
-    if (!v.valid) { setKeyError(v.error ?? 'Chave inválida.'); return; }
+    if (!v.valid) {
+      setKeyError(v.error ?? 'Chave inválida.');
+      return;
+    }
     setKeyError('');
     setSettings((prev) => ({ ...prev, apiKey: apiKeyInput.trim() }));
     showToast('Chave de API salva com sucesso.', 'success');
@@ -244,7 +263,12 @@ export function SettingsForm() {
   async function handleTestConnection() {
     const key = apiKeyInput.trim();
     const v = validateApiKey(key, selectedProvider.label);
-    if (!v.valid) { setKeyError(v.error ?? 'Chave inválida.'); setTestStatus('error'); setTestMessage('Corrija a chave antes de testar.'); return; }
+    if (!v.valid) {
+      setKeyError(v.error ?? 'Chave inválida.');
+      setTestStatus('error');
+      setTestMessage('Corrija a chave antes de testar.');
+      return;
+    }
     setKeyError('');
     setTestStatus('idle');
     setTestMessage('');
@@ -309,7 +333,6 @@ export function SettingsForm() {
 
   return (
     <div className="flex flex-col gap-5">
-
       {/* ── 1. Provider ────────────────────────────────────────────────────── */}
       <SettingsCard>
         <div className="flex items-center justify-between mb-5">
@@ -319,7 +342,7 @@ export function SettingsForm() {
               Selecione o serviço que processará suas análises.
             </p>
           </div>
-          <Radio size={18} className="text-[#00ffd5] shrink-0" />
+          <Radio size={18} className="text-[#00ffd5] shrink-0" aria-hidden="true" />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -359,7 +382,7 @@ export function SettingsForm() {
               Sua chave fica apenas no navegador, nunca sai do seu dispositivo.
             </p>
           </div>
-          <ShieldCheck size={18} className="text-[#00ff88] shrink-0" />
+          <ShieldCheck size={18} className="text-[#00ff88] shrink-0" aria-hidden="true" />
         </div>
 
         {/* Input */}
@@ -371,7 +394,10 @@ export function SettingsForm() {
             onChange={(e) => {
               setApiKeyInput(e.target.value);
               if (keyError) setKeyError('');
-              if (testStatus !== 'idle') { setTestStatus('idle'); setTestMessage(''); }
+              if (testStatus !== 'idle') {
+                setTestStatus('idle');
+                setTestMessage('');
+              }
             }}
             placeholder={selectedProvider.apiKeyPlaceholder}
             autoComplete="off"
@@ -388,13 +414,17 @@ export function SettingsForm() {
             aria-label={showKey ? 'Ocultar' : 'Mostrar'}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8b8fa3] hover:text-[#e4e4e7] transition-colors"
           >
-            {showKey ? <EyeOff size={15} /> : <Eye size={15} />}
+            {showKey ? (
+              <EyeOff size={15} aria-hidden="true" />
+            ) : (
+              <Eye size={15} aria-hidden="true" />
+            )}
           </button>
         </div>
 
         {keyError && (
           <div className="mb-3 flex items-center gap-2 text-xs text-[#ff4757]" role="alert">
-            <AlertCircle size={13} className="shrink-0" />
+            <AlertCircle size={13} className="shrink-0" aria-hidden="true" />
             {keyError}
           </div>
         )}
@@ -402,8 +432,9 @@ export function SettingsForm() {
         {/* Saved state */}
         {settings.apiKey && !keyError && (
           <div className="mb-3 flex items-center gap-2 text-xs text-[#00ff88]">
-            <CheckCircle size={13} className="shrink-0" />
-            Chave ativa: <span className="font-mono font-semibold">...{settings.apiKey.slice(-4)}</span>
+            <CheckCircle size={13} className="shrink-0" aria-hidden="true" />
+            Chave ativa:{' '}
+            <span className="font-mono font-semibold">...{settings.apiKey.slice(-4)}</span>
           </div>
         )}
 
@@ -416,16 +447,30 @@ export function SettingsForm() {
                 : 'bg-[#ff4757]/[0.03] border-[#ff4757]/15 text-[#ff4757]'
             }`}
           >
-            {testStatus === 'success' ? <CheckCircle size={14} className="mt-px shrink-0" /> : <XCircle size={14} className="mt-px shrink-0" />}
+            {testStatus === 'success' ? (
+              <CheckCircle size={14} className="mt-px shrink-0" aria-hidden="true" />
+            ) : (
+              <XCircle size={14} className="mt-px shrink-0" aria-hidden="true" />
+            )}
             {testMessage}
           </div>
         )}
 
         {/* Button row */}
         <div className="flex flex-wrap gap-2">
-          <Btn variant="primary" onClick={handleSaveKey}>Salvar</Btn>
-          <Btn variant="secondary" onClick={handleTestConnection} loading={testLoading}>Testar Conexão</Btn>
-          <Btn variant="danger" onClick={handleRemoveKey} disabled={!settings.apiKey && !apiKeyInput}>Remover</Btn>
+          <Btn variant="primary" onClick={handleSaveKey}>
+            Salvar
+          </Btn>
+          <Btn variant="secondary" onClick={handleTestConnection} loading={testLoading}>
+            Testar Conexão
+          </Btn>
+          <Btn
+            variant="danger"
+            onClick={handleRemoveKey}
+            disabled={!settings.apiKey && !apiKeyInput}
+          >
+            Remover
+          </Btn>
         </div>
 
         {/* Get key link */}
@@ -436,7 +481,7 @@ export function SettingsForm() {
           className="mt-4 inline-flex items-center gap-1.5 text-xs text-[#9ca3af] hover:text-[#00ffd5] transition-colors"
         >
           Não tem uma chave? Obtenha em {selectedProvider.label}
-          <ExternalLink size={11} />
+          <ExternalLink size={11} aria-hidden="true" />
         </a>
       </SettingsCard>
 
@@ -454,13 +499,13 @@ export function SettingsForm() {
         <div className="flex items-start justify-between gap-4 mb-1">
           <div className="flex-1 min-w-0">
             <h2 className="text-[15px] font-semibold text-white flex items-center gap-2">
-              <History size={16} className="text-[#00ffd5] shrink-0" />
+              <History size={16} className="text-[#00ffd5] shrink-0" aria-hidden="true" />
               Histórico de análises
             </h2>
             <p className="text-xs text-[#8b8fa3] mt-1 leading-relaxed">
-              Quando ativado, suas análises são salvas localmente no seu navegador (até 10,
-              FIFO). Nenhum dado é enviado a servidores. Você pode desativar ou apagar o
-              histórico a qualquer momento.
+              Quando ativado, suas análises são salvas localmente no seu navegador (até 10, FIFO).
+              Nenhum dado é enviado a servidores. Você pode desativar ou apagar o histórico a
+              qualquer momento.
             </p>
           </div>
 
@@ -496,7 +541,7 @@ export function SettingsForm() {
                 className="inline-flex items-center gap-1 text-[11px] text-[#00ffd5] hover:text-[#00ffd5]/80 transition-colors"
               >
                 Ver histórico
-                <ArrowRight size={10} />
+                <ArrowRight size={10} aria-hidden="true" />
               </Link>
             )}
           </div>
@@ -532,12 +577,18 @@ export function SettingsForm() {
         </p>
 
         {!confirmClear ? (
-          <Btn variant="danger" onClick={() => setConfirmClear(true)}>Limpar todos os dados</Btn>
+          <Btn variant="danger" onClick={() => setConfirmClear(true)}>
+            Limpar todos os dados
+          </Btn>
         ) : (
           <div className="flex flex-wrap items-center gap-3 rounded-xl bg-[#ff4757]/[0.04] border border-[#ff4757]/15 px-4 py-3">
             <p className="flex-1 text-sm text-[#ff6b7a]">Tem certeza?</p>
-            <Btn variant="danger" onClick={handleClearData}>Sim, limpar</Btn>
-            <Btn variant="ghost" onClick={() => setConfirmClear(false)}>Não</Btn>
+            <Btn variant="danger" onClick={handleClearData}>
+              Sim, limpar
+            </Btn>
+            <Btn variant="ghost" onClick={() => setConfirmClear(false)}>
+              Não
+            </Btn>
           </div>
         )}
       </SettingsCard>
@@ -547,21 +598,24 @@ export function SettingsForm() {
         role="status"
         aria-live="polite"
         className={`fixed bottom-5 left-4 right-4 sm:left-auto sm:right-5 z-50 flex items-center gap-2.5 rounded-xl border border-[#1e1e30] bg-[#141420] px-4 py-3 text-[13px] font-medium shadow-xl shadow-black/40 transition-all duration-200 ${
-          toast.visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
+          toast.visible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-3 pointer-events-none'
         }`}
       >
         {toast.variant === 'success' ? (
-          <CheckCircle size={15} className="text-[#00ff88] shrink-0" />
+          <CheckCircle size={15} className="text-[#00ff88] shrink-0" aria-hidden="true" />
         ) : (
-          <XCircle size={15} className="text-[#ff4757] shrink-0" />
+          <XCircle size={15} className="text-[#ff4757] shrink-0" aria-hidden="true" />
         )}
         <span className="text-[#e4e4e7]">{toast.message}</span>
         <button
           type="button"
           onClick={() => setToast((p) => ({ ...p, visible: false }))}
+          aria-label="Fechar notificação"
           className="ml-1 text-[#8b8fa3] hover:text-[#e4e4e7] transition-colors"
         >
-          <X size={13} />
+          <X size={13} aria-hidden="true" />
         </button>
       </div>
     </div>

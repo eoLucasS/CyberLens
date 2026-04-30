@@ -73,7 +73,7 @@ export default function HistoryListPage() {
         href="/"
         className="inline-flex items-center gap-1.5 text-sm text-[#9ca3af] hover:text-[#e4e4e7] transition-colors mb-6"
       >
-        <ArrowLeft size={14} />
+        <ArrowLeft size={14} aria-hidden="true" />
         Voltar ao início
       </Link>
 
@@ -82,7 +82,7 @@ export default function HistoryListPage() {
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex-1 min-w-0">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00ffd5]/10 text-[#00ffd5] text-xs font-medium mb-3">
-              <History size={14} />
+              <History size={14} aria-hidden="true" />
               Histórico local
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
@@ -102,7 +102,7 @@ export default function HistoryListPage() {
                   onClick={() => setConfirmClearAll(true)}
                   className="inline-flex items-center gap-1.5 rounded-xl border border-[#ff4757]/20 bg-[#ff4757]/[0.04] px-4 py-2 text-xs font-medium text-[#ff4757] hover:bg-[#ff4757]/[0.08] transition-colors"
                 >
-                  <Trash2 size={13} />
+                  <Trash2 size={13} aria-hidden="true" />
                   Limpar tudo
                 </button>
               ) : (
@@ -132,7 +132,7 @@ export default function HistoryListPage() {
       {!saveEnabled && (
         <div className="mb-6 rounded-2xl border border-[#ffd32a]/20 bg-[#ffd32a]/[0.04] p-4 sm:p-5">
           <div className="flex items-start gap-3">
-            <Info size={18} className="shrink-0 text-[#ffd32a] mt-0.5" />
+            <Info size={18} className="shrink-0 text-[#ffd32a] mt-0.5" aria-hidden="true" />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-[#e4e4e7]">
                 O salvamento automático está desativado
@@ -145,7 +145,7 @@ export default function HistoryListPage() {
                 href="/configuracoes"
                 className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-[#ffd32a]/10 border border-[#ffd32a]/20 px-3 py-1.5 text-[11px] font-medium text-[#ffd32a] hover:bg-[#ffd32a]/15 transition-colors"
               >
-                <Settings size={12} />
+                <Settings size={12} aria-hidden="true" />
                 Ativar em Configurações
               </Link>
             </div>
@@ -157,7 +157,7 @@ export default function HistoryListPage() {
       {entries.length === 0 ? (
         <div className="rounded-2xl border border-white/[0.06] bg-[#141420] p-8 sm:p-12 text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#00ffd5]/10 text-[#00ffd5]">
-            <History size={24} />
+            <History size={24} aria-hidden="true" />
           </div>
           <h2 className="text-base sm:text-lg font-semibold text-[#e4e4e7] mb-2">
             Nenhuma análise salva ainda
@@ -172,7 +172,7 @@ export default function HistoryListPage() {
               href="/"
               className="inline-flex items-center gap-2 rounded-xl bg-[#00ffd5] px-5 py-2.5 text-sm font-semibold text-[#0a0a0f] hover:bg-[#00e6c0] transition-colors"
             >
-              <Sparkles size={14} />
+              <Sparkles size={14} aria-hidden="true" />
               Fazer uma análise
             </Link>
             {!saveEnabled && (
@@ -180,7 +180,7 @@ export default function HistoryListPage() {
                 href="/configuracoes"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-[#141420] px-5 py-2.5 text-sm text-[#e4e4e7] hover:border-[#00ffd5]/20 transition-colors"
               >
-                <Settings size={14} />
+                <Settings size={14} aria-hidden="true" />
                 Configurações
               </Link>
             )}

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Shield, Settings, ExternalLink, BookOpen } from "lucide-react";
+import Link from 'next/link';
+import { Shield, Settings, ExternalLink, BookOpen } from 'lucide-react';
 
 export default function Header() {
   return (
@@ -13,19 +13,18 @@ export default function Header() {
             href="/"
             className="flex items-center gap-2 text-cyber-accent hover:text-cyber-accent/80 transition-colors"
           >
-            <Shield className="w-6 h-6" />
-            <span className="text-lg font-semibold tracking-tight text-cyber-text">
-              CyberLens
-            </span>
+            <Shield className="w-6 h-6" aria-hidden="true" />
+            <span className="text-lg font-semibold tracking-tight text-cyber-text">CyberLens</span>
           </Link>
 
           {/* Navigation */}
           <nav className="flex items-center gap-0.5 sm:gap-1">
             <Link
               href="/configuracoes"
+              aria-label="Configurações"
               className="flex items-center gap-1.5 px-2 py-2 sm:px-3 rounded-md text-sm text-cyber-text-secondary hover:text-cyber-text hover:bg-white/5 transition-colors"
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-4 h-4" aria-hidden="true" />
               <span className="hidden sm:inline">Configurações</span>
             </Link>
 
@@ -34,7 +33,7 @@ export default function Header() {
               className="flex items-center gap-1.5 px-2 py-2 sm:px-3 rounded-md text-sm text-cyber-text-secondary hover:text-cyber-text hover:bg-white/5 transition-colors"
               aria-label="Documentação"
             >
-              <BookOpen className="w-4 h-4" />
+              <BookOpen className="w-4 h-4" aria-hidden="true" />
               <span className="hidden sm:inline">Docs</span>
             </Link>
 
@@ -45,7 +44,7 @@ export default function Header() {
               className="flex items-center gap-1.5 px-2 py-2 sm:px-3 rounded-md text-sm text-cyber-text-secondary hover:text-cyber-text hover:bg-white/5 transition-colors"
               aria-label="Ver código no GitHub"
             >
-              <ExternalLink className="w-4 h-4" />
+              <ExternalLink className="w-4 h-4" aria-hidden="true" />
               <span className="hidden sm:inline">GitHub</span>
             </a>
           </nav>

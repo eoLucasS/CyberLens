@@ -38,13 +38,7 @@ interface ResumeUploadProps {
   disabled?: boolean;
 }
 
-type UploadState =
-  | 'idle'
-  | 'processing'
-  | 'complete'
-  | 'error'
-  | 'ocr-prompt'
-  | 'ocr-processing';
+type UploadState = 'idle' | 'processing' | 'complete' | 'error' | 'ocr-prompt' | 'ocr-processing';
 
 /** Hard cap on text the user can submit (either via extraction or manual edit). */
 const MAX_TEXT_LENGTH = 50_000;
@@ -75,9 +69,7 @@ function formatCachedDate(iso: string): string {
 }
 
 export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: ResumeUploadProps) {
-  const [uploadState, setUploadState] = useState<UploadState>(
-    isComplete ? 'complete' : 'idle',
-  );
+  const [uploadState, setUploadState] = useState<UploadState>(isComplete ? 'complete' : 'idle');
   const [acceptedFile, setAcceptedFile] = useState<File | null>(null);
   const [extractedText, setExtractedText] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -210,9 +202,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
 
       onFileAccepted(acceptedFile, result.text);
     } catch {
-      setErrorMessage(
-        'Erro durante o OCR. Tente novamente ou use um PDF com texto selecionável.',
-      );
+      setErrorMessage('Erro durante o OCR. Tente novamente ou use um PDF com texto selecionável.');
       setUploadState('error');
     }
   }, [acceptedFile, onFileAccepted]);
@@ -303,11 +293,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
   });
 
   const showCachedUI =
-    hydrated &&
-    cachedResume !== null &&
-    !disabled &&
-    uploadState === 'idle' &&
-    !usingCache;
+    hydrated && cachedResume !== null && !disabled && uploadState === 'idle' && !usingCache;
 
   // ── Renderers ────────────────────────────────────────────────────────────
 
@@ -343,7 +329,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
       return (
         <div className="flex flex-col gap-4 w-full text-left">
           <div className="flex items-center gap-3">
-            <CheckCircle className="shrink-0 text-[#00ff88]" size={22} />
+            <CheckCircle className="shrink-0 text-[#00ff88]" size={22} aria-hidden="true" />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-[#e4e4e7] truncate">{displayName}</p>
               <p className="text-xs text-[#9ca3af]">
@@ -388,12 +374,12 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
               >
                 {isTextOpen ? (
                   <>
-                    <ChevronUp size={14} />
+                    <ChevronUp size={14} aria-hidden="true" />
                     Ocultar texto extraído
                   </>
                 ) : (
                   <>
-                    <ChevronDown size={14} />
+                    <ChevronDown size={14} aria-hidden="true" />
                     Ver texto extraído
                   </>
                 )}
@@ -408,7 +394,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                   }}
                   className="flex items-center gap-1.5 text-xs text-[#9ca3af] hover:text-[#e4e4e7] transition-colors"
                 >
-                  <Pencil size={12} />
+                  <Pencil size={12} aria-hidden="true" />
                   Corrigir texto extraído
                 </button>
               )}
@@ -446,21 +432,15 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 />
                 <div className="mt-2 flex items-center justify-between flex-wrap gap-2">
                   <p className="text-[11px] text-[#6b7280]">
-                    {editedText.length.toLocaleString('pt-BR')} / {MAX_TEXT_LENGTH.toLocaleString('pt-BR')}{' '}
-                    caracteres
+                    {editedText.length.toLocaleString('pt-BR')} /{' '}
+                    {MAX_TEXT_LENGTH.toLocaleString('pt-BR')} caracteres
                     {editedText.trim().length < MIN_TEXT_LENGTH && (
-                      <span className="text-[#ffd32a] ml-2">
-                        Mínimo: {MIN_TEXT_LENGTH}
-                      </span>
+                      <span className="text-[#ffd32a] ml-2">Mínimo: {MIN_TEXT_LENGTH}</span>
                     )}
                   </p>
                   <div className="flex gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleCancelEdit}
-                    >
-                      <X size={14} />
+                    <Button variant="ghost" size="sm" onClick={handleCancelEdit}>
+                      <X size={14} aria-hidden="true" />
                       Cancelar
                     </Button>
                     <Button
@@ -469,7 +449,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                       onClick={handleSaveEdit}
                       disabled={editedText.trim().length < MIN_TEXT_LENGTH}
                     >
-                      <Save size={14} />
+                      <Save size={14} aria-hidden="true" />
                       Salvar alterações
                     </Button>
                   </div>
@@ -489,7 +469,7 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
             isDragActive ? 'bg-[#00ffd5]/20 text-[#00ffd5]' : 'bg-white/5 text-[#9ca3af]',
           ].join(' ')}
         >
-          <FileUp size={28} />
+          <FileUp size={28} aria-hidden="true" />
         </div>
         <div className="text-center">
           <p
@@ -519,18 +499,18 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
         <div className="mb-4 rounded-xl border border-[#00ffd5]/20 bg-[#00ffd5]/[0.04] p-4">
           <div className="flex items-start gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#00ffd5]/10 text-[#00ffd5]">
-              <FileText size={16} />
+              <FileText size={16} aria-hidden="true" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-[#e4e4e7]">
                 Currículo detectado no seu navegador
               </p>
               <p className="mt-1 text-xs text-[#9ca3af] break-words">
-                <span className="font-medium text-[#e4e4e7]">{cachedResume.fileName}</span>{' '}
-                ({formatFileSize(cachedResume.fileSize)})
+                <span className="font-medium text-[#e4e4e7]">{cachedResume.fileName}</span> (
+                {formatFileSize(cachedResume.fileSize)})
               </p>
               <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-[#8b8fa3]">
-                <Clock size={11} />
+                <Clock size={11} aria-hidden="true" />
                 Salvo em {formatCachedDate(cachedResume.savedAt)}
                 {cachedResume.isOcr && ' · via OCR'}
               </div>
@@ -543,8 +523,8 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 </Button>
               </div>
               <p className="mt-3 text-[11px] text-[#6b7280] leading-relaxed">
-                O currículo fica salvo apenas no localStorage do seu navegador. Você pode
-                removê-lo a qualquer momento em Configurações.
+                O currículo fica salvo apenas no localStorage do seu navegador. Você pode removê-lo
+                a qualquer momento em Configurações.
               </p>
             </div>
           </div>
@@ -558,14 +538,12 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-start gap-3">
-            <AlertCircle size={20} className="shrink-0 text-[#ffd32a] mt-0.5" />
+            <AlertCircle size={20} className="shrink-0 text-[#ffd32a] mt-0.5" aria-hidden="true" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-[#e4e4e7]">
-                PDF baseado em imagem detectado
-              </p>
+              <p className="text-sm font-medium text-[#e4e4e7]">PDF baseado em imagem detectado</p>
               <p className="mt-1 text-xs text-[#9ca3af] leading-relaxed">
-                O arquivo <strong className="text-[#e4e4e7]">{acceptedFile.name}</strong> parece
-                ser um PDF escaneado ou gerado a partir de imagens. O texto não pode ser extraído
+                O arquivo <strong className="text-[#e4e4e7]">{acceptedFile.name}</strong> parece ser
+                um PDF escaneado ou gerado a partir de imagens. O texto não pode ser extraído
                 diretamente.
               </p>
               <p className="mt-2 text-xs text-[#9ca3af] leading-relaxed">
@@ -577,13 +555,13 @@ export function ResumeUpload({ onFileAccepted, isComplete, disabled = false }: R
                 servidores externos.
               </p>
               <p className="mt-2 text-xs text-[#ffd32a]/80">
-                O OCR pode não ser 100% preciso, especialmente em documentos com baixa qualidade
-                de imagem, layouts complexos ou fontes incomuns. Você poderá revisar e corrigir o
-                texto antes de analisar.
+                O OCR pode não ser 100% preciso, especialmente em documentos com baixa qualidade de
+                imagem, layouts complexos ou fontes incomuns. Você poderá revisar e corrigir o texto
+                antes de analisar.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Button variant="primary" size="sm" onClick={handleOcr}>
-                  <ScanSearch size={14} />
+                  <ScanSearch size={14} aria-hidden="true" />
                   Tentar OCR
                 </Button>
                 <Button variant="ghost" size="sm" onClick={handleSkipOcr}>

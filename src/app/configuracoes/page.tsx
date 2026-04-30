@@ -13,7 +13,7 @@ export default function ConfiguracoesPage() {
           href="/"
           className="mb-6 inline-flex items-center gap-1.5 text-sm text-[#9ca3af] hover:text-[#e4e4e7] transition-colors"
         >
-          <ArrowLeft size={14} />
+          <ArrowLeft size={14} aria-hidden="true" />
           Voltar para análise
         </Link>
 

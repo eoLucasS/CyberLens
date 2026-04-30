@@ -32,15 +32,14 @@ function Pillar({ icon, title, desc }: { icon: React.ReactNode; title: string; d
 }
 
 export default function ConsentModal() {
-  const [consent, setConsent] = useLocalStorage<ConsentRecord>(
-    STORAGE_KEYS.CONSENT,
-    NO_CONSENT,
-  );
+  const [consent, setConsent] = useLocalStorage<ConsentRecord>(STORAGE_KEYS.CONSENT, NO_CONSENT);
 
   const [hydrated, setHydrated] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  useEffect(() => { setHydrated(true); }, []);
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   const pathname = usePathname();
   const isExemptRoute =
@@ -98,11 +97,9 @@ export default function ConsentModal() {
           {/* Header */}
           <div className="text-center mb-4 sm:mb-5">
             <div className="inline-flex items-center justify-center h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-[#00ffd5]/10 border border-[#00ffd5]/20 mb-3">
-              <Shield size={18} className="text-[#00ffd5]" />
+              <Shield size={18} className="text-[#00ffd5]" aria-hidden="true" />
             </div>
-            <h2 className="text-base sm:text-lg font-bold text-white">
-              Privacidade e Termos
-            </h2>
+            <h2 className="text-base sm:text-lg font-bold text-white">Privacidade e Termos</h2>
             <p className="text-xs sm:text-sm text-[#9ca3af] mt-1">
               Veja como o CyberLens protege seus dados.
             </p>
@@ -111,17 +108,17 @@ export default function ConsentModal() {
           {/* Pillars */}
           <div className="space-y-3 mb-4">
             <Pillar
-              icon={<Lock size={14} />}
+              icon={<Lock size={14} aria-hidden="true" />}
               title="Dados ficam no navegador"
               desc="API key e configurações armazenados apenas no localStorage. Sem servidores."
             />
             <Pillar
-              icon={<Eye size={14} />}
+              icon={<Eye size={14} aria-hidden="true" />}
               title="Transparência"
               desc="Currículo enviado apenas ao provedor de IA que você escolher, com sua própria API key."
             />
             <Pillar
-              icon={<Database size={14} />}
+              icon={<Database size={14} aria-hidden="true" />}
               title="Zero rastreamento"
               desc="Sem cookies, sem analytics, sem coleta de dados pessoais."
             />
@@ -130,7 +127,8 @@ export default function ConsentModal() {
           {/* Cost */}
           <div className="rounded-lg bg-[#ffd32a]/[0.05] border border-[#ffd32a]/10 px-3 py-2 mb-4">
             <p className="text-[11px] text-[#ffd32a]/80 leading-relaxed">
-              Cada análise consome créditos do seu provedor de IA. O CyberLens não se responsabiliza por custos da API.
+              Cada análise consome créditos do seu provedor de IA. O CyberLens não se responsabiliza
+              por custos da API.
             </p>
           </div>
 
@@ -143,7 +141,7 @@ export default function ConsentModal() {
               className="inline-flex items-center gap-1 text-[11px] text-[#00ffd5] hover:underline"
             >
               Política de Privacidade
-              <ExternalLink size={9} />
+              <ExternalLink size={9} aria-hidden="true" />
             </Link>
             <span className="text-[#2e2e3e]">|</span>
             <Link
@@ -153,7 +151,7 @@ export default function ConsentModal() {
               className="inline-flex items-center gap-1 text-[11px] text-[#00ffd5] hover:underline"
             >
               Termos de Uso
-              <ExternalLink size={9} />
+              <ExternalLink size={9} aria-hidden="true" />
             </Link>
           </div>
 
@@ -166,27 +164,46 @@ export default function ConsentModal() {
                 onChange={(e) => setChecked(e.target.checked)}
                 className="peer sr-only"
               />
-              <div className={`h-[18px] w-[18px] rounded border-2 transition-all flex items-center justify-center ${
-                checked
-                  ? 'bg-[#00ffd5] border-[#00ffd5]'
-                  : 'border-[#3a3a4a] group-hover:border-[#5a5a6a]'
-              }`}>
+              <div
+                className={`h-[18px] w-[18px] rounded border-2 transition-all flex items-center justify-center ${
+                  checked
+                    ? 'bg-[#00ffd5] border-[#00ffd5]'
+                    : 'border-[#3a3a4a] group-hover:border-[#5a5a6a]'
+                }`}
+              >
                 {checked && (
                   <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                    <path d="M2.5 6L5 8.5L9.5 3.5" stroke="#0a0a0f" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M2.5 6L5 8.5L9.5 3.5"
+                      stroke="#0a0a0f"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 )}
               </div>
             </div>
             <span className="text-[12px] sm:text-[13px] text-[#9ca3af] group-hover:text-[#e4e4e7] transition-colors leading-relaxed">
               Li e concordo com a{' '}
-              <Link href="/privacidade" target="_blank" rel="noopener noreferrer" className="text-[#00ffd5] hover:underline">
+              <Link
+                href="/privacidade"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00ffd5] hover:underline"
+              >
                 Política de Privacidade
               </Link>{' '}
               e os{' '}
-              <Link href="/termos" target="_blank" rel="noopener noreferrer" className="text-[#00ffd5] hover:underline">
+              <Link
+                href="/termos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#00ffd5] hover:underline"
+              >
                 Termos de Uso
-              </Link>.
+              </Link>
+              .
             </span>
           </label>
 

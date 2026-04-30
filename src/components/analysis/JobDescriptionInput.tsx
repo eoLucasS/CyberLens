@@ -58,9 +58,7 @@ export function JobDescriptionInput({ onSubmit, isComplete }: JobDescriptionInpu
 
   if (isComplete && !isEditing) {
     const preview =
-      submittedText.length > 200
-        ? `${submittedText.slice(0, 200)}...`
-        : submittedText;
+      submittedText.length > 200 ? `${submittedText.slice(0, 200)}...` : submittedText;
 
     return (
       <Card className="p-5">
@@ -70,9 +68,7 @@ export function JobDescriptionInput({ onSubmit, isComplete }: JobDescriptionInpu
               Passo 2: Descrição da Vaga
             </p>
             {/* Truncated preview of the confirmed job description */}
-            <p className="text-sm text-[#9ca3af] leading-relaxed break-words">
-              {preview}
-            </p>
+            <p className="text-sm text-[#9ca3af] leading-relaxed break-words">{preview}</p>
           </div>
           <Button
             variant="ghost"
@@ -81,7 +77,7 @@ export function JobDescriptionInput({ onSubmit, isComplete }: JobDescriptionInpu
             className="shrink-0"
             aria-label="Editar descrição da vaga"
           >
-            <Pencil size={14} />
+            <Pencil size={14} aria-hidden="true" />
             Editar
           </Button>
         </div>
@@ -127,8 +123,8 @@ export function JobDescriptionInput({ onSubmit, isComplete }: JobDescriptionInpu
 
       {/* Supplementary hint line */}
       <p id="job-desc-hint" className="mt-2 text-xs text-[#8b8fa3]">
-        Inclua requisitos técnicos, responsabilidades e certificações exigidas para
-        uma análise mais precisa.
+        Inclua requisitos técnicos, responsabilidades e certificações exigidas para uma análise mais
+        precisa.
       </p>
 
       {/* Submit button: disabled until content is valid */}

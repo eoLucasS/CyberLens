@@ -131,20 +131,19 @@ export default function DemoLandingPage() {
   return (
     <div className="min-h-screen py-8 sm:py-12 px-4">
       <div className="max-w-5xl mx-auto">
-
         {/* Back link */}
         <Link
           href="/"
           className="mb-6 inline-flex items-center gap-1.5 text-sm text-[#9ca3af] hover:text-[#e4e4e7] transition-colors"
         >
-          <ArrowLeft size={14} />
+          <ArrowLeft size={14} aria-hidden="true" />
           Voltar ao início
         </Link>
 
         {/* Header */}
         <div className="mb-10 sm:mb-14 text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00ffd5]/10 text-[#00ffd5] text-xs font-medium mb-4">
-            <Sparkles size={14} />
+            <Sparkles size={14} aria-hidden="true" />
             Modo demonstração
           </div>
           <h1 className="text-2xl sm:text-4xl font-bold text-white tracking-tight">
@@ -153,8 +152,8 @@ export default function DemoLandingPage() {
             <span className="text-[#00ffd5]"> em 5 segundos</span>
           </h1>
           <p className="mt-4 text-sm sm:text-[15px] text-[#9ca3af] leading-relaxed">
-            Escolha um dos três perfis abaixo e veja uma análise completa,
-            sem cadastro, sem API key, sem compromisso.
+            Escolha um dos três perfis abaixo e veja uma análise completa, sem cadastro, sem API
+            key, sem compromisso.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-[#8b8fa3]">
             <span className="inline-flex items-center gap-1.5">
@@ -166,7 +165,7 @@ export default function DemoLandingPage() {
               Sem cadastro
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Clock size={14} className="text-[#00ffd5]" />
+              <Clock size={14} className="text-[#00ffd5]" aria-hidden="true" />
               Menos de 5 segundos
             </span>
           </div>
@@ -213,14 +212,8 @@ export default function DemoLandingPage() {
                 {/* Highlights */}
                 <ul className="mt-4 space-y-1.5">
                   {p.highlights.map((h) => (
-                    <li
-                      key={h}
-                      className="flex items-start gap-2 text-[11px] text-[#8b8fa3]"
-                    >
-                      <CheckCircle2
-                        size={11}
-                        className="mt-0.5 shrink-0 text-[#00ffd5]"
-                      />
+                    <li key={h} className="flex items-start gap-2 text-[11px] text-[#8b8fa3]">
+                      <CheckCircle2 size={11} className="mt-0.5 shrink-0 text-[#00ffd5]" />
                       {h}
                     </li>
                   ))}
@@ -228,12 +221,10 @@ export default function DemoLandingPage() {
 
                 {/* Classification chip (bottom) */}
                 <div className="mt-5 pt-4 border-t border-white/[0.06] flex items-center justify-between">
-                  <span className="text-[11px] text-[#6b7280]">
-                    {p.classification}
-                  </span>
+                  <span className="text-[11px] text-[#6b7280]">{p.classification}</span>
                   <span className="inline-flex items-center gap-1 text-xs font-medium text-[#00ffd5] group-hover:translate-x-0.5 transition-transform">
                     Ver análise
-                    <ArrowRight size={12} />
+                    <ArrowRight size={12} aria-hidden="true" />
                   </span>
                 </div>
               </Link>
@@ -253,7 +244,7 @@ export default function DemoLandingPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <ExplainerCard
-              icon={<Zap size={16} />}
+              icon={<Zap size={16} aria-hidden="true" />}
               title="Raio-X instantâneo"
               description="Palavras-chave encontradas e ausentes, calculadas no seu navegador antes mesmo da IA ser chamada."
             />
@@ -268,7 +259,7 @@ export default function DemoLandingPage() {
               description="Lacunas classificadas por prioridade, cada uma com sugestão de reescrita ou plano de ação."
             />
             <ExplainerCard
-              icon={<BookOpen size={16} />}
+              icon={<BookOpen size={16} aria-hidden="true" />}
               title="Plano de estudos"
               description="Roadmap personalizado com recursos reais (cursos, certificações) e tempo estimado por tópico."
             />
@@ -277,15 +268,13 @@ export default function DemoLandingPage() {
 
         {/* Final CTA */}
         <div className="mt-8 sm:mt-10 text-center">
-          <p className="text-sm text-[#9ca3af] mb-4">
-            Pronto para analisar seu próprio currículo?
-          </p>
+          <p className="text-sm text-[#9ca3af] mb-4">Pronto para analisar seu próprio currículo?</p>
           <Link
             href="/"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#00ffd5] text-[#0a0a0f] font-semibold text-sm hover:bg-[#00e6c0] transition-colors"
           >
             Começar análise real
-            <ArrowRight size={14} />
+            <ArrowRight size={14} aria-hidden="true" />
           </Link>
         </div>
       </div>

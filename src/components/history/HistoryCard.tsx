@@ -131,14 +131,14 @@ export function HistoryCard({ entry, onRemove, onUpdate }: HistoryCardProps) {
           className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[#6b7280] hover:text-[#ff4757] hover:bg-[#ff4757]/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff4757]/40"
           aria-label={`Remover análise: ${entry.jobTitle}`}
         >
-          <Trash2 size={14} />
+          <Trash2 size={14} aria-hidden="true" />
         </button>
       </div>
 
       {/* Editable job title area (NOT a link, so it's clearly interactive) */}
       <div className="px-5">
         <div className="flex items-start gap-2">
-          <Briefcase size={13} className="shrink-0 text-[#9ca3af] mt-1" />
+          <Briefcase size={13} className="shrink-0 text-[#9ca3af] mt-1" aria-hidden="true" />
           <div className="min-w-0 flex-1">
             {editing ? (
               <div className="flex items-center gap-1.5">
@@ -146,7 +146,9 @@ export function HistoryCard({ entry, onRemove, onUpdate }: HistoryCardProps) {
                   ref={inputRef}
                   type="text"
                   value={draftTitle}
-                  onChange={(e) => setDraftTitle(e.target.value.slice(0, MAX_EDITABLE_TITLE_LENGTH))}
+                  onChange={(e) =>
+                    setDraftTitle(e.target.value.slice(0, MAX_EDITABLE_TITLE_LENGTH))
+                  }
                   onKeyDown={handleKeyDown}
                   onBlur={commitEdit}
                   maxLength={MAX_EDITABLE_TITLE_LENGTH}
@@ -163,7 +165,7 @@ export function HistoryCard({ entry, onRemove, onUpdate }: HistoryCardProps) {
                   className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#00ffd5]/10 text-[#00ffd5] hover:bg-[#00ffd5]/20 transition-colors"
                   aria-label="Salvar título"
                 >
-                  <Check size={12} />
+                  <Check size={12} aria-hidden="true" />
                 </button>
                 <button
                   type="button"
@@ -174,7 +176,7 @@ export function HistoryCard({ entry, onRemove, onUpdate }: HistoryCardProps) {
                   className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#ff4757]/10 text-[#ff4757] hover:bg-[#ff4757]/20 transition-colors"
                   aria-label="Cancelar edição"
                 >
-                  <X size={12} />
+                  <X size={12} aria-hidden="true" />
                 </button>
               </div>
             ) : (
@@ -188,7 +190,7 @@ export function HistoryCard({ entry, onRemove, onUpdate }: HistoryCardProps) {
                   className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[#6b7280] hover:text-[#00ffd5] hover:bg-[#00ffd5]/5 transition-colors opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ffd5]/40"
                   aria-label="Editar título da vaga"
                 >
-                  <Pencil size={11} />
+                  <Pencil size={11} aria-hidden="true" />
                 </button>
               </div>
             )}
@@ -206,18 +208,18 @@ export function HistoryCard({ entry, onRemove, onUpdate }: HistoryCardProps) {
         aria-label={`Abrir análise salva: ${entry.jobTitle}`}
       >
         <div className="flex items-center gap-2 mb-3">
-          <FileText size={12} className="shrink-0 text-[#6b7280]" />
+          <FileText size={12} className="shrink-0 text-[#6b7280]" aria-hidden="true" />
           <p className="text-[11px] text-[#9ca3af] truncate">{entry.resumeFileName}</p>
         </div>
 
         <div className="flex items-center justify-between pt-3 border-t border-white/[0.04]">
           <p className="text-[11px] text-[#6b7280] inline-flex items-center gap-1">
-            <Clock size={11} />
+            <Clock size={11} aria-hidden="true" />
             <time dateTime={entry.savedAt}>{formatRelativeDate(entry.savedAt)}</time>
           </p>
           <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#00ffd5] group-hover:translate-x-0.5 transition-transform">
             Abrir
-            <ArrowRight size={11} />
+            <ArrowRight size={11} aria-hidden="true" />
           </span>
         </div>
       </Link>

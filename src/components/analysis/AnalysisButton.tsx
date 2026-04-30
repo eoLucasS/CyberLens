@@ -57,9 +57,7 @@ export function AnalysisButton({
 
             {/* Rotating loading message */}
             <div className="flex flex-col items-center gap-1 text-center">
-              <p className="text-sm font-medium text-[#00ffd5]">
-                {loadingMessage}
-              </p>
+              <p className="text-sm font-medium text-[#00ffd5]">{loadingMessage}</p>
               {/* Animated dots */}
               <span className="flex gap-1 mt-1" aria-hidden>
                 {[0, 1, 2].map((i) => (
@@ -76,8 +74,8 @@ export function AnalysisButton({
 
             {/* Progress flavour text */}
             <p className="text-xs text-[#8b8fa3] text-center max-w-xs">
-              A análise pode levar alguns segundos dependendo do tamanho do
-              currículo e da velocidade da API.
+              A análise pode levar alguns segundos dependendo do tamanho do currículo e da
+              velocidade da API.
             </p>
           </div>
         </div>
@@ -102,8 +100,8 @@ export function AnalysisButton({
       </p>
 
       <p className="mb-5 text-sm text-[#9ca3af]">
-        Com o currículo e a descrição da vaga prontos, inicie a análise de
-        aderência com inteligência artificial.
+        Com o currículo e a descrição da vaga prontos, inicie a análise de aderência com
+        inteligência artificial.
       </p>
 
       {/* Primary CTA button */}
@@ -115,7 +113,7 @@ export function AnalysisButton({
         className="w-full"
         aria-label="Analisar aderência do currículo à vaga"
       >
-        <Sparkles size={18} />
+        <Sparkles size={18} aria-hidden="true" />
         Analisar Aderência
       </Button>
 
@@ -136,8 +134,7 @@ export function AnalysisButton({
       {/* Passive hint when disabled because upstream steps aren't done */}
       {disabled && hasApiKey && (
         <p className="mt-3 text-xs text-[#8b8fa3]">
-          Complete o envio do currículo e a descrição da vaga para habilitar a
-          análise.
+          Complete o envio do currículo e a descrição da vaga para habilitar a análise.
         </p>
       )}
     </Card>

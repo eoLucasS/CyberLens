@@ -15,7 +15,16 @@ import { getStorageItem, STORAGE_KEYS } from '@/lib/utils/storage';
 import { APP_NAME, APP_DESCRIPTION, STEP_TITLES } from '@/constants/ui';
 import { AI_PROVIDERS } from '@/constants/providers';
 import type { UserSettings } from '@/types';
-import { Shield, FileText, Briefcase, Sparkles, BarChart3, KeyRound, ArrowRight, PlayCircle } from 'lucide-react';
+import {
+  Shield,
+  FileText,
+  Briefcase,
+  Sparkles,
+  BarChart3,
+  KeyRound,
+  ArrowRight,
+  PlayCircle,
+} from 'lucide-react';
 
 const STEP_ICONS = [FileText, Briefcase, Sparkles, BarChart3];
 
@@ -57,15 +66,18 @@ export default function HomePage() {
     setCurrentStep((prev) => Math.max(prev, 1));
   }, []);
 
-  const handleJobSubmit = useCallback((text: string) => {
-    setJobDescription(text);
-    setCurrentStep((prev) => Math.max(prev, 2));
-    if (resumeText) {
-      const cleaned = cleanJobDescription(text);
-      const preview = analyzeKeywords(cleaned, resumeText);
-      setKeywordPreview(preview);
-    }
-  }, [resumeText]);
+  const handleJobSubmit = useCallback(
+    (text: string) => {
+      setJobDescription(text);
+      setCurrentStep((prev) => Math.max(prev, 2));
+      if (resumeText) {
+        const cleaned = cleanJobDescription(text);
+        const preview = analyzeKeywords(cleaned, resumeText);
+        setKeywordPreview(preview);
+      }
+    },
+    [resumeText],
+  );
 
   const handleAnalyze = useCallback(async () => {
     await analyze(resumeText, jobDescription, { resumeFileName });
@@ -90,15 +102,14 @@ export default function HomePage() {
   }, []);
 
   const hasApiKey = Boolean(settings?.apiKey);
-  const providerLabel =
-    AI_PROVIDERS.find((p) => p.name === settings?.provider)?.label ?? undefined;
+  const providerLabel = AI_PROVIDERS.find((p) => p.name === settings?.provider)?.label ?? undefined;
 
   return (
     <div className="mx-auto w-full max-w-[1200px] px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
       {/* Hero */}
       <section className="mb-8 sm:mb-12 text-center">
         <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-full border border-[#00ffd5]/20 bg-[#00ffd5]/5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-[#00ffd5]">
-          <Shield className="h-4 w-4" />
+          <Shield className="h-4 w-4" aria-hidden="true" />
           {APP_NAME}
         </div>
         <h1 className="mb-3 sm:mb-4 text-2xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
@@ -114,11 +125,12 @@ export default function HomePage() {
             href="/demo"
             className="group inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-[#141420] px-4 py-2.5 text-xs sm:text-sm font-medium text-[#e4e4e7] hover:border-[#00ffd5]/25 hover:text-white transition-all duration-200"
           >
-            <PlayCircle size={16} className="text-[#00ffd5]" />
+            <PlayCircle size={16} className="text-[#00ffd5]" aria-hidden="true" />
             Ver demonstração em 5 segundos
             <ArrowRight
               size={14}
               className="text-[#00ffd5] opacity-60 group-hover:translate-x-0.5 transition-transform"
+              aria-hidden="true"
             />
           </Link>
         </div>
@@ -142,15 +154,11 @@ export default function HomePage() {
                         : 'border-white/10 bg-white/5 text-[#8b8fa3]'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                 </div>
                 <span
                   className={`hidden text-sm sm:inline ${
-                    isComplete
-                      ? 'text-[#00ff88]'
-                      : isActive
-                        ? 'text-[#00ffd5]'
-                        : 'text-[#8b8fa3]'
+                    isComplete ? 'text-[#00ff88]' : isActive ? 'text-[#00ffd5]' : 'text-[#8b8fa3]'
                   }`}
                 >
                   {title}
@@ -179,14 +187,20 @@ export default function HomePage() {
               className="group mb-4 block relative overflow-hidden rounded-2xl border border-[#00ffd5]/15 bg-gradient-to-br from-[#00ffd5]/[0.06] via-[#0f0f1a] to-[#7c3aed]/[0.04] p-5 sm:p-6 transition-all duration-300 hover:border-[#00ffd5]/30 hover:shadow-[0_0_30px_rgba(0,255,213,0.06)]"
             >
               {/* Decorative grid */}
-              <div className="pointer-events-none absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, #00ffd5 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+              <div
+                className="pointer-events-none absolute inset-0 opacity-[0.03]"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, #00ffd5 1px, transparent 1px)',
+                  backgroundSize: '24px 24px',
+                }}
+              />
 
               <div className="relative flex items-center gap-4 sm:gap-5">
                 {/* Animated icon */}
                 <div className="shrink-0 relative">
                   <div className="absolute inset-0 rounded-2xl bg-[#00ffd5]/20 blur-xl group-hover:bg-[#00ffd5]/30 transition-all duration-500" />
                   <div className="relative flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl border border-[#00ffd5]/20 bg-[#0a0a0f]/80 text-[#00ffd5]">
-                    <KeyRound className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <KeyRound className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                   </div>
                 </div>
 
@@ -195,10 +209,17 @@ export default function HomePage() {
                     <p className="text-sm sm:text-base font-semibold text-[#e4e4e7] group-hover:text-white transition-colors">
                       Configure seu provedor de IA
                     </p>
-                    <ArrowRight className="h-4 w-4 text-[#00ffd5] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                    <ArrowRight
+                      className="h-4 w-4 text-[#00ffd5] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                      aria-hidden="true"
+                    />
                   </div>
                   <p className="text-xs sm:text-sm text-[#9ca3af] leading-relaxed">
-                    Leva menos de 1 minuto. O <span className="text-[#00ffd5] font-medium">Hugging Face oferece créditos gratuitos</span> para você começar sem custo.
+                    Leva menos de 1 minuto. O{' '}
+                    <span className="text-[#00ffd5] font-medium">
+                      Hugging Face oferece créditos gratuitos
+                    </span>{' '}
+                    para você começar sem custo.
                   </p>
                 </div>
               </div>
@@ -213,7 +234,7 @@ export default function HomePage() {
                 className="text-xs text-[#9ca3af] hover:text-[#00ffd5] transition-colors inline-flex items-center gap-1"
               >
                 Ou veja uma demonstração primeiro
-                <ArrowRight size={11} />
+                <ArrowRight size={11} aria-hidden="true" />
               </Link>
             </div>
           )}
