@@ -148,3 +148,4 @@ export type {
   Match,
 } from './types';
 export { TOKENS, CATEGORY_LABELS, CATEGORIES, DEFAULT_CATEGORY_STATE } from './tokens';
+export { DEFAULT_PREFS, sanitizePrefs, toEnabledMap, countDisabledCategories } from './preferences';

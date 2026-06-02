@@ -15,6 +15,25 @@ export interface AIProviderConfig {
   docsUrl: string;
 }
 
+/**
+ * User-controlled anonymization preferences. The master `enabled` toggle
+ * short-circuits the entire pipeline; when false, no PII is redacted even
+ * if individual categories are on. Category-level flags only take effect
+ * when the master switch is true.
+ */
+export interface AnonymizationPrefs {
+  enabled: boolean;
+  categories: {
+    email: boolean;
+    phone: boolean;
+    cpf: boolean;
+    cep: boolean;
+    birthdate: boolean;
+    linkedin: boolean;
+    github: boolean;
+  };
+}
+
 export interface UserSettings {
   provider: AIProviderName;
   model: string;
@@ -26,4 +45,10 @@ export interface UserSettings {
    * without explicit user consent.
    */
   saveHistory?: boolean;
+  /**
+   * PII anonymization preferences. Optional for backward compatibility with
+   * older localStorage entries; readers should use sanitizePrefs from
+   * @/lib/anonymizer/preferences to get a safe normalized object.
+   */
+  anonymization?: AnonymizationPrefs;
 }

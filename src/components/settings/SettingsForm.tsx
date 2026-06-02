@@ -12,9 +12,12 @@ import {
   Loader2,
   Radio,
   ShieldCheck,
+  ShieldOff,
   AlertCircle,
+  AlertTriangle,
   History,
   ArrowRight,
+  RotateCcw,
 } from 'lucide-react';
 import { useLocalStorage } from '@/hooks';
 import { AI_PROVIDERS, DEFAULT_PROVIDER, DEFAULT_MODEL } from '@/constants/providers';
@@ -22,7 +25,15 @@ import { validateApiKey } from '@/lib/utils/validators';
 import { STORAGE_KEYS, clearAllData } from '@/lib/utils/storage';
 import { testConnection } from '@/lib/ai';
 import { getHistory, clearHistory } from '@/lib/history/store';
-import type { UserSettings, AIProviderName, AIProviderConfig } from '@/types';
+import {
+  CATEGORIES,
+  CATEGORY_LABELS,
+  DEFAULT_PREFS,
+  countDisabledCategories,
+  sanitizePrefs,
+} from '@/lib/anonymizer';
+import type { Category } from '@/lib/anonymizer';
+import type { UserSettings, AIProviderName, AIProviderConfig, AnonymizationPrefs } from '@/types';
 
 const DEFAULT_SETTINGS: UserSettings = {
   provider: DEFAULT_PROVIDER.name,
@@ -30,6 +41,21 @@ const DEFAULT_SETTINGS: UserSettings = {
   apiKey: '',
   hasAcceptedTerms: false,
   saveHistory: false,
+  anonymization: DEFAULT_PREFS,
+};
+
+/**
+ * Short description per category, shown beneath each sub-toggle so the user
+ * understands exactly what is being redacted.
+ */
+const CATEGORY_DESCRIPTIONS: Record<Category, string> = {
+  email: 'Endereços de e-mail completos.',
+  phone: 'Telefones BR em qualquer formato.',
+  cpf: 'CPF formatado ou em sequência de 11 dígitos.',
+  cep: 'CEP no formato XXXXX-XXX.',
+  birthdate: 'Datas com cue ("nascido em", "DN:") ou anos 1900-2004.',
+  linkedin: 'URLs e nomes de host do LinkedIn.',
+  github: 'URLs e nomes de host do GitHub.',
 };
 
 type TestStatus = 'idle' | 'success' | 'error';
@@ -331,6 +357,43 @@ export function SettingsForm() {
     showToast('Histórico desativado. Entradas anteriores mantidas.', 'success');
   }
 
+  // Anonymization preferences: read through sanitizePrefs so legacy entries
+  // and tampered payloads always resolve to a valid, fully populated shape.
+  const anonPrefs: AnonymizationPrefs = sanitizePrefs(settings.anonymization);
+  const disabledCount = countDisabledCategories(anonPrefs);
+
+  function handleToggleAnonymizationMaster(next: boolean) {
+    setSettings((prev) => ({
+      ...prev,
+      anonymization: { ...sanitizePrefs(prev.anonymization), enabled: next },
+    }));
+    showToast(
+      next ? 'Anonimização ativada.' : 'Anonimização desativada.',
+      next ? 'success' : 'error',
+    );
+  }
+
+  function handleToggleAnonymizationCategory(category: Category, next: boolean) {
+    setSettings((prev) => {
+      const current = sanitizePrefs(prev.anonymization);
+      return {
+        ...prev,
+        anonymization: {
+          ...current,
+          categories: { ...current.categories, [category]: next },
+        },
+      };
+    });
+  }
+
+  function handleResetAnonymizationDefaults() {
+    setSettings((prev) => ({
+      ...prev,
+      anonymization: { enabled: true, categories: { ...DEFAULT_PREFS.categories } },
+    }));
+    showToast('Anonimização restaurada para o padrão.', 'success');
+  }
+
   return (
     <div className="flex flex-col gap-5">
       {/* ── 1. Provider ────────────────────────────────────────────────────── */}
@@ -507,7 +570,141 @@ export function SettingsForm() {
         </p>
       </div>
 
-      {/* ── 5. History (opt-in) ────────────────────────────────────────────── */}
+      {/* ── 5. Anonimização ────────────────────────────────────────────────── */}
+      <SettingsCard>
+        {/* Header row: title + master toggle. Stacks on very small screens. */}
+        <div className="flex items-start justify-between gap-4 mb-1">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-[15px] font-semibold text-white flex items-center gap-2">
+              {anonPrefs.enabled ? (
+                <ShieldCheck size={16} className="text-[#00ff88] shrink-0" aria-hidden="true" />
+              ) : (
+                <ShieldOff size={16} className="text-[#ffd32a] shrink-0" aria-hidden="true" />
+              )}
+              Anonimização de dados pessoais
+            </h2>
+            <p className="text-xs text-[#8b8fa3] mt-1 leading-relaxed">
+              Antes de qualquer envio ao provedor de IA, o CyberLens detecta e substitui dados
+              estruturais (CPF, e-mail, telefone, CEP, datas, LinkedIn, GitHub) por marcadores
+              neutros. Tudo acontece localmente no seu navegador.
+            </p>
+          </div>
+
+          {/* Master toggle (same primitive as the history toggle). */}
+          <button
+            type="button"
+            role="switch"
+            aria-checked={anonPrefs.enabled}
+            aria-label={anonPrefs.enabled ? 'Desativar anonimização' : 'Ativar anonimização'}
+            onClick={() => handleToggleAnonymizationMaster(!anonPrefs.enabled)}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ffd5]/40 ${
+              anonPrefs.enabled ? 'bg-[#00ffd5]/80' : 'bg-[#2a2a3a]'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                anonPrefs.enabled ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+
+        {/* Warning banner shown only when the master switch is off. */}
+        {!anonPrefs.enabled && (
+          <div
+            className="mt-4 rounded-xl border border-[#ffd32a]/25 bg-[#ffd32a]/[0.05] px-4 py-3 flex items-start gap-2.5"
+            role="alert"
+          >
+            <AlertTriangle size={15} className="text-[#ffd32a] shrink-0 mt-px" aria-hidden="true" />
+            <div className="min-w-0">
+              <p className="text-xs font-medium text-[#ffd32a]">
+                Seus dados pessoais sairão sem redação.
+              </p>
+              <p className="mt-1 text-[11px] text-[#ffd32a]/80 leading-relaxed">
+                CPF, e-mail, telefone, CEP, datas e URLs sociais identificadas no seu currículo
+                serão enviadas ao provedor de IA em texto cru. Você pode reativar a qualquer
+                momento.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Per-category toggles, only meaningful when master is on. */}
+        {anonPrefs.enabled && (
+          <>
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {CATEGORIES.map((category) => {
+                const checked = anonPrefs.categories[category];
+                return (
+                  <div
+                    key={category}
+                    className={`flex items-start justify-between gap-3 rounded-xl border px-3.5 py-3 transition-colors ${
+                      checked
+                        ? 'border-[#1e1e30] bg-[#0d0d18]'
+                        : 'border-[#ffd32a]/15 bg-[#ffd32a]/[0.03]'
+                    }`}
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className={`text-[13px] font-medium ${
+                          checked ? 'text-[#e4e4e7]' : 'text-[#ffd32a]'
+                        }`}
+                      >
+                        {CATEGORY_LABELS[category]}
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-[#8b8fa3] leading-relaxed">
+                        {CATEGORY_DESCRIPTIONS[category]}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={checked}
+                      aria-label={
+                        checked
+                          ? `Desativar redação de ${CATEGORY_LABELS[category]}`
+                          : `Ativar redação de ${CATEGORY_LABELS[category]}`
+                      }
+                      onClick={() => handleToggleAnonymizationCategory(category, !checked)}
+                      className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ffd5]/40 ${
+                        checked ? 'bg-[#00ffd5]/80' : 'bg-[#2a2a3a]'
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                          checked ? 'translate-x-5' : 'translate-x-0.5'
+                        }`}
+                      />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Footer: counter (when categories are off) + reset link */}
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-[11px] text-[#6b7280]">
+                {disabledCount === 0
+                  ? 'Todas as categorias suportadas estão ativas.'
+                  : `${disabledCount} ${disabledCount === 1 ? 'categoria desativada' : 'categorias desativadas'}.`}
+              </p>
+              {disabledCount > 0 && (
+                <button
+                  type="button"
+                  onClick={handleResetAnonymizationDefaults}
+                  className="inline-flex items-center gap-1 text-[11px] text-[#00ffd5] hover:text-[#00ffd5]/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00ffd5]/40 rounded"
+                >
+                  <RotateCcw size={11} aria-hidden="true" />
+                  Restaurar padrão
+                </button>
+              )}
+            </div>
+          </>
+        )}
+      </SettingsCard>
+
+      {/* ── 6. History (opt-in) ────────────────────────────────────────────── */}
       <SettingsCard>
         <div className="flex items-start justify-between gap-4 mb-1">
           <div className="flex-1 min-w-0">
